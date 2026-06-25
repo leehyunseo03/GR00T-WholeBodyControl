@@ -16,16 +16,7 @@ from isaaclab.markers import VisualizationMarkers, VisualizationMarkersCfg
 from isaaclab.markers.config import DEFORMABLE_TARGET_MARKER_CFG
 import isaaclab.sim as sim_utils
 from isaaclab.utils import configclass
-from isaaclab.utils.math import (
-    matrix_from_quat,
-    quat_apply,
-    quat_apply_yaw,
-    quat_error_magnitude,
-    quat_from_euler_xyz,
-    quat_inv,
-    quat_mul,
-    sample_uniform,
-)
+from isaaclab.utils.math import sample_uniform
 import numpy as np
 import torch
 
@@ -41,6 +32,35 @@ if TYPE_CHECKING:
 # Objects spread vertically (Z) since envs only vary in X,Y - much simpler!
 INACTIVE_OBJECT_BASE_OFFSET = torch.tensor([1000.0, 0.0, -50.0])  # 1km away in X, 50m underground
 INACTIVE_OBJECT_Z_SPACING = 10.0  # 10m vertical spacing between objects (must be > chair height)
+
+
+def quat_apply(quat: torch.Tensor, vec: torch.Tensor) -> torch.Tensor:
+    return rotations.quat_apply(quat, vec, w_last=False)
+
+
+def quat_apply_yaw(quat: torch.Tensor, vec: torch.Tensor) -> torch.Tensor:
+    return rotations.quat_apply(rotations.yaw_quat(quat), vec, w_last=False)
+
+
+def quat_inv(quat: torch.Tensor) -> torch.Tensor:
+    return rotations.quat_unit(rotations.quat_conjugate(quat, w_last=False))
+
+
+def quat_mul(q1: torch.Tensor, q2: torch.Tensor) -> torch.Tensor:
+    return rotations.quat_mul(q1, q2, w_last=False)
+
+
+def quat_from_euler_xyz(roll: torch.Tensor, pitch: torch.Tensor, yaw: torch.Tensor) -> torch.Tensor:
+    return rotations.xyzw_to_wxyz(rotations.quat_from_euler_xyz(roll, pitch, yaw))
+
+
+def matrix_from_quat(quat: torch.Tensor) -> torch.Tensor:
+    return rotations.quaternion_to_matrix(quat)
+
+
+def quat_error_magnitude(q1: torch.Tensor, q2: torch.Tensor) -> torch.Tensor:
+    diff = quat_mul(q1, quat_inv(q2))
+    return 2.0 * torch.atan2(torch.linalg.norm(diff[..., 1:], dim=-1), diff[..., 0].abs())
 
 
 def _init_variable_frames(
@@ -2301,7 +2321,7 @@ class TrackingCommand(CommandTerm):
 
     @property
     def robot_body_quat_w(self) -> torch.Tensor:
-        return self.robot.data.body_quat_w[:, self.body_indexes]
+        return rotations.xyzw_to_wxyz(self.robot.data.body_quat_w[:, self.body_indexes])
 
     @property
     def robot_body_lin_vel_w(self) -> torch.Tensor:
@@ -2344,7 +2364,7 @@ class TrackingCommand(CommandTerm):
             if self.ref_motion_root_rotation_noise is not None:
                 ref_root_quat = quat_mul(ref_root_quat, self.ref_motion_root_rotation_noise)
             return ref_root_quat
-        return self.robot.data.body_quat_w[:, self.robot_anchor_body_index]
+        return rotations.xyzw_to_wxyz(self.robot.data.body_quat_w[:, self.robot_anchor_body_index])
 
     @property
     def robot_anchor_lin_vel_w(self) -> torch.Tensor:
@@ -3057,7 +3077,7 @@ class TrackingCommand(CommandTerm):
             torch.cat(
                 [
                     root_pos[env_ids],
-                    root_ori[env_ids],
+                    rotations.wxyz_to_xyzw(root_ori[env_ids]),
                     root_lin_vel[env_ids],
                     root_ang_vel[env_ids],
                 ],
@@ -3065,6 +3085,53 @@ class TrackingCommand(CommandTerm):
             ),
             env_ids=env_ids,
         )
+        if os.environ.get("GEAR_SONIC_DEBUG_RESET", "0") == "1" and not getattr(
+            self, "_debug_reset_printed", False
+        ):
+            self._debug_reset_printed = True
+            debug_env = int(env_ids[0].item())
+            debug_names = [
+                self.cfg.anchor_body,
+                "torso_link",
+                "left_wrist_yaw_link",
+                "right_wrist_yaw_link",
+                "left_ankle_roll_link",
+                "right_ankle_roll_link",
+            ]
+            root_up = quat_apply(
+                root_ori[debug_env].unsqueeze(0),
+                torch.tensor([[0.0, 0.0, 1.0]], dtype=torch.float32, device=self.device),
+            )[0]
+            print(  # noqa: T201
+                "[GEAR_SONIC_DEBUG_RESET] "
+                f"env={debug_env} motion_id={int(self.motion_ids[debug_env].item())} "
+                f"step={int((self.motion_start_time_steps[debug_env] + self.time_steps[debug_env]).item())}"
+            )
+            print(  # noqa: T201
+                "[GEAR_SONIC_DEBUG_RESET] "
+                f"root_pos={root_pos[debug_env].detach().cpu().tolist()} "
+                f"root_quat_wxyz={root_ori[debug_env].detach().cpu().tolist()} "
+                f"root_up_world={root_up.detach().cpu().tolist()}"
+            )
+            for name in debug_names:
+                if name in self.cfg.body_names:
+                    motion_idx = self.cfg.body_names.index(name)
+                    print(  # noqa: T201
+                        "[GEAR_SONIC_DEBUG_RESET] "
+                        f"ref {name} pos="
+                        f"{self.body_pos_w[debug_env, motion_idx].detach().cpu().tolist()} "
+                        f"quat_wxyz="
+                        f"{self.body_quat_w[debug_env, motion_idx].detach().cpu().tolist()}"
+                    )
+                if name in self.robot.body_names:
+                    robot_idx = self.robot.body_names.index(name)
+                    print(  # noqa: T201
+                        "[GEAR_SONIC_DEBUG_RESET] "
+                        f"robot {name} pos="
+                        f"{self.robot.data.body_pos_w[debug_env, robot_idx].detach().cpu().tolist()} "
+                        f"quat_wxyz="
+                        f"{rotations.xyzw_to_wxyz(self.robot.data.body_quat_w[debug_env, robot_idx]).detach().cpu().tolist()}"
+                    )
         # Handle object positioning
         if self._multi_object_mode and len(self._object_names) > 0:
             # MULTI-OBJECT MODE: Position active object, move others far away

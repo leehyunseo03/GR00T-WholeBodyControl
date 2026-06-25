@@ -6,6 +6,7 @@ import omni
 from pxr import Gf, UsdGeom
 import torch
 from loguru import logger
+from gear_sonic.isaac_utils import rotations
 from gear_sonic.trl.utils.common import custom_instantiate
 
 if TYPE_CHECKING:
@@ -1951,7 +1952,10 @@ class ManagerEnvWrapper:
             joint_pos, joint_vel, env_ids=self._replay_env_ids
         )
         self.motion_command.robot.write_root_state_to_sim(
-            torch.cat([root_pos, root_quat, root_lin_vel, root_ang_vel], dim=-1),
+            torch.cat(
+                [root_pos, rotations.wxyz_to_xyzw(root_quat), root_lin_vel, root_ang_vel],
+                dim=-1,
+            ),
             env_ids=self._replay_env_ids,
         )
 
