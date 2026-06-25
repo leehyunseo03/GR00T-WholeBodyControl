@@ -99,6 +99,7 @@ def main(override_config: omegaconf.OmegaConf):
             raw = raw.replace("groot/rl/data/", "gear_sonic/data/")
             raw = raw.replace("assets/bm/unitree_description/", "assets/robot_description/")
             raw = raw.replace("1215_bones_seed_filtered", "bones_seed_smpl")
+            raw = raw.replace("isaaclab.utils.noise.AdditiveUniformNoiseCfg", "isaaclab.utils.noise.UniformNoiseCfg")
             import io
             train_config = omegaconf.OmegaConf.load(io.StringIO(raw))
 
@@ -219,6 +220,17 @@ def main(override_config: omegaconf.OmegaConf):
 
         args_cli, hydra_args = parser.parse_known_args()
         sys.argv = [sys.argv[0]] + hydra_args  # noqa: RUF005
+
+        def _livestream_enabled(args_cli):
+            if getattr(args_cli, "livestream", -1) >= 0:
+                return args_cli.livestream > 0
+            return int(os.environ.get("LIVESTREAM", 0)) > 0
+
+        def _append_kit_arg(args_cli, setting):
+            kit_args = args_cli.kit_args or ""
+            if setting not in kit_args:
+                args_cli.kit_args = f"{kit_args} {setting}".strip()
+
         args_cli.num_envs = config.num_envs
         args_cli.seed = config.seed
         args_cli.env_spacing = env_config.config.env_spacing
@@ -231,14 +243,24 @@ def main(override_config: omegaconf.OmegaConf):
         args_cli.multi_gpu = config.multi_gpu
         args_cli.distributed = config.multi_gpu
         args_cli.device = device
+        livestream_enabled = _livestream_enabled(args_cli)
+
+        if livestream_enabled:
+            if not getattr(args_cli, "visualizer_explicit", False):
+                args_cli.visualizer = ["kit"]
 
         base_kit_args = (
             "--/log/level=error --/log/fileLogLevel=error --/log/outputStreamLevel=error"
         )
-        if args_cli.headless:
+        if args_cli.headless and not livestream_enabled:
             args_cli.kit_args = base_kit_args + " --no-window"
         else:
             args_cli.kit_args = base_kit_args + f" --/renderer/activeGpu={render_gpu_idx}"
+        if livestream_enabled:
+            _append_kit_arg(
+                args_cli,
+                "--/exts/omni.kit.livestream.app/primaryStream/allowDynamicResize=true",
+            )
 
         _lock_path = "/tmp/isaaclab_app_launcher.lock"  # noqa: S108
         with filelock.FileLock(_lock_path):
@@ -588,6 +610,16 @@ def main(override_config: omegaconf.OmegaConf):
     if config.get("run_eval_loop", True):
         env.set_is_evaluating(True)
         obs_dict = env.reset_all()
+        if simulator_type == "IsaacSim" and int(os.environ.get("LIVESTREAM", 0)) > 0:
+            try:
+                if hasattr(env, "focusing_viewer"):
+                    env.focusing_viewer()
+                if hasattr(env, "env") and hasattr(env.env, "sim"):
+                    for _ in range(3):
+                        env.env.sim.render()
+                logger.info("Warmed up livestream viewport")
+            except Exception as e:  # noqa: BLE001
+                logger.warning(f"Could not warm up livestream viewport: {e}")
         model.eval()
         for obs_key in obs_dict:
             obs_dict[obs_key] = obs_dict[obs_key].to(device)
