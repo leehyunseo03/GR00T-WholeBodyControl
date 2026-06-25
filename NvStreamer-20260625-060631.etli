@@ -1,0 +1,54 @@
+30766,MarkQosNameValue,RivermaxEnabled,0
+30766,MarkQosNameValue,L4S Enabled (Upstream),0
+30766,MarkQosNameValue,LtrEnabled,0
+30766,MarkQosNameValue,SurfaceBitDepth,8
+30766,MarkQosNameValue,TransitSelectionValueApplied,0
+30766,MarkQosNameValue,AllTransitSelectionValuesApplied,
+30766,MarkQosNameValue,AllTransitSelectionValuesForwarded,
+30766,MarkQosNameValue,L4S Enabled for Video (Downstream),0
+30766,MarkQosNameValue,DataChannelMode,DcSCTP
+30766,MarkQosNameValue,Transport Policy (PM),N/A
+30766,MarkQosNameValue,TransitSelectionValueForwarded,0
+30766,MarkQosNameValue,HostName,b8addc138ebe
+30766,MarkQosNameValue,L4S Enabled (Downstream),0
+30766,MarkQosNameValue,ChromaFormat,RGB
+30766,MarkQosNameValue,Format,H264
+30766,MarkQosNameValue,TURN Info (Forwarded),
+30766,MarkQosNameValue,PacketPacing_Reason,StaticPacing
+30766,MarkQosNameValue,DVS P4VirtualChangelist,0
+30766,MarkQosNameValue,VideoStreamingDirection,Downstream
+30766,MarkQosNameValue,GPU Detail,Intel(R) Iris(R) Xe Graphics
+30766,MarkQosNameValue,Transport Policy (Forwarded),All
+30766,MarkQosNameValue,Streaming Mode,1920x1080p60
+30766,MarkQosNameValue,AdapterWidth,1280
+30766,MarkQosNameValue,L4S Enabled for Audio (Downstream),0
+30766,MarkQosNameValue,AdapterRefreshRate,60.0
+30766,MarkQosNameValue,DriverVersion,580.15
+30766,MarkQosNameValue,AdapterHeight,720
+30766,MarkQosNameValue,Device,NVIDIA GeForce RTX 5090
+30766,MarkQosNameValue,DynamicMaxBitrateEnabled,0
+30766,MarkQosNameValue,DriverBranch,NVIDIA UNIX Open Kernel Module for x86_64  580.159.03  Release Build  (dvs-builder@U22-I3-AM27-29-6)  Fri Apr 24 06:03:03 UTC 2026
+30766,MarkQosNameValue,DVS Branch,unknown
+30766,MarkQosNameValue,IsCoProc,0
+30766,MarkQosNameValue,VideoEncoderClassId,0xD0B7
+30766,MarkQosNameValue,StreamProfileType,Gaming_LAN
+30766,MarkQosNameValue,Windows Version,non-Windows
+30766,MarkQos,stream 0 nvtime::sessionStartTime[us] on server: 88621106353
+30766,MarkQos,StreamServerBackendMode is 2
+30766,MarkQos,RL QOS disabled for stream: 0
+30766,MarkQos,Stream [0]: Max Fps is 60
+30766,MarkQos,Stream [0]: ReferencePictureScalingEnabled:0
+30766,MarkQos,NvRtcClient Browser name: Chromium, Browser version: 146.0.7680.216
+30766,MarkQos,ClientGenericMapping: {ProcCpuUsage, TotalCpuUsage}
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Stream[0]: Client display[-1] resolution : {physical : 1920x1080@60, logical : 1536x864@60} at frame#0 topology: 3
+30766,MarkQos,Number of delayed commands: 0
+30766,MarkQos,Audio drift stats - Ratio: 0.000000, Total Drift: 0 ms, Packet Count: 0
+30766,MarkGsBlobStats,0x3B0100000100000004000000000000000840000000000000000015020000010000000101000000000000000000030A001B01000000000000030003001C01000000000000000000001B01000000000000020003000B01000001000000000000000000000000000B01000001000000000000000000000000000B01000001000000000000000000000000000C02000001000000000000000000000000000000000000000000100300000100000000000000000000002502000001000000000000008000000000000000000000002601000001000000009CDA010000000000000000000000000203000001000000000000000FFE00070100000000000000003C001271000001000000010000001B01000000000000000002001B01000000000000010000003E01C2C512A614000000010000009A99193F1B01000000000000030001003E01C26ED6A71400000001000000CDCCCC3E3E01027CD9A714000000020000009A99993E3E014289DCA71400000001000000CDCC4C3E3E01E20FDEA71400000001000000CDCCCC3D3E018296DFA71400000001000000CDCCCC3D19010000000000000C0005F0BFF621F3501E85AA0500000080070000400400003C000000010000000000000002000000010000001200000012000000120000000000000000000000000000901302000100000001000000010000000D000000000000000000000000000000000000000000000000000000000000000000000039010000E546A905000000001003000001000000180000000000000039010000E546A90500000000110300000B000000780400000000000039010000E546A905000000001D03000001000000050000000000000039010000E546A905000000001E03000001000000080400000000000039010000E546A9050000000020030000050000003C0000000000000039010000E546A9050000000021030000010000000C0000000000000039010000E546A905000000000D020000120000005802000000000000

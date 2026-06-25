@@ -132,8 +132,25 @@ def randomize_rigid_body_com(
         ranges[:, 0], ranges[:, 1], (len(env_ids), 3), device="cpu"
     ).unsqueeze(1)
 
+    if hasattr(asset, "set_coms_index") and hasattr(asset.data, "body_com_pose_b"):
+        com_pose = asset.data.body_com_pose_b
+        coms = com_pose.torch.clone() if hasattr(com_pose, "torch") else torch.as_tensor(com_pose, device=asset.device).clone()
+        env_ids_device = env_ids.to(asset.device)
+        body_ids_device = body_ids.to(asset.device)
+        rand_samples = rand_samples.to(asset.device)
+        coms[env_ids_device[:, None], body_ids_device, :3] += rand_samples
+        asset.set_coms_index(
+            coms=coms[env_ids_device[:, None], body_ids_device],
+            body_ids=body_ids_device,
+            env_ids=env_ids_device,
+        )
+        return
+
     # get the current com of the bodies (num_assets, num_bodies)
-    coms = asset.root_physx_view.get_coms().clone()
+    coms = asset.root_physx_view.get_coms()
+    if not isinstance(coms, torch.Tensor):
+        coms = torch.as_tensor(coms, device="cpu")
+    coms = coms.clone()
 
     # Randomize the com in range
     coms[:, body_ids, :3] += rand_samples
