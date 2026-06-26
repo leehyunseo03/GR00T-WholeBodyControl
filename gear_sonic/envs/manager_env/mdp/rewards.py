@@ -6,19 +6,18 @@ from typing import TYPE_CHECKING
 
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.utils import configclass
-from isaaclab.utils.math import (
-    quat_apply,
-    quat_error_magnitude,
-    quat_inv,
-    quat_mul,
-)
 import torch
 
 from gear_sonic.envs.manager_env.mdp.commands import (
     ForceTrackingCommand,
     TrackingCommand,
     _get_body_indexes,
+    quat_apply,
+    quat_error_magnitude,
+    quat_inv,
+    quat_mul,
 )
+from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
@@ -128,7 +127,7 @@ def upright_penalty(
     total_penalty = torch.zeros(env.num_envs, device=env.device)
     for name in body_names:
         body_idx = robot.body_names.index(name)
-        body_quat = robot.data.body_quat_w[:, body_idx]
+        body_quat = quat_adapter.isaaclab_to_wxyz(robot.data.body_quat_w[:, body_idx])
         g_local = quat_apply(quat_inv(body_quat), command.down_dir)
         total_penalty += g_local[:, 0] ** 2 + g_local[:, 1] ** 2
 

@@ -6,7 +6,6 @@ from collections.abc import Sequence
 import re
 from typing import TYPE_CHECKING
 
-import isaaclab.utils.math as math_utils
 import torch
 
 if TYPE_CHECKING:
@@ -15,15 +14,15 @@ if TYPE_CHECKING:
 from isaaclab.assets import Articulation, RigidObject
 from isaaclab.managers import ManagerTermBase, SceneEntityCfg, TerminationTermCfg
 from isaaclab.utils import configclass
-from isaaclab.utils.math import (
-    axis_angle_from_quat,
+
+from gear_sonic.envs.manager_env.mdp.commands import (
+    TrackingCommand,
+    _get_body_indexes,
     quat_apply_inverse,
     quat_conjugate,
     quat_error_magnitude,
     quat_mul,
 )
-
-from gear_sonic.envs.manager_env.mdp.commands import TrackingCommand, _get_body_indexes
 from gear_sonic.trl.utils.torch_transform import get_heading_q
 
 
@@ -147,13 +146,8 @@ def exceeded_anchor_tilt(
     """
     asset: RigidObject | Articulation = env.scene[asset_cfg.name]
     command: TrackingCommand = env.command_manager.get_term(command_name)
-    quat_apply_fn = (
-        math_utils.quat_apply_inverse
-        if hasattr(math_utils, "quat_apply_inverse")
-        else math_utils.quat_rotate_inverse
-    )
-    ref_grav = quat_apply_fn(command.anchor_quat_w, asset.data.GRAVITY_VEC_W)
-    robot_grav = quat_apply_fn(command.robot_anchor_quat_w, asset.data.GRAVITY_VEC_W)
+    ref_grav = quat_apply_inverse(command.anchor_quat_w, asset.data.GRAVITY_VEC_W)
+    robot_grav = quat_apply_inverse(command.robot_anchor_quat_w, asset.data.GRAVITY_VEC_W)
     return (ref_grav[:, 2] - robot_grav[:, 2]).abs().gt(threshold)
 
 
@@ -382,8 +376,7 @@ class CummBodyOriError(_CummErrorMixin):
         """
         ref_body_quat = self.command.body_quat_w[:, self.motion_body_indices]
         robot_body_quat = self.command.robot_body_quat_w[:, self.robot_body_indices]
-        quat_diff = quat_mul(quat_conjugate(ref_body_quat), robot_body_quat)
-        body_ori_error = axis_angle_from_quat(quat_diff).norm(dim=-1)
+        body_ori_error = quat_error_magnitude(ref_body_quat, robot_body_quat)
         self.error[:] = body_ori_error.max(dim=1).values
         return self._update_counters()
 
@@ -481,9 +474,6 @@ class CummBodyOriErrorLocal(_CummErrorMixin):
         ref_body_quat_local = quat_mul(quat_conjugate(ref_root_quat), ref_body_quat)
         robot_body_quat_local = quat_mul(quat_conjugate(robot_root_quat), robot_body_quat)
 
-        quat_diff = quat_mul(quat_conjugate(ref_body_quat_local), robot_body_quat_local)
-        body_ori_error = axis_angle_from_quat(quat_diff).norm(dim=-1)
+        body_ori_error = quat_error_magnitude(ref_body_quat_local, robot_body_quat_local)
         self.error[:] = body_ori_error.max(dim=1).values
         return self._update_counters()
-
-

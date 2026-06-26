@@ -10,6 +10,9 @@ from tqdm import tqdm
 from transformers import TrainerCallback
 import wandb
 
+from gear_sonic.envs.manager_env.mdp.commands import quat_error_magnitude
+from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
+
 
 def create_html_table(metrics_dict):
     """
@@ -307,15 +310,13 @@ class ImEvalCallback(TrainerCallback):
             obj = self.env.env.scene["object"]
             motion_cmd = self.env.motion_command
             current_obj_pos = obj.data.root_pos_w[:, :3]  # (num_envs, 3)
-            current_obj_quat = obj.data.root_quat_w  # (num_envs, 4)
+            current_obj_quat = quat_adapter.isaaclab_to_wxyz(obj.data.root_quat_w)
             target_obj_pos = motion_cmd.object_root_pos[:, 0, :3]  # (num_envs, 3)
             target_obj_quat = motion_cmd.object_root_quat[:, 0]  # (num_envs, 4)
 
             pos_error = torch.norm(target_obj_pos - current_obj_pos, dim=-1)  # (num_envs,)
 
             # Quaternion error: angle between two quaternions
-            from isaaclab.utils.math import quat_error_magnitude
-
             ori_error = quat_error_magnitude(target_obj_quat, current_obj_quat)  # (num_envs,)
 
             self.obj_pos_error.append(pos_error.cpu())

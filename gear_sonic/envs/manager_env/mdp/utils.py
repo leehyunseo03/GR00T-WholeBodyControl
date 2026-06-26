@@ -85,7 +85,7 @@ def debug_visualize_object_projection(
 
             # Step 3: Camera extrinsics (offset from d435_link)
             base_pos_offset = [0.0, 0.0, 0.0]
-            base_rot_offset_quat = [1.0, 0.0, 0.0, 0.0]
+            base_rot_offset_quat = [0.0, 0.0, 0.0, 1.0]
             if hasattr(camera, "cfg") and hasattr(camera.cfg, "offset"):
                 offset_cfg = camera.cfg.offset
                 if hasattr(offset_cfg, "pos"):
