@@ -1,11 +1,20 @@
 # Robot configuration adapted from the BeyondMimic project.
 # See: https://github.com/HybridRobotics/whole_body_tracking
 
+import os
+
 from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets.articulation import ArticulationCfg
 import isaaclab.sim as sim_utils
 
-ASSET_DIR = "gear_sonic/data/assets"
+ASSET_DIR = os.environ.get(
+    "GEAR_SONIC_ASSET_DIR",
+    "/workspace/GR00T-WholeBodyControl/gear_sonic/data/assets",
+)
+G1_USD_PATH = os.environ.get(
+    "GEAR_SONIC_G1_USD",
+    "/workspace/GR00T-WholeBodyControl/gear_sonic/data/robots/g1/g1_29dof_rev_1_0/g1_29dof_rev_1_0.usd",
+)
 
 ARMATURE_5020 = 0.003609725
 ARMATURE_7520_14 = 0.010177520
@@ -197,10 +206,8 @@ G1_ISAACLAB_TO_MUJOCO_MAPPING = {
 }
 
 G1_CYLINDER_MODEL_12_DEX_CFG = ArticulationCfg(
-    spawn=sim_utils.UrdfFileCfg(
-        fix_base=False,
-        replace_cylinders_with_capsules=True,
-        asset_path=f"{ASSET_DIR}/robot_description/urdf/g1/main.urdf",
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=G1_USD_PATH,
         activate_contact_sensors=True,
         rigid_props=sim_utils.RigidBodyPropertiesCfg(
             disable_gravity=False,
@@ -215,9 +222,6 @@ G1_CYLINDER_MODEL_12_DEX_CFG = ArticulationCfg(
             enabled_self_collisions=True,
             solver_position_iteration_count=8,
             solver_velocity_iteration_count=4,
-        ),
-        joint_drive=sim_utils.UrdfConverterCfg.JointDriveCfg(
-            gains=sim_utils.UrdfConverterCfg.JointDriveCfg.PDGainsCfg(stiffness=0, damping=0)
         ),
     ),
     init_state=ArticulationCfg.InitialStateCfg(

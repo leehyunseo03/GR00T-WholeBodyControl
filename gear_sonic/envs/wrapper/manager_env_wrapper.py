@@ -6,6 +6,8 @@ import omni
 from pxr import Gf, UsdGeom
 import torch
 from loguru import logger
+from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
+from gear_sonic.isaac_utils import rotations
 from gear_sonic.trl.utils.common import custom_instantiate
 
 if TYPE_CHECKING:
@@ -1951,7 +1953,10 @@ class ManagerEnvWrapper:
             joint_pos, joint_vel, env_ids=self._replay_env_ids
         )
         self.motion_command.robot.write_root_state_to_sim(
-            torch.cat([root_pos, root_quat, root_lin_vel, root_ang_vel], dim=-1),
+            torch.cat(
+                [root_pos, quat_adapter.wxyz_to_isaaclab(root_quat), root_lin_vel, root_ang_vel],
+                dim=-1,
+            ),
             env_ids=self._replay_env_ids,
         )
 
@@ -1982,7 +1987,9 @@ class ManagerEnvWrapper:
             for obj_idx in range(object_root_pos.shape[1]):
                 obj_pos = object_root_pos[:, obj_idx, :]
                 obj_quat = object_root_quat[:, obj_idx, :]
-                object_root_pose = torch.cat([obj_pos, obj_quat], dim=-1)
+                object_root_pose = torch.cat(
+                    [obj_pos, quat_adapter.wxyz_to_isaaclab(obj_quat)], dim=-1
+                )
 
                 self.env.scene["object"].write_root_pose_to_sim(
                     object_root_pose, env_ids=self._replay_env_ids
@@ -2020,7 +2027,9 @@ class ManagerEnvWrapper:
             else:
                 table_pos = table_pos + self.env.scene.env_origins[self._replay_env_ids]
 
-            table_root_pose = torch.cat([table_pos, table_quat], dim=-1)
+            table_root_pose = torch.cat(
+                [table_pos, quat_adapter.wxyz_to_isaaclab(table_quat)], dim=-1
+            )
             self.env.scene["table"].write_root_pose_to_sim(
                 table_root_pose, env_ids=self._replay_env_ids
             )

@@ -4,20 +4,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from isaaclab.utils.math import (
-    matrix_from_quat,
-    quat_apply,
-    quat_apply_inverse,
-    quat_apply_yaw,
-    quat_conjugate,
-    quat_inv,
-    quat_mul,
-    subtract_frame_transforms,
-)
 import torch
 
 from gear_sonic.envs.env_utils import joint_utils
 from gear_sonic.envs.manager_env.mdp import commands, utils
+from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
 from gear_sonic.trl.utils import torch_transform
 
 if TYPE_CHECKING:
@@ -64,6 +55,15 @@ G1_MUJOCO_ORDER = [
 # Index mappings for 29 DOF
 isaaclab_to_mujoco_dof = [joint_utils.G1_ISAACLab_ORDER.index(i) for i in G1_MUJOCO_ORDER]
 mujoco_to_isaaclab = [G1_MUJOCO_ORDER.index(i) for i in joint_utils.G1_ISAACLab_ORDER]
+
+matrix_from_quat = commands.matrix_from_quat
+quat_apply = commands.quat_apply
+quat_apply_inverse = commands.quat_apply_inverse
+quat_apply_yaw = commands.quat_apply_yaw
+quat_conjugate = commands.quat_conjugate
+quat_inv = commands.quat_inv
+quat_mul = commands.quat_mul
+subtract_frame_transforms = commands.subtract_frame_transforms
 
 
 @configclass
@@ -2170,7 +2170,7 @@ def height_map(env: ManagerBasedEnv, command_name, random=False) -> torch.Tensor
 
     robot_root_pos_w, robot_root_quat_w = (
         command.robot.data.root_pos_w,
-        command.robot.data.root_quat_w,
+        quat_adapter.isaaclab_to_wxyz(command.robot.data.root_quat_w),
     )
     scan_dot_pos_w = command.scan_dot_pos_w
 

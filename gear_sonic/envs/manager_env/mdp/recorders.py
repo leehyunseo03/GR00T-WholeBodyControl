@@ -16,6 +16,8 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
+from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
+
 if TYPE_CHECKING:
     from isaaclab import envs
 
@@ -282,7 +284,9 @@ class TrajectoryRecorderTerm(recorder_manager.RecorderTerm):
             self._frame_data[i]["root_pos_w"].append(root_pos_rel)
 
             # Root quaternion (wxyz)
-            root_quat = robot.data.root_quat_w[i].cpu().numpy().copy()
+            root_quat = (
+                quat_adapter.isaaclab_to_wxyz(robot.data.root_quat_w[i]).cpu().numpy().copy()
+            )
             self._frame_data[i]["root_quat_w"].append(root_quat)
 
             # Object state
@@ -290,7 +294,9 @@ class TrajectoryRecorderTerm(recorder_manager.RecorderTerm):
                 obj = self.env.scene["object"]
                 obj_pos = obj.data.root_pos_w[i].cpu().numpy().copy()
                 obj_pos_rel = obj_pos - env_origins[i].cpu().numpy()
-                obj_quat = obj.data.root_quat_w[i].cpu().numpy().copy()
+                obj_quat = (
+                    quat_adapter.isaaclab_to_wxyz(obj.data.root_quat_w[i]).cpu().numpy().copy()
+                )
                 self._frame_data[i]["object_pos_w"].append(obj_pos_rel)
                 self._frame_data[i]["object_quat_w"].append(obj_quat)
 
@@ -299,7 +305,9 @@ class TrajectoryRecorderTerm(recorder_manager.RecorderTerm):
                 table = self.env.scene["table"]
                 table_pos = table.data.root_pos_w[i].cpu().numpy().copy()
                 table_pos_rel = table_pos - env_origins[i].cpu().numpy()
-                table_quat = table.data.root_quat_w[i].cpu().numpy().copy()
+                table_quat = (
+                    quat_adapter.isaaclab_to_wxyz(table.data.root_quat_w[i]).cpu().numpy().copy()
+                )
                 self._frame_data[i]["table_pos_w"].append(table_pos_rel)
                 self._frame_data[i]["table_quat_w"].append(table_quat)
 
