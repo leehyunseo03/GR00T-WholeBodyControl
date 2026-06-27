@@ -1,0 +1,1 @@
+../../../sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl

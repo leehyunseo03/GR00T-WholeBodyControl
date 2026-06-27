@@ -1,0 +1,165 @@
+{
+  "output": "stage1_motions/mix_70_30",
+  "total_slots": 20,
+  "copy": false,
+  "groups": [
+    {
+      "name": "sample",
+      "requested_fraction": 0.7,
+      "slots": 14,
+      "source_robot_dir": "sample_data/robot_filtered",
+      "source_smpl_dir": "sample_data/smpl_filtered",
+      "source_pairs": 2
+    },
+    {
+      "name": "custom",
+      "requested_fraction": 0.3,
+      "slots": 6,
+      "source_robot_dir": "custom_motions/robot_arms_up_goal",
+      "source_smpl_dir": "custom_motions/smpl_arms_up_goal",
+      "source_pairs": 1
+    }
+  ],
+  "links": [
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0000_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0000_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0001_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0001_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0002_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0002_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0003_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0003_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0004_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0004_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0005_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0005_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0006_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0006_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0007_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0007_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0008_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0008_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0009_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0009_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0010_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0010_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0011_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0011_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0012_walk_forward_amateur_001__A001.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0012_walk_forward_amateur_001__A001.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001.pkl"
+    },
+    {
+      "group": "sample",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/sample_0013_walk_forward_amateur_001__A001_M.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/sample_0013_walk_forward_amateur_001__A001_M.pkl",
+      "source_robot": "sample_data/robot_filtered/210531/walk_forward_amateur_001__A001_M.pkl",
+      "source_smpl": "sample_data/smpl_filtered/walk_forward_amateur_001__A001_M.pkl"
+    },
+    {
+      "group": "custom",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/custom_0000_arms_up_goal.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/custom_0000_arms_up_goal.pkl",
+      "source_robot": "custom_motions/robot_arms_up_goal/arms_up_goal.pkl",
+      "source_smpl": "custom_motions/smpl_arms_up_goal/arms_up_goal.pkl"
+    },
+    {
+      "group": "custom",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/custom_0001_arms_up_goal.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/custom_0001_arms_up_goal.pkl",
+      "source_robot": "custom_motions/robot_arms_up_goal/arms_up_goal.pkl",
+      "source_smpl": "custom_motions/smpl_arms_up_goal/arms_up_goal.pkl"
+    },
+    {
+      "group": "custom",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/custom_0002_arms_up_goal.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/custom_0002_arms_up_goal.pkl",
+      "source_robot": "custom_motions/robot_arms_up_goal/arms_up_goal.pkl",
+      "source_smpl": "custom_motions/smpl_arms_up_goal/arms_up_goal.pkl"
+    },
+    {
+      "group": "custom",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/custom_0003_arms_up_goal.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/custom_0003_arms_up_goal.pkl",
+      "source_robot": "custom_motions/robot_arms_up_goal/arms_up_goal.pkl",
+      "source_smpl": "custom_motions/smpl_arms_up_goal/arms_up_goal.pkl"
+    },
+    {
+      "group": "custom",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/custom_0004_arms_up_goal.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/custom_0004_arms_up_goal.pkl",
+      "source_robot": "custom_motions/robot_arms_up_goal/arms_up_goal.pkl",
+      "source_smpl": "custom_motions/smpl_arms_up_goal/arms_up_goal.pkl"
+    },
+    {
+      "group": "custom",
+      "robot": "stage1_motions/mix_70_30/robot_filtered/custom_0005_arms_up_goal.pkl",
+      "smpl": "stage1_motions/mix_70_30/smpl_filtered/custom_0005_arms_up_goal.pkl",
+      "source_robot": "custom_motions/robot_arms_up_goal/arms_up_goal.pkl",
+      "source_smpl": "custom_motions/smpl_arms_up_goal/arms_up_goal.pkl"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+../../../custom_motions/robot_arms_up_goal/arms_up_goal.pkl
