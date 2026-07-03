@@ -40,13 +40,19 @@ class BodyTrackingRecorderTerm(recorder_manager.RecorderTerm):
             "ref_body_pos_w": [],
             "robot_body_pos_w": [],
             "body_error": [],
+            "ref_joint_pos": [],
+            "robot_joint_pos": [],
+            "joint_error": [],
             "body_error_mean": [],
             "body_error_max": [],
+            "joint_error_mean": [],
+            "joint_error_max": [],
             "anchor_pos_error": [],
             "vr3_error_mean": [],
             "foot_error_mean": [],
         }
         self._command_metric_frames: dict[str, list] = {}
+        self._joint_names: list[str] | None = None
 
     def _motion_command(self):
         return self.env.command_manager.get_term("motion")
@@ -71,6 +77,23 @@ class BodyTrackingRecorderTerm(recorder_manager.RecorderTerm):
         if self._body_names is None:
             self._body_names = list(command.cfg.body_names)
 
+        ref_joint = command.joint_pos[env_idx].detach().cpu().numpy()
+        if getattr(command, "has_dof_mismatch", False):
+            joint_indices = command.body_joint_indices
+            robot_joint = command.robot_joint_pos[env_idx, joint_indices].detach().cpu().numpy()
+            if self._joint_names is None:
+                self._joint_names = [command.robot.joint_names[int(i)] for i in joint_indices]
+        else:
+            robot_joint = command.robot_joint_pos[env_idx].detach().cpu().numpy()
+            if self._joint_names is None:
+                self._joint_names = list(command.robot.joint_names)
+        joint_count = min(ref_joint.shape[-1], robot_joint.shape[-1])
+        ref_joint = ref_joint[:joint_count]
+        robot_joint = robot_joint[:joint_count]
+        joint_error = robot_joint - ref_joint
+        if self._joint_names is not None:
+            self._joint_names = self._joint_names[:joint_count]
+
         ref_body = command.body_pos_w[env_idx].detach().cpu().numpy()
         robot_body = command.robot_body_pos_w[env_idx].detach().cpu().numpy()
         body_error = np.linalg.norm(ref_body - robot_body, axis=-1)
@@ -87,8 +110,13 @@ class BodyTrackingRecorderTerm(recorder_manager.RecorderTerm):
         self._frames["ref_body_pos_w"].append(ref_body)
         self._frames["robot_body_pos_w"].append(robot_body)
         self._frames["body_error"].append(body_error)
+        self._frames["ref_joint_pos"].append(ref_joint)
+        self._frames["robot_joint_pos"].append(robot_joint)
+        self._frames["joint_error"].append(joint_error)
         self._frames["body_error_mean"].append(float(np.mean(body_error)))
         self._frames["body_error_max"].append(float(np.max(body_error)))
+        self._frames["joint_error_mean"].append(float(np.mean(np.abs(joint_error))))
+        self._frames["joint_error_max"].append(float(np.max(np.abs(joint_error))))
         self._frames["anchor_pos_error"].append(float(anchor_error))
         self._frames["vr3_error_mean"].append(self._mean_for_indices(body_error, vr3_indices))
         self._frames["foot_error_mean"].append(self._mean_for_indices(body_error, foot_indices))
@@ -122,6 +150,7 @@ class BodyTrackingRecorderTerm(recorder_manager.RecorderTerm):
             npz_path,
             **arrays,
             body_names=np.asarray(self._body_names or [], dtype=object),
+            joint_names=np.asarray(self._joint_names or [], dtype=object),
         )
 
         summary = {
@@ -131,6 +160,8 @@ class BodyTrackingRecorderTerm(recorder_manager.RecorderTerm):
             "motion_id": int(self._frames["motion_id"][0]),
             "body_error_mean": float(np.mean(arrays["body_error_mean"])),
             "body_error_max": float(np.max(arrays["body_error_max"])),
+            "joint_error_mean": float(np.mean(arrays["joint_error_mean"])),
+            "joint_error_max": float(np.max(arrays["joint_error_max"])),
             "anchor_pos_error_mean": float(np.mean(arrays["anchor_pos_error"])),
             "vr3_error_mean": float(np.nanmean(arrays["vr3_error_mean"])),
             "foot_error_mean": float(np.nanmean(arrays["foot_error_mean"])),

@@ -72,6 +72,9 @@ manager_env:
         motion_file: data/motion_lib_bones_seed/robot_filtered
         smpl_motion_file: data/bones_seed_smpl
         smpl_y_up: true
+        # Keep motion loading conservative to avoid multiprocessing file-descriptor
+        # exhaustion when large motion subsets are loaded in Isaac Sim containers.
+        num_load_jobs: 1
 
 algo:
   config:

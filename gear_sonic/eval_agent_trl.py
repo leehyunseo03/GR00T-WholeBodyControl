@@ -493,7 +493,10 @@ def main(override_config: omegaconf.OmegaConf):
     env.reinit_dr()
 
     global_step = checkpoint["state"].global_step
-    exported_policy_path = os.path.join(config.experiment_dir, "exported")
+    exported_policy_path = config.get("exported_policy_path", None)
+    if exported_policy_path is None:
+        exported_policy_path = os.path.join(config.experiment_dir, "exported")
+    exported_policy_path = os.path.abspath(os.path.expanduser(str(exported_policy_path)))
     os.makedirs(exported_policy_path, exist_ok=True)
     exported_onnx_name = f"model_step_{global_step:06d}.onnx"
     new_cp_path = f"{os.path.dirname(config.checkpoint)}/model_step_{global_step:06d}.pt"
@@ -578,7 +581,7 @@ def main(override_config: omegaconf.OmegaConf):
             "env_config": omegaconf.OmegaConf.to_container(env.config, resolve=True),
             "algo_config": omegaconf.OmegaConf.to_container(config.algo.config, resolve=True),
         }
-        config_yaml_path = os.path.join(os.path.dirname(config.checkpoint), "model_config.yaml")
+        config_yaml_path = os.path.join(exported_policy_path, "model_config.yaml")
         with open(config_yaml_path, "w") as f:
             yaml.dump(export_config, f, default_flow_style=False)
         logger.info(f"Exported config to: {config_yaml_path}")

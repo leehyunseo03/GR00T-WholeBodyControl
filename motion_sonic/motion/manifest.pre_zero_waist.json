@@ -1,0 +1,90 @@
+{
+  "created_unix": 1782999140.1617935,
+  "elapsed_sec": 0.00495600700378418,
+  "target": {
+    "source_kind": "generated_forward_target",
+    "motion_key": "forward_5m_target",
+    "frame": -1,
+    "forward_meters": 5.0,
+    "target_height": 0.78,
+    "npz_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion/target_reference/forward_5m_target.npz",
+    "pkl_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion/target_reference/forward_5m_target.pkl",
+    "target_dof_order": "mujoco"
+  },
+  "mode": "walk",
+  "requested_mode": "walk",
+  "effective_mode": "walk",
+  "mode_preset": "native",
+  "available_modes": [
+    "idle",
+    "slow_walk",
+    "walk",
+    "hand_crawling",
+    "walk_boxing",
+    "elbow_crawling",
+    "stealth_walk",
+    "injured_walk",
+    "walk_stealth",
+    "walk_happy_dance",
+    "walk_zombie",
+    "walk_gun",
+    "walk_scared",
+    "walk_left",
+    "walk_right"
+  ],
+  "target_vel": 5.0,
+  "target_lookahead_meters": 1.5,
+  "fps": 30,
+  "max_steps": 240,
+  "append_target_hold": 30,
+  "zero_waist": false,
+  "start_from_target_first": false,
+  "target_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "target_yaw": 0.0,
+  "final_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "final_root_xy_error": 0.0,
+  "final_dof_rmse": 0.0,
+  "qpos_summary": {
+    "num_frames": 270,
+    "root_xyz_first": [
+      0.0,
+      0.0,
+      0.7796019911766052
+    ],
+    "root_xyz_last": [
+      5.0,
+      0.0,
+      0.7799999713897705
+    ],
+    "root_xyz_min": [
+      0.0,
+      -0.02884100005030632,
+      0.7282289862632751
+    ],
+    "root_xyz_max": [
+      5.0,
+      0.06543300300836563,
+      0.7840819954872131
+    ],
+    "dof_mean": 0.07847519963979721,
+    "dof_min": -0.711637556552887,
+    "dof_max": 1.2983204126358032
+  },
+  "robot_pkl": "motion_sonic/motion/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_target.pkl",
+  "qpos_npy": "motion_sonic/motion/qpos/motionbricks_to_target_forward_5m_target.npy",
+  "qpos_npz": "motion_sonic/motion/qpos/motionbricks_to_target_forward_5m_target.npz",
+  "visualization": {
+    "trajectory_markers_json": "motion_sonic/motion/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.json",
+    "trajectory_markers_xml": "motion_sonic/motion/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.xml",
+    "marker_count": 24,
+    "marker_stride": 10
+  }
+}

@@ -3464,6 +3464,36 @@ class TrackingCommand(CommandTerm):
                     self.height_map_visualizer = VisualizationMarkers(height_map_cfg)
                 self.height_map_visualizer.set_visibility(True)
 
+            if self.cfg.visualize_motion_root_trajectory:
+                if not hasattr(self, "motion_root_trajectory_visualizer"):
+                    trajectory_cfg = VisualizationMarkersCfg(
+                        prim_path="/Visuals/Command/motion_root_trajectory",
+                        markers={
+                            "trajectory": sim_utils.SphereCfg(
+                                radius=self.cfg.motion_root_trajectory_marker_radius,
+                                visual_material=sim_utils.PreviewSurfaceCfg(
+                                    diffuse_color=(1.0, 0.86, 0.0),
+                                ),
+                            ),
+                        },
+                    )
+                    self.motion_root_trajectory_visualizer = VisualizationMarkers(trajectory_cfg)
+                if not hasattr(self, "motion_final_target_visualizer"):
+                    final_target_cfg = VisualizationMarkersCfg(
+                        prim_path="/Visuals/Command/motion_final_target",
+                        markers={
+                            "target": sim_utils.SphereCfg(
+                                radius=self.cfg.motion_final_target_marker_radius,
+                                visual_material=sim_utils.PreviewSurfaceCfg(
+                                    diffuse_color=(0.0, 0.25, 1.0),
+                                ),
+                            ),
+                        },
+                    )
+                    self.motion_final_target_visualizer = VisualizationMarkers(final_target_cfg)
+                self.motion_root_trajectory_visualizer.set_visibility(True)
+                self.motion_final_target_visualizer.set_visibility(True)
+
             # Contact center visualizers: deferred to _debug_vis_callback (lazy init)
             # because motion_lib is not yet available during super().__init__()
             if not hasattr(self, "contact_center_visualizers"):
@@ -3477,6 +3507,10 @@ class TrackingCommand(CommandTerm):
                     vis.set_visibility(False)
             if hasattr(self, "height_map_visualizer"):
                 self.height_map_visualizer.set_visibility(False)
+            if hasattr(self, "motion_root_trajectory_visualizer"):
+                self.motion_root_trajectory_visualizer.set_visibility(False)
+            if hasattr(self, "motion_final_target_visualizer"):
+                self.motion_final_target_visualizer.set_visibility(False)
             if hasattr(self, "contact_center_visualizers") and self.contact_center_visualizers:
                 for vis in self.contact_center_visualizers.values():
                     vis.set_visibility(False)
@@ -3515,6 +3549,15 @@ class TrackingCommand(CommandTerm):
             self.height_map_visualizer.visualize(
                 translations=self.scan_dot_pos_w.view(-1, 3),
             )
+
+        if (
+            self.cfg.visualize_motion_root_trajectory
+            and hasattr(self, "motion_root_trajectory_visualizer")
+            and hasattr(self, "motion_final_target_visualizer")
+            and hasattr(self, "motion_lib")
+            and len(self.motion_ids) > 0
+        ):
+            self._visualize_motion_root_trajectory()
 
         # Contact center visualization (lazy init on first callback)
         if hasattr(self, "contact_center_visualizers") and self.contact_center_visualizers is None:  # noqa: SIM102
@@ -3562,6 +3605,41 @@ class TrackingCommand(CommandTerm):
                 world_center = self._get_contact_center_world(hand)
                 world_center[~valid_mask] = hidden_pos
                 visualizer.visualize(translations=world_center)
+
+    def _visualize_motion_root_trajectory(self):
+        """Draw the active env-0 reference root path and final target in IsaacLab."""
+        motion_id = int(self.motion_ids[0].item())
+        if motion_id < 0 or motion_id >= int(self.motion_lib._num_motions):  # noqa: SLF001
+            return
+
+        start = int(self.motion_lib.length_starts[motion_id].item())
+        num_frames = int(self.motion_lib._motion_num_frames[motion_id].item())  # noqa: SLF001
+        if num_frames <= 0:
+            return
+
+        stride = max(1, int(self.cfg.motion_root_trajectory_marker_stride))
+        end = start + num_frames
+        root_path = self.motion_lib.body_pos_w[start:end:stride, 0, :].clone()
+        root_path = root_path + self._env.scene.env_origins[0].view(1, 3)
+        if root_path.numel() == 0:
+            return
+        root_path[:, 2] += float(self.cfg.motion_root_trajectory_marker_z_offset)
+
+        max_markers = int(self.cfg.motion_root_trajectory_max_markers)
+        if max_markers > 0 and root_path.shape[0] > max_markers:
+            sample_ids = torch.linspace(
+                0,
+                root_path.shape[0] - 1,
+                max_markers,
+                device=root_path.device,
+            ).long()
+            root_path = root_path[sample_ids]
+
+        final_target = self.motion_lib.body_pos_w[end - 1, 0, :].view(1, 3).clone()
+        final_target = final_target + self._env.scene.env_origins[0].view(1, 3)
+        final_target[:, 2] += float(self.cfg.motion_root_trajectory_marker_z_offset)
+        self.motion_root_trajectory_visualizer.visualize(translations=root_path)
+        self.motion_final_target_visualizer.visualize(translations=final_target)
 
     def set_motion_state(self, motion_ids, time_steps, motion_start_time_steps=None):
         """Update which motion clip/frame this command serves (for offline use)."""
@@ -4271,6 +4349,15 @@ class TrackingCommandCfg(CommandTermCfg):
     body_pos_visualizer_cfg.markers["target"].visual_material = sim_utils.PreviewSurfaceCfg(
         diffuse_color=(1.0, 1.0, 0.0)
     )
+
+    # Optional livestream/debug overlay for the active env-0 root trajectory:
+    # yellow spheres for reference path samples, blue sphere for its last frame.
+    visualize_motion_root_trajectory: bool = False
+    motion_root_trajectory_marker_stride: int = 10
+    motion_root_trajectory_max_markers: int = 200
+    motion_root_trajectory_marker_radius: float = 0.045
+    motion_final_target_marker_radius: float = 0.10
+    motion_root_trajectory_marker_z_offset: float = 0.0
 
     feet_contact_visualizer_cfg: VisualizationMarkersCfg = DEFORMABLE_TARGET_MARKER_CFG.replace(
         prim_path="/Visuals/goal_marker_sphere"

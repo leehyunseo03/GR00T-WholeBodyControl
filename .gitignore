@@ -209,6 +209,15 @@ teleop_vids/
 data/
 bones_seed_smpl/
 sonic_release/
+*.csv
+*.npz
+*.pkl
+*.etli
+*.tar.gz
+*.bvh
+*.usd
+*.pyc 
+
 # Training output logs
 logs_rl/
 logs_eval/

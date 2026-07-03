@@ -1,0 +1,2801 @@
+{
+  "data_root": "/workspace/GR00T-WholeBodyControl/phuma_precision/data/raw/data/g1",
+  "selected_manifest": "/workspace/GR00T-WholeBodyControl/phuma_precision/outputs/selected/selected_manifest.csv",
+  "output_dir": "/workspace/GR00T-WholeBodyControl/stage1_motions/phuma_precision",
+  "zero_start_xy": true,
+  "normalize_heading": false,
+  "write_smpl_dummy": true,
+  "motions": [
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0000_cd8bb41e95_Pause_Bird_clip_4_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Bird_clip_4_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0000_cd8bb41e95_Pause_Bird_clip_4_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0000_cd8bb41e95_Pause_Bird_clip_4_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0001_9104731e6f_Pause_Bird_clip_2_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Bird_clip_2_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0001_9104731e6f_Pause_Bird_clip_2_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0001_9104731e6f_Pause_Bird_clip_2_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0002_ce16e4452b_Pause_Long_chunk_0000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Long_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0002_ce16e4452b_Pause_Long_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0002_ce16e4452b_Pause_Long_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0003_c91288bf40_Pause_Long_clip_1_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Long_clip_1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0003_c91288bf40_Pause_Long_clip_1_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0003_c91288bf40_Pause_Long_clip_1_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0004_7810b00229_Pause_A_clip_4_chunk_0001",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_A_clip_4_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0004_7810b00229_Pause_A_clip_4_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0004_7810b00229_Pause_A_clip_4_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0005_5622529403_Pause_A_clip_2_chunk_0001",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_A_clip_2_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0005_5622529403_Pause_A_clip_2_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0005_5622529403_Pause_A_clip_2_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0006_ce7759de7b_Pause_A_clip_2_chunk_0000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_A_clip_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0006_ce7759de7b_Pause_A_clip_2_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0006_ce7759de7b_Pause_A_clip_2_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0007_6d187b9000_Pause_Bird_chunk_0000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Bird_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0007_6d187b9000_Pause_Bird_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0007_6d187b9000_Pause_Bird_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0008_92adc30f48_Neck_Stretch_R_Clip1_clip_2",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "fitness/subset_0073/Neck_Stretch_R_Clip1_clip_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0008_92adc30f48_Neck_Stretch_R_Clip1_clip_2.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0008_92adc30f48_Neck_Stretch_R_Clip1_clip_2.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0009_2415e0ffa7_Pause_Worried_clip_3_chunk",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Worried_clip_3_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0009_2415e0ffa7_Pause_Worried_clip_3_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0009_2415e0ffa7_Pause_Worried_clip_3_chunk.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0010_7081f6653f_Pause_Long_clip_5_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Long_clip_5_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0010_7081f6653f_Pause_Long_clip_5_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0010_7081f6653f_Pause_Long_clip_5_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0011_7db632ca53_Pause_Worried_clip_5_chunk",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Worried_clip_5_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0011_7db632ca53_Pause_Worried_clip_5_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0011_7db632ca53_Pause_Worried_clip_5_chunk.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0012_b0a82e5354_Close-up_Knife_clip_6_chunk",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0000/Close-up_Knife_clip_6_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0012_b0a82e5354_Close-up_Knife_clip_6_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0012_b0a82e5354_Close-up_Knife_clip_6_chunk.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0013_2288a6e217_duck_lift_chunk_0001",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "GRAB/s5/duck_lift_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0013_2288a6e217_duck_lift_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0013_2288a6e217_duck_lift_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0014_7413f4776b_spheremedium_lift_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "GRAB/s1/spheremedium_lift_chunk_0003.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0014_7413f4776b_spheremedium_lift_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0014_7413f4776b_spheremedium_lift_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0015_cb8ca5cd77_Neck_Stretch_R_Clip1_clip_3",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "fitness/subset_0073/Neck_Stretch_R_Clip1_clip_3_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0015_cb8ca5cd77_Neck_Stretch_R_Clip1_clip_3.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0015_cb8ca5cd77_Neck_Stretch_R_Clip1_clip_3.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0016_349418c5d4_Pause_Chubby_clip_3_chunk_0",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Chubby_clip_3_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0016_349418c5d4_Pause_Chubby_clip_3_chunk_0.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0016_349418c5d4_Pause_Chubby_clip_3_chunk_0.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0017_732b53da47_002415_chunk_0000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "humanml/002415_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0017_732b53da47_002415_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0017_732b53da47_002415_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0018_244ef96ace_Pause_A_chunk_0001",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_A_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0018_244ef96ace_Pause_A_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0018_244ef96ace_Pause_A_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0019_d4916bcad3_Neck_Stretch_R_Clip1_clip_2",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "fitness/subset_0073/Neck_Stretch_R_Clip1_clip_2_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0019_d4916bcad3_Neck_Stretch_R_Clip1_clip_2.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0019_d4916bcad3_Neck_Stretch_R_Clip1_clip_2.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0020_d86e22d154_waterbottle_lift_chunk_0002",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "GRAB/s8/waterbottle_lift_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0020_d86e22d154_waterbottle_lift_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0020_d86e22d154_waterbottle_lift_chunk_0002.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0021_d8d0770099_Entertainment_A_clip_83_chu",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0007/Entertainment_A_clip_83_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0021_d8d0770099_Entertainment_A_clip_83_chu.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0021_d8d0770099_Entertainment_A_clip_83_chu.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0022_55a8e14877_Pause_Bird_clip_2_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Bird_clip_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0022_55a8e14877_Pause_Bird_clip_2_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0022_55a8e14877_Pause_Bird_clip_2_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0023_e94f024503_Pause_Worried_clip_2_chunk",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Worried_clip_2_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0023_e94f024503_Pause_Worried_clip_2_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0023_e94f024503_Pause_Worried_clip_2_chunk.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0024_30e19789d9_Neck_Stretch_R_Clip1_clip_3",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "fitness/subset_0073/Neck_Stretch_R_Clip1_clip_3_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0024_30e19789d9_Neck_Stretch_R_Clip1_clip_3.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0024_30e19789d9_Neck_Stretch_R_Clip1_clip_3.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0025_212af19168_Pause_Long_clip_2_chunk_000",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0026/Pause_Long_clip_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0025_212af19168_Pause_Long_clip_2_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0025_212af19168_Pause_Long_clip_2_chunk_000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0026_4f587a0f74_000_chunk_0001",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "EgoBody/recording_20220312_S29_S28_04/body_idx_1/000_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0026_4f587a0f74_000_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0026_4f587a0f74_000_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0027_f6f9c0150b_Neck_Stretch_R_Clip1_clip_1",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "fitness/subset_0073/Neck_Stretch_R_Clip1_clip_14_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0027_f6f9c0150b_Neck_Stretch_R_Clip1_clip_1.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0027_f6f9c0150b_Neck_Stretch_R_Clip1_clip_1.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0028_77b21d4fdd_Hand_Clapping_Choreography",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "game_motion/subset_0034/Hand_Clapping_Choreography_clip_2_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0028_77b21d4fdd_Hand_Clapping_Choreography.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0028_77b21d4fdd_Hand_Clapping_Choreography.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_stand_idle_pose_hold_0029_7d10f90d47_watch_set_2_chunk_0002",
+      "bucket": "stand_idle_pose_hold",
+      "source_rel_path": "GRAB/s1/watch_set_2_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_stand_idle_pose_hold_0029_7d10f90d47_watch_set_2_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_stand_idle_pose_hold_0029_7d10f90d47_watch_set_2_chunk_0002.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0030_e736668b25_003731_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/003731_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0030_e736668b25_003731_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0030_e736668b25_003731_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0031_25a3afed47_006921_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/006921_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0031_25a3afed47_006921_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0031_25a3afed47_006921_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0032_d3b693cc45_002788_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002788_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0032_d3b693cc45_002788_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0032_d3b693cc45_002788_chunk_0000.pkl",
+      "frames": 134,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0033_291d4cb1a0_005551_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/005551_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0033_291d4cb1a0_005551_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0033_291d4cb1a0_005551_chunk_0000.pkl",
+      "frames": 129,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0034_33d2db71f3_011184_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011184_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0034_33d2db71f3_011184_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0034_33d2db71f3_011184_chunk_0000.pkl",
+      "frames": 130,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0035_298cc6d068_000152_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/000152_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0035_298cc6d068_000152_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0035_298cc6d068_000152_chunk_0000.pkl",
+      "frames": 130,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0036_d3637409ba_013581_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/013581_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0036_d3637409ba_013581_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0036_d3637409ba_013581_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0037_e90e6738bd_005961_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/005961_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0037_e90e6738bd_005961_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0037_e90e6738bd_005961_chunk_0000.pkl",
+      "frames": 113,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0038_58c30d4808_003156_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/003156_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0038_58c30d4808_003156_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0038_58c30d4808_003156_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0039_5905864b63_000563_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/000563_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0039_5905864b63_000563_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0039_5905864b63_000563_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0040_957412385c_013625_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/013625_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0040_957412385c_013625_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0040_957412385c_013625_chunk_0000.pkl",
+      "frames": 126,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0041_d48684bcfb_009465_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/009465_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0041_d48684bcfb_009465_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0041_d48684bcfb_009465_chunk_0000.pkl",
+      "frames": 117,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0042_adc64fa03b_010188_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010188_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0042_adc64fa03b_010188_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0042_adc64fa03b_010188_chunk_0000.pkl",
+      "frames": 112,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0043_244ad66b3c_004716_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004716_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0043_244ad66b3c_004716_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0043_244ad66b3c_004716_chunk_0000.pkl",
+      "frames": 86,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0044_895982c22c_001015_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/001015_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0044_895982c22c_001015_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0044_895982c22c_001015_chunk_0000.pkl",
+      "frames": 109,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0045_d2bc087455_011066_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011066_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0045_d2bc087455_011066_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0045_d2bc087455_011066_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0046_a51cfefd31_012232_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/012232_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0046_a51cfefd31_012232_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0046_a51cfefd31_012232_chunk_0000.pkl",
+      "frames": 126,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0047_173faa4b89_002001_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002001_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0047_173faa4b89_002001_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0047_173faa4b89_002001_chunk_0000.pkl",
+      "frames": 128,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0048_054a6ef304_004236_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004236_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0048_054a6ef304_004236_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0048_054a6ef304_004236_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0049_e46798f89d_010169_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010169_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0049_e46798f89d_010169_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0049_e46798f89d_010169_chunk_0000.pkl",
+      "frames": 125,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0050_03356eaebb_010247_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010247_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0050_03356eaebb_010247_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0050_03356eaebb_010247_chunk_0000.pkl",
+      "frames": 109,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0051_2c7cd1bc7f_011356_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011356_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0051_2c7cd1bc7f_011356_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0051_2c7cd1bc7f_011356_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0052_a98abd8d53_011339_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011339_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0052_a98abd8d53_011339_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0052_a98abd8d53_011339_chunk_0000.pkl",
+      "frames": 106,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0053_0eafe0110c_007594_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/007594_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0053_0eafe0110c_007594_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0053_0eafe0110c_007594_chunk_0000.pkl",
+      "frames": 101,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0054_b586a88b30_001210_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/001210_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0054_b586a88b30_001210_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0054_b586a88b30_001210_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0055_8c4d7e0b80_005179_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/005179_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0055_8c4d7e0b80_005179_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0055_8c4d7e0b80_005179_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0056_b272f680f0_009254_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/009254_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0056_b272f680f0_009254_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0056_b272f680f0_009254_chunk_0000.pkl",
+      "frames": 126,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0057_e02734d629_010734_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010734_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0057_e02734d629_010734_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0057_e02734d629_010734_chunk_0000.pkl",
+      "frames": 99,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0058_7c3ecc2bb5_004387_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004387_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0058_7c3ecc2bb5_004387_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0058_7c3ecc2bb5_004387_chunk_0000.pkl",
+      "frames": 102,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0059_0645d3c865_005786_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/005786_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0059_0645d3c865_005786_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0059_0645d3c865_005786_chunk_0000.pkl",
+      "frames": 115,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0060_d97200c188_009187_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/009187_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0060_d97200c188_009187_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0060_d97200c188_009187_chunk_0000.pkl",
+      "frames": 105,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0061_58c2a2a90e_002743_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002743_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0061_58c2a2a90e_002743_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0061_58c2a2a90e_002743_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0062_7bd609571b_011056_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011056_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0062_7bd609571b_011056_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0062_7bd609571b_011056_chunk_0000.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0063_3e4ee4a901_012772_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/012772_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0063_3e4ee4a901_012772_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0063_3e4ee4a901_012772_chunk_0000.pkl",
+      "frames": 132,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0064_4c93ee311a_002757_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002757_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0064_4c93ee311a_002757_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0064_4c93ee311a_002757_chunk_0000.pkl",
+      "frames": 100,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0065_d54eff55a9_004516_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004516_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0065_d54eff55a9_004516_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0065_d54eff55a9_004516_chunk_0000.pkl",
+      "frames": 122,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0066_db4f804765_000142_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/000142_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0066_db4f804765_000142_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0066_db4f804765_000142_chunk_0000.pkl",
+      "frames": 106,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0067_82c5993225_004233_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004233_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0067_82c5993225_004233_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0067_82c5993225_004233_chunk_0000.pkl",
+      "frames": 126,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0068_c472cae93c_010722_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010722_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0068_c472cae93c_010722_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0068_c472cae93c_010722_chunk_0000.pkl",
+      "frames": 125,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0069_f1a9f8cd37_003198_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/003198_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0069_f1a9f8cd37_003198_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0069_f1a9f8cd37_003198_chunk_0000.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0070_d78da1afa0_011935_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011935_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0070_d78da1afa0_011935_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0070_d78da1afa0_011935_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0071_ed8b7c6c17_006698_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/006698_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0071_ed8b7c6c17_006698_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0071_ed8b7c6c17_006698_chunk_0000.pkl",
+      "frames": 92,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0072_88a1472cf2_011424_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011424_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0072_88a1472cf2_011424_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0072_88a1472cf2_011424_chunk_0000.pkl",
+      "frames": 107,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0073_1e931c44ed_011839_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011839_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0073_1e931c44ed_011839_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0073_1e931c44ed_011839_chunk_0000.pkl",
+      "frames": 117,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0074_2c44e6ad51_012013_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/012013_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0074_2c44e6ad51_012013_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0074_2c44e6ad51_012013_chunk_0000.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0075_06effd1d48_004461_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004461_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0075_06effd1d48_004461_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0075_06effd1d48_004461_chunk_0000.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0076_179902d360_008090_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/008090_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0076_179902d360_008090_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0076_179902d360_008090_chunk_0000.pkl",
+      "frames": 96,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0077_4bbb14e2e1_008280_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/008280_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0077_4bbb14e2e1_008280_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0077_4bbb14e2e1_008280_chunk_0000.pkl",
+      "frames": 95,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0078_30deecc3df_013413_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/013413_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0078_30deecc3df_013413_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0078_30deecc3df_013413_chunk_0000.pkl",
+      "frames": 130,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0079_c21d9ef531_010319_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010319_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0079_c21d9ef531_010319_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0079_c21d9ef531_010319_chunk_0000.pkl",
+      "frames": 131,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0080_ed1cab81cf_006227_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/006227_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0080_ed1cab81cf_006227_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0080_ed1cab81cf_006227_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0081_60b8597347_004688_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004688_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0081_60b8597347_004688_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0081_60b8597347_004688_chunk_0000.pkl",
+      "frames": 122,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0082_14526039ad_003180_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/003180_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0082_14526039ad_003180_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0082_14526039ad_003180_chunk_0000.pkl",
+      "frames": 102,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0083_d23ef94250_012448_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/012448_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0083_d23ef94250_012448_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0083_d23ef94250_012448_chunk_0000.pkl",
+      "frames": 111,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0084_2787b26d0e_003696_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/003696_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0084_2787b26d0e_003696_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0084_2787b26d0e_003696_chunk_0000.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0085_0f9613fa36_014076_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/014076_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0085_0f9613fa36_014076_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0085_0f9613fa36_014076_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0086_6cfd028061_010977_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/010977_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0086_6cfd028061_010977_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0086_6cfd028061_010977_chunk_0000.pkl",
+      "frames": 134,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0087_3961f16755_007657_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/007657_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0087_3961f16755_007657_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0087_3961f16755_007657_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0088_efae5066ef_009319_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/009319_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0088_efae5066ef_009319_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0088_efae5066ef_009319_chunk_0000.pkl",
+      "frames": 93,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0089_7ae9114708_002233_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002233_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0089_7ae9114708_002233_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0089_7ae9114708_002233_chunk_0000.pkl",
+      "frames": 100,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0090_695a9ff5b5_002314_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002314_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0090_695a9ff5b5_002314_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0090_695a9ff5b5_002314_chunk_0000.pkl",
+      "frames": 111,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0091_74c06feb40_002332_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/002332_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0091_74c06feb40_002332_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0091_74c06feb40_002332_chunk_0000.pkl",
+      "frames": 92,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0092_d4ed11e982_009233_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/009233_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0092_d4ed11e982_009233_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0092_d4ed11e982_009233_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0093_374447526f_011805_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011805_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0093_374447526f_011805_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0093_374447526f_011805_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0094_d3138a974b_004696_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/004696_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0094_d3138a974b_004696_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0094_d3138a974b_004696_chunk_0000.pkl",
+      "frames": 124,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0095_ee17e89915_012495_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/012495_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0095_ee17e89915_012495_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0095_ee17e89915_012495_chunk_0000.pkl",
+      "frames": 115,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0096_b34fd83628_011433_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/011433_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0096_b34fd83628_011433_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0096_b34fd83628_011433_chunk_0000.pkl",
+      "frames": 84,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0097_61293f9e3b_003209_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/003209_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0097_61293f9e3b_003209_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0097_61293f9e3b_003209_chunk_0000.pkl",
+      "frames": 129,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0098_78d25bb78a_008271_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/008271_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0098_78d25bb78a_008271_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0098_78d25bb78a_008271_chunk_0000.pkl",
+      "frames": 92,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_walk_stop_pose_0099_fcc509a4e3_006668_chunk_0000",
+      "bucket": "walk_stop_pose",
+      "source_rel_path": "humanml/006668_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_walk_stop_pose_0099_fcc509a4e3_006668_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_walk_stop_pose_0099_fcc509a4e3_006668_chunk_0000.pkl",
+      "frames": 109,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0100_37eba20f70_011200_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/011200_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0100_37eba20f70_011200_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0100_37eba20f70_011200_chunk_0000.pkl",
+      "frames": 100,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0101_9ce8c4e608_013267_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/013267_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0101_9ce8c4e608_013267_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0101_9ce8c4e608_013267_chunk_0000.pkl",
+      "frames": 89,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0102_9cd828a73f_000012_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000012_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0102_9cd828a73f_000012_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0102_9cd828a73f_000012_chunk_0000.pkl",
+      "frames": 101,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0103_aa19ad77a8_006989_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/006989_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0103_aa19ad77a8_006989_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0103_aa19ad77a8_006989_chunk_0000.pkl",
+      "frames": 101,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0104_304f698a5e_000329_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000329_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0104_304f698a5e_000329_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0104_304f698a5e_000329_chunk_0000.pkl",
+      "frames": 94,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0105_3736ed4dd6_004467_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/004467_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0105_3736ed4dd6_004467_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0105_3736ed4dd6_004467_chunk_0000.pkl",
+      "frames": 78,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0106_467b27200b_011267_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/011267_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0106_467b27200b_011267_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0106_467b27200b_011267_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0107_60515c76c3_011585_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/011585_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0107_60515c76c3_011585_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0107_60515c76c3_011585_chunk_0000.pkl",
+      "frames": 94,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0108_c485adb54c_008273_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/008273_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0108_c485adb54c_008273_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0108_c485adb54c_008273_chunk_0000.pkl",
+      "frames": 133,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0109_4eb4e82377_007183_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/007183_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0109_4eb4e82377_007183_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0109_4eb4e82377_007183_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0110_be86e08564_001947_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/001947_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0110_be86e08564_001947_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0110_be86e08564_001947_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0111_12f00c2583_002178_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/002178_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0111_12f00c2583_002178_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0111_12f00c2583_002178_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0112_d2fcfcfba2_009654_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/009654_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0112_d2fcfcfba2_009654_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0112_d2fcfcfba2_009654_chunk_0000.pkl",
+      "frames": 132,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0113_e7ba45acb5_000437_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000437_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0113_e7ba45acb5_000437_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0113_e7ba45acb5_000437_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0114_35299ea722_001370_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/001370_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0114_35299ea722_001370_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0114_35299ea722_001370_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0115_0be189a6fc_007182_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/007182_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0115_0be189a6fc_007182_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0115_0be189a6fc_007182_chunk_0000.pkl",
+      "frames": 103,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0116_323f6f3a78_005860_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/005860_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0116_323f6f3a78_005860_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0116_323f6f3a78_005860_chunk_0000.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0117_9089c2b532_Taking_the_bus_during_walking_1_cl",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "idea400/Taking_the_bus_during_walking_1_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0117_9089c2b532_Taking_the_bus_during_walking_1_cl.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0117_9089c2b532_Taking_the_bus_during_walking_1_cl.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0118_99ccb9bc00_004836_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/004836_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0118_99ccb9bc00_004836_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0118_99ccb9bc00_004836_chunk_0000.pkl",
+      "frames": 83,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0119_328ae12365_004302_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/004302_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0119_328ae12365_004302_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0119_328ae12365_004302_chunk_0000.pkl",
+      "frames": 113,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0120_10e9cc189c_002196_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/002196_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0120_10e9cc189c_002196_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0120_10e9cc189c_002196_chunk_0000.pkl",
+      "frames": 125,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0121_5d08f88a6b_000769_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000769_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0121_5d08f88a6b_000769_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0121_5d08f88a6b_000769_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0122_fcddd28218_007505_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/007505_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0122_fcddd28218_007505_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0122_fcddd28218_007505_chunk_0000.pkl",
+      "frames": 76,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0123_cc14850c7b_006122_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/006122_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0123_cc14850c7b_006122_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0123_cc14850c7b_006122_chunk_0000.pkl",
+      "frames": 98,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0124_3723f3a5ba_014436_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/014436_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0124_3723f3a5ba_014436_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0124_3723f3a5ba_014436_chunk_0000.pkl",
+      "frames": 105,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0125_a8572d7e30_008103_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/008103_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0125_a8572d7e30_008103_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0125_a8572d7e30_008103_chunk_0000.pkl",
+      "frames": 126,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0126_4e1782fa9b_011780_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/011780_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0126_4e1782fa9b_011780_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0126_4e1782fa9b_011780_chunk_0000.pkl",
+      "frames": 132,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0127_11b3e4f2d1_005816_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/005816_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0127_11b3e4f2d1_005816_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0127_11b3e4f2d1_005816_chunk_0000.pkl",
+      "frames": 76,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0128_9fc0b374af_005369_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/005369_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0128_9fc0b374af_005369_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0128_9fc0b374af_005369_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0129_0c3c66a989_008439_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/008439_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0129_0c3c66a989_008439_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0129_0c3c66a989_008439_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0130_86af332c1b_001394_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/001394_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0130_86af332c1b_001394_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0130_86af332c1b_001394_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0131_45a93516b4_011068_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/011068_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0131_45a93516b4_011068_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0131_45a93516b4_011068_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0132_912c539f47_003038_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/003038_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0132_912c539f47_003038_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0132_912c539f47_003038_chunk_0000.pkl",
+      "frames": 126,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0133_e1f60a01d5_009460_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/009460_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0133_e1f60a01d5_009460_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0133_e1f60a01d5_009460_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0134_11ea29a452_002352_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/002352_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0134_11ea29a452_002352_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0134_11ea29a452_002352_chunk_0000.pkl",
+      "frames": 65,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0135_c22a1bcfd5_006287_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/006287_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0135_c22a1bcfd5_006287_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0135_c22a1bcfd5_006287_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0136_1af6d59681_005876_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/005876_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0136_1af6d59681_005876_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0136_1af6d59681_005876_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0137_d793f8f18e_010489_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/010489_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0137_d793f8f18e_010489_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0137_d793f8f18e_010489_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0138_ff78228b92_007754_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/007754_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0138_ff78228b92_007754_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0138_ff78228b92_007754_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0139_34725074b7_002454_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/002454_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0139_34725074b7_002454_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0139_34725074b7_002454_chunk_0000.pkl",
+      "frames": 131,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0140_88d76973c1_014136_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/014136_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0140_88d76973c1_014136_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0140_88d76973c1_014136_chunk_0001.pkl",
+      "frames": 127,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0141_12831fbda7_007001_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/007001_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0141_12831fbda7_007001_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0141_12831fbda7_007001_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0142_23ea97d4fd_005067_chunk_0002",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/005067_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0142_23ea97d4fd_005067_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0142_23ea97d4fd_005067_chunk_0002.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0143_c913d71e18_011642_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/011642_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0143_c913d71e18_011642_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0143_c913d71e18_011642_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0144_775d446c28_006307_chunk_0002",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/006307_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0144_775d446c28_006307_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0144_775d446c28_006307_chunk_0002.pkl",
+      "frames": 84,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0145_a724ce4d48_010571_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/010571_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0145_a724ce4d48_010571_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0145_a724ce4d48_010571_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0146_3242015e62_010043_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/010043_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0146_3242015e62_010043_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0146_3242015e62_010043_chunk_0001.pkl",
+      "frames": 122,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0147_b57b113fda_002371_chunk_0002",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/002371_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0147_b57b113fda_002371_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0147_b57b113fda_002371_chunk_0002.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0148_98a0c80aa1_009364_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/009364_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0148_98a0c80aa1_009364_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0148_98a0c80aa1_009364_chunk_0000.pkl",
+      "frames": 117,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0149_ca49e522b3_009176_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/009176_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0149_ca49e522b3_009176_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0149_ca49e522b3_009176_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0150_34ac62cc45_Side_Lunge_To_Tree_Var_R_clip_13_c",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "fitness/subset_0097/Side_Lunge_To_Tree_Var_R_clip_13_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0150_34ac62cc45_Side_Lunge_To_Tree_Var_R_clip_13_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0150_34ac62cc45_Side_Lunge_To_Tree_Var_R_clip_13_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0151_5dae3cf607_Salute_during_walking_clip1_chunk",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "idea400/Salute_during_walking_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0151_5dae3cf607_Salute_during_walking_clip1_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0151_5dae3cf607_Salute_during_walking_clip1_chunk.pkl",
+      "frames": 119,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0152_5a1d418078_003387_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/003387_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0152_5a1d418078_003387_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0152_5a1d418078_003387_chunk_0000.pkl",
+      "frames": 106,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0153_3271820f20_porter_clip3_chunk_0003",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "perform/porter_clip3_chunk_0003.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0153_3271820f20_porter_clip3_chunk_0003.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0153_3271820f20_porter_clip3_chunk_0003.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0154_fae8f104fc_003763_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/003763_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0154_fae8f104fc_003763_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0154_fae8f104fc_003763_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0155_ac1b16cd31_Swan_on_chest_Svend_Press_0_clip2",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humman/Swan_on_chest_Svend_Press_0_clip2_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0155_ac1b16cd31_Swan_on_chest_Svend_Press_0_clip2.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0155_ac1b16cd31_Swan_on_chest_Svend_Press_0_clip2.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0156_74f68108c4_Dance_Ballet_Jazz_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "aist/subset_0002/Dance_Ballet_Jazz_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0156_74f68108c4_Dance_Ballet_Jazz_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0156_74f68108c4_Dance_Ballet_Jazz_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0157_fea8fd520f_004643_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/004643_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0157_fea8fd520f_004643_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0157_fea8fd520f_004643_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0158_dbb76b9e79_Simultaneously_Building_with_block",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "idea400/Simultaneously_Building_with_blocks_and_walking_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0158_dbb76b9e79_Simultaneously_Building_with_block.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0158_dbb76b9e79_Simultaneously_Building_with_block.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0159_3c0e4c2ff6_002956_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/002956_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0159_3c0e4c2ff6_002956_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0159_3c0e4c2ff6_002956_chunk_0000.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0160_879261f426_Heels_touch_each_other_during_walk",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "idea400/Heels_touch_each_other_during_walking_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0160_879261f426_Heels_touch_each_other_during_walk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0160_879261f426_Heels_touch_each_other_during_walk.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0161_9625e394f4_006191_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/006191_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0161_9625e394f4_006191_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0161_9625e394f4_006191_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0162_037bad2d5e_Side_Lunge_To_Tree_Var_3a_R_clip_5",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "fitness/subset_0024/Side_Lunge_To_Tree_Var_3a_R_clip_5_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0162_037bad2d5e_Side_Lunge_To_Tree_Var_3a_R_clip_5.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0162_037bad2d5e_Side_Lunge_To_Tree_Var_3a_R_clip_5.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0163_b058abe8d4_Dance_Pop_Flex_clip_13_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "aist/subset_0009/Dance_Pop_Flex_clip_13_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0163_b058abe8d4_Dance_Pop_Flex_clip_13_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0163_b058abe8d4_Dance_Pop_Flex_clip_13_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0164_19e31b4506_Goddess_Step_Out_Squat_clip_2_chun",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "fitness/subset_0030/Goddess_Step_Out_Squat_clip_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0164_19e31b4506_Goddess_Step_Out_Squat_clip_2_chun.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0164_19e31b4506_Goddess_Step_Out_Squat_clip_2_chun.pkl",
+      "frames": 72,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0165_0ccd941946_000882_chunk_0002",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000882_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0165_0ccd941946_000882_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0165_0ccd941946_000882_chunk_0002.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0166_3a7a6159e3_000158_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000158_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0166_3a7a6159e3_000158_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0166_3a7a6159e3_000158_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0167_771b315211_008355_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/008355_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0167_771b315211_008355_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0167_771b315211_008355_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0168_6aefdd0066_006_chunk_0000",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "EgoBody/recording_20220315_S30_S21_01/body_idx_0/006_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0168_6aefdd0066_006_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0168_6aefdd0066_006_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_sidestep_pose_0169_601d786ee4_000598_chunk_0001",
+      "bucket": "sidestep_pose",
+      "source_rel_path": "humanml/000598_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_sidestep_pose_0169_601d786ee4_000598_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_sidestep_pose_0169_601d786ee4_000598_chunk_0001.pkl",
+      "frames": 102,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0170_2e90c5ccfa_003266_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/003266_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0170_2e90c5ccfa_003266_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0170_2e90c5ccfa_003266_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0171_c8f80c8e42_Dance_Ballet_Jazz_Paddbre_cli",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "aist/subset_0002/Dance_Ballet_Jazz_Paddbre_clip_6_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0171_c8f80c8e42_Dance_Ballet_Jazz_Paddbre_cli.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0171_c8f80c8e42_Dance_Ballet_Jazz_Paddbre_cli.pkl",
+      "frames": 119,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0172_47a1bbcaf4_001669_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/001669_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0172_47a1bbcaf4_001669_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0172_47a1bbcaf4_001669_chunk_0001.pkl",
+      "frames": 91,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0173_022d654cb2_008584_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/008584_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0173_022d654cb2_008584_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0173_022d654cb2_008584_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0174_44e4d18b7d_013598_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/013598_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0174_44e4d18b7d_013598_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0174_44e4d18b7d_013598_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0175_b2deea755b_013544_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/013544_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0175_b2deea755b_013544_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0175_b2deea755b_013544_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0176_b29f809e5b_Katana_Rotfeuerfisch_clip_8_c",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "game_motion/subset_0015/Katana_Rotfeuerfisch_clip_8_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0176_b29f809e5b_Katana_Rotfeuerfisch_clip_8_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0176_b29f809e5b_Katana_Rotfeuerfisch_clip_8_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0177_0119a97321_Katana_Rotfeuerfisch_clip_4_c",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "game_motion/subset_0015/Katana_Rotfeuerfisch_clip_4_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0177_0119a97321_Katana_Rotfeuerfisch_clip_4_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0177_0119a97321_Katana_Rotfeuerfisch_clip_4_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0178_33a65fcdf3_012399_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/012399_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0178_33a65fcdf3_012399_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0178_33a65fcdf3_012399_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0179_c225c3c2ab_walking_and_Taking_pictures_a",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/walking_and_Taking_pictures_at_the_same_time_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0179_c225c3c2ab_walking_and_Taking_pictures_a.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0179_c225c3c2ab_walking_and_Taking_pictures_a.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0180_09835e535b_003843_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/003843_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0180_09835e535b_003843_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0180_09835e535b_003843_chunk_0001.pkl",
+      "frames": 109,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0181_92e382b9ae_009912_chunk_0002",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/009912_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0181_92e382b9ae_009912_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0181_92e382b9ae_009912_chunk_0002.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0182_971c2185eb_Katana_Rotfeuerfisch_clip_7_c",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "game_motion/subset_0015/Katana_Rotfeuerfisch_clip_7_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0182_971c2185eb_Katana_Rotfeuerfisch_clip_7_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0182_971c2185eb_Katana_Rotfeuerfisch_clip_7_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0183_70507463fa_003260_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/003260_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0183_70507463fa_003260_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0183_70507463fa_003260_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0184_180610c2d3_000401_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/000401_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0184_180610c2d3_000401_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0184_180610c2d3_000401_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0185_221d1467fa_001068_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/001068_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0185_221d1467fa_001068_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0185_221d1467fa_001068_chunk_0000.pkl",
+      "frames": 101,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0186_1a1b67f013_006478_chunk_0002",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/006478_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0186_1a1b67f013_006478_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0186_1a1b67f013_006478_chunk_0002.pkl",
+      "frames": 82,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0187_149cccdefd_Wiping_with_a_rag_and_walking",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/Wiping_with_a_rag_and_walking_at_the_same_time_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0187_149cccdefd_Wiping_with_a_rag_and_walking.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0187_149cccdefd_Wiping_with_a_rag_and_walking.pkl",
+      "frames": 125,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0188_8c6d031851_walking_during_Knocking_clip1",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/walking_during_Knocking_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0188_8c6d031851_walking_during_Knocking_clip1.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0188_8c6d031851_walking_during_Knocking_clip1.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0189_c5955b1cd5_002902_chunk_0002",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/002902_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0189_c5955b1cd5_002902_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0189_c5955b1cd5_002902_chunk_0002.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0190_d9d757629c_20250808_154628_chunk_0011",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "custom/20250808_154628_chunk_0011.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0190_d9d757629c_20250808_154628_chunk_0011.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0190_d9d757629c_20250808_154628_chunk_0011.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0191_172ed46a5b_Short_Weapon_Selbstverletzung",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "game_motion/subset_0031/Short_Weapon_Selbstverletzungsschwert_clip_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0191_172ed46a5b_Short_Weapon_Selbstverletzung.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0191_172ed46a5b_Short_Weapon_Selbstverletzung.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0192_d70e6b8f71_000002_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/000002_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0192_d70e6b8f71_000002_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0192_d70e6b8f71_000002_chunk_0000.pkl",
+      "frames": 103,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0193_dd2087b02d_Short_Weapon_Selbstverletzung",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "game_motion/subset_0031/Short_Weapon_Selbstverletzungsschwert_clip_3_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0193_dd2087b02d_Short_Weapon_Selbstverletzung.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0193_dd2087b02d_Short_Weapon_Selbstverletzung.pkl",
+      "frames": 108,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0194_03e6133ae3_000486_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/000486_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0194_03e6133ae3_000486_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0194_03e6133ae3_000486_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0195_09e300139c_010733_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/010733_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0195_09e300139c_010733_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0195_09e300139c_010733_chunk_0000.pkl",
+      "frames": 122,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0196_d779a2bbd6_009460_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/009460_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0196_d779a2bbd6_009460_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0196_d779a2bbd6_009460_chunk_0001.pkl",
+      "frames": 129,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0197_3f64e0f4c8_010145_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/010145_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0197_3f64e0f4c8_010145_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0197_3f64e0f4c8_010145_chunk_0000.pkl",
+      "frames": 69,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0198_2a88146724_Simultaneously_walking_and_Ge",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/Simultaneously_walking_and_Gestures_in_the_Air_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0198_2a88146724_Simultaneously_walking_and_Ge.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0198_2a88146724_Simultaneously_walking_and_Ge.pkl",
+      "frames": 129,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0199_519b4b20ef_009871_chunk_0002",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/009871_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0199_519b4b20ef_009871_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0199_519b4b20ef_009871_chunk_0002.pkl",
+      "frames": 79,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0200_4e23420f2a_006501_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/006501_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0200_4e23420f2a_006501_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0200_4e23420f2a_006501_chunk_0000.pkl",
+      "frames": 94,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0201_036331a79a_Simultaneously_Covering_ears",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/Simultaneously_Covering_ears_and_stealing_bells_and_walking_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0201_036331a79a_Simultaneously_Covering_ears.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0201_036331a79a_Simultaneously_Covering_ears.pkl",
+      "frames": 128,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0202_e69e971d21_002_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "EgoBody/recording_20220318_S32_S31_01/body_idx_1/002_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0202_e69e971d21_002_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0202_e69e971d21_002_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0203_3d53ef1f32_004789_chunk_0002",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/004789_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0203_3d53ef1f32_004789_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0203_3d53ef1f32_004789_chunk_0002.pkl",
+      "frames": 66,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0204_04d29d71ff_walking_during_Building_with",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/walking_during_Building_with_blocks_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0204_04d29d71ff_walking_during_Building_with.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0204_04d29d71ff_walking_during_Building_with.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0205_735ba56620_Waving_during_walking_clip1_c",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/Waving_during_walking_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0205_735ba56620_Waving_during_walking_clip1_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0205_735ba56620_Waving_during_walking_clip1_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0206_fcb66de05a_004903_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/004903_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0206_fcb66de05a_004903_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0206_fcb66de05a_004903_chunk_0000.pkl",
+      "frames": 110,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0207_fc0d4b2757_004071_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/004071_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0207_fc0d4b2757_004071_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0207_fc0d4b2757_004071_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0208_599ff76363_011076_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/011076_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0208_599ff76363_011076_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0208_599ff76363_011076_chunk_0000.pkl",
+      "frames": 84,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0209_e7c331a8ba_003714_chunk_0002",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/003714_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0209_e7c331a8ba_003714_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0209_e7c331a8ba_003714_chunk_0002.pkl",
+      "frames": 75,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0210_f31e497c2f_009351_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/009351_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0210_f31e497c2f_009351_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0210_f31e497c2f_009351_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0211_d527dc8252_003951_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/003951_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0211_d527dc8252_003951_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0211_d527dc8252_003951_chunk_0000.pkl",
+      "frames": 117,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0212_bec48aef37_Jumping_Jacks_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "fitness/subset_0071/Jumping_Jacks_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0212_bec48aef37_Jumping_Jacks_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0212_bec48aef37_Jumping_Jacks_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0213_45f81184b5_Aerial_Kick_Kungfu_wushu_17_c",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "kungfu/Aerial_Kick_Kungfu_wushu_17_clip1_chunk_0003.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0213_45f81184b5_Aerial_Kick_Kungfu_wushu_17_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0213_45f81184b5_Aerial_Kick_Kungfu_wushu_17_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0214_4e1e931885_000764_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/000764_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0214_4e1e931885_000764_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0214_4e1e931885_000764_chunk_0000.pkl",
+      "frames": 116,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0215_06c5058596_008230_chunk_0000",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/008230_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0215_06c5058596_008230_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0215_06c5058596_008230_chunk_0000.pkl",
+      "frames": 123,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0216_008d11a58e_Grilling_and_walking_at_the_s",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "idea400/Grilling_and_walking_at_the_same_time_clip1_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0216_008d11a58e_Grilling_and_walking_at_the_s.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0216_008d11a58e_Grilling_and_walking_at_the_s.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0217_eb017a5b00_012408_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/012408_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0217_eb017a5b00_012408_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0217_eb017a5b00_012408_chunk_0001.pkl",
+      "frames": 119,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0218_02acba78e6_011384_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/011384_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0218_02acba78e6_011384_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0218_02acba78e6_011384_chunk_0001.pkl",
+      "frames": 121,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_pose_sidestep_pose_0219_d524f2ba72_002437_chunk_0001",
+      "bucket": "pose_sidestep_pose",
+      "source_rel_path": "humanml/002437_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_pose_sidestep_pose_0219_d524f2ba72_002437_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_pose_sidestep_pose_0219_d524f2ba72_002437_chunk_0001.pkl",
+      "frames": 129,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0220_2fb36e50ea_Dance_Street_Jazz_Positions_Des",
+      "bucket": "corrective_steps",
+      "source_rel_path": "aist/subset_0003/Dance_Street_Jazz_Positions_Des_Pieds_clip_3_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0220_2fb36e50ea_Dance_Street_Jazz_Positions_Des.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0220_2fb36e50ea_Dance_Street_Jazz_Positions_Des.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0221_128490d0cc_Electrician_Version_Love_Shot_D",
+      "bucket": "corrective_steps",
+      "source_rel_path": "dance/subset_0001/Electrician_Version_Love_Shot_Dormitory_Million_Lights_clip_5_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0221_128490d0cc_Electrician_Version_Love_Shot_D.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0221_128490d0cc_Electrician_Version_Love_Shot_D.pkl",
+      "frames": 129,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0222_345a0c9744_007537_chunk_0000",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/007537_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0222_345a0c9744_007537_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0222_345a0c9744_007537_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0223_1f6d4e728b_Dance_Street_Jazz_Positions_Des",
+      "bucket": "corrective_steps",
+      "source_rel_path": "aist/subset_0003/Dance_Street_Jazz_Positions_Des_Pieds_clip_1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0223_1f6d4e728b_Dance_Street_Jazz_Positions_Des.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0223_1f6d4e728b_Dance_Street_Jazz_Positions_Des.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0224_e3a7ceeddc_003281_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/003281_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0224_e3a7ceeddc_003281_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0224_e3a7ceeddc_003281_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0225_761a111f00_tanabata_clip5_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "perform/tanabata_clip5_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0225_761a111f00_tanabata_clip5_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0225_761a111f00_tanabata_clip5_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0226_cb4376e57d_002797_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/002797_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0226_cb4376e57d_002797_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0226_cb4376e57d_002797_chunk_0001.pkl",
+      "frames": 61,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0227_60045c30eb_Aerial_Kick_Kungfu_wushu_turn_o",
+      "bucket": "corrective_steps",
+      "source_rel_path": "kungfu/Aerial_Kick_Kungfu_wushu_turn_over_11_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0227_60045c30eb_Aerial_Kick_Kungfu_wushu_turn_o.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0227_60045c30eb_Aerial_Kick_Kungfu_wushu_turn_o.pkl",
+      "frames": 134,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0228_977505545b_007562_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/007562_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0228_977505545b_007562_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0228_977505545b_007562_chunk_0001.pkl",
+      "frames": 65,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0229_3bc4b2be54_beat_drums_and_gongs_32_clip2_c",
+      "bucket": "corrective_steps",
+      "source_rel_path": "music/beat_drums_and_gongs_32_clip2_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0229_3bc4b2be54_beat_drums_and_gongs_32_clip2_c.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0229_3bc4b2be54_beat_drums_and_gongs_32_clip2_c.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0230_930a5eeb08_002_chunk_0004",
+      "bucket": "corrective_steps",
+      "source_rel_path": "EgoBody/recording_20210911_S07_S06_01/body_idx_0/002_chunk_0004.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0230_930a5eeb08_002_chunk_0004.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0230_930a5eeb08_002_chunk_0004.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0231_d13512e512_004_chunk_0000",
+      "bucket": "corrective_steps",
+      "source_rel_path": "EgoBody/recording_20220312_S28_S29_01/body_idx_0/004_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0231_d13512e512_004_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0231_d13512e512_004_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0232_c515b9d9fb_009323_chunk_0000",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/009323_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0232_c515b9d9fb_009323_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0232_c515b9d9fb_009323_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0233_18bef9db27_002342_chunk_0000",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/002342_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0233_18bef9db27_002342_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0233_18bef9db27_002342_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0234_5864448b06_cry_loudly_and_standing_at_the",
+      "bucket": "corrective_steps",
+      "source_rel_path": "idea400/cry_loudly_and_standing_at_the_same_time_1_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0234_5864448b06_cry_loudly_and_standing_at_the.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0234_5864448b06_cry_loudly_and_standing_at_the.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0235_93948baeb6_Dance_Street_Jazz_Positions_Des",
+      "bucket": "corrective_steps",
+      "source_rel_path": "aist/subset_0003/Dance_Street_Jazz_Positions_Des_Pieds_clip_13_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0235_93948baeb6_Dance_Street_Jazz_Positions_Des.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0235_93948baeb6_Dance_Street_Jazz_Positions_Des.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0236_61da389228_010836_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/010836_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0236_61da389228_010836_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0236_61da389228_010836_chunk_0001.pkl",
+      "frames": 70,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0237_a27fa939a6_012879_chunk_0000",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/012879_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0237_a27fa939a6_012879_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0237_a27fa939a6_012879_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0238_fc1c481c83_002659_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/002659_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0238_fc1c481c83_002659_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0238_fc1c481c83_002659_chunk_0001.pkl",
+      "frames": 49,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0239_41af99147a_Chair_Twist_clip_6_chunk_0004",
+      "bucket": "corrective_steps",
+      "source_rel_path": "fitness/subset_0081/Chair_Twist_clip_6_chunk_0004.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0239_41af99147a_Chair_Twist_clip_6_chunk_0004.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0239_41af99147a_Chair_Twist_clip_6_chunk_0004.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0240_90d4c811f7_001_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "EgoBody/recording_20210911_S03_S08_01/body_idx_0/001_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0240_90d4c811f7_001_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0240_90d4c811f7_001_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0241_730e6a56c0_train_lift_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "GRAB/s3/train_lift_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0241_730e6a56c0_train_lift_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0241_730e6a56c0_train_lift_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0242_1c805cd531_Simultaneously_Against_somethin",
+      "bucket": "corrective_steps",
+      "source_rel_path": "idea400/Simultaneously_Against_something_and_standing_1_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0242_1c805cd531_Simultaneously_Against_somethin.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0242_1c805cd531_Simultaneously_Against_somethin.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0243_b4cac4f835_000_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "EgoBody/recording_20220315_S21_S30_05/body_idx_1/000_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0243_b4cac4f835_000_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0243_b4cac4f835_000_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0244_7f260397b6_Chair_Twist_clip_6_chunk_0006",
+      "bucket": "corrective_steps",
+      "source_rel_path": "fitness/subset_0081/Chair_Twist_clip_6_chunk_0006.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0244_7f260397b6_Chair_Twist_clip_6_chunk_0006.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0244_7f260397b6_Chair_Twist_clip_6_chunk_0006.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0245_a77e701318_006759_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/006759_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0245_a77e701318_006759_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0245_a77e701318_006759_chunk_0001.pkl",
+      "frames": 122,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0246_8735563408_006027_chunk_0000",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/006027_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0246_8735563408_006027_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0246_8735563408_006027_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0247_0a8e893235_stretch_2_clip1_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "perform/stretch_2_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0247_0a8e893235_stretch_2_clip1_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0247_0a8e893235_stretch_2_clip1_chunk_0001.pkl",
+      "frames": 73,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0248_35001c4718_006736_chunk_0001",
+      "bucket": "corrective_steps",
+      "source_rel_path": "humanml/006736_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0248_35001c4718_006736_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0248_35001c4718_006736_chunk_0001.pkl",
+      "frames": 58,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_corrective_steps_0249_55fcd5fdf2_003_chunk_0004",
+      "bucket": "corrective_steps",
+      "source_rel_path": "EgoBody/recording_20220312_S28_S29_02/body_idx_0/003_chunk_0004.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_corrective_steps_0249_55fcd5fdf2_003_chunk_0004.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_corrective_steps_0249_55fcd5fdf2_003_chunk_0004.pkl",
+      "frames": 81,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0250_1e6e249a36_waterbottle_lift_chunk_0001",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "GRAB/s5/waterbottle_lift_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0250_1e6e249a36_waterbottle_lift_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0250_1e6e249a36_waterbottle_lift_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0251_674a672344_Soldiers_first_type_R_dubbing_1_clip1",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "humman/Soldiers_first_type_R_dubbing_1_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0251_674a672344_Soldiers_first_type_R_dubbing_1_clip1.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0251_674a672344_Soldiers_first_type_R_dubbing_1_clip1.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0252_0ed45958ce_Dance_Pop_Flex_clip_6_chunk_0002",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "aist/subset_0009/Dance_Pop_Flex_clip_6_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0252_0ed45958ce_Dance_Pop_Flex_clip_6_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0252_0ed45958ce_Dance_Pop_Flex_clip_6_chunk_0002.pkl",
+      "frames": 34,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0253_d91a19591c_wineglass_drink_2_chunk_0000",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "GRAB/s9/wineglass_drink_2_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0253_d91a19591c_wineglass_drink_2_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0253_d91a19591c_wineglass_drink_2_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0254_aaa392e73d_002841_chunk_0001",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "humanml/002841_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0254_aaa392e73d_002841_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0254_aaa392e73d_002841_chunk_0001.pkl",
+      "frames": 54,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0255_c214583ea6_Hamstring_Stretch_L_clip_6_chunk_0002",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "fitness/subset_0042/Hamstring_Stretch_L_clip_6_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0255_c214583ea6_Hamstring_Stretch_L_clip_6_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0255_c214583ea6_Hamstring_Stretch_L_clip_6_chunk_0002.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0256_cb8bba803b_009116_chunk_0002",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "humanml/009116_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0256_cb8bba803b_009116_chunk_0002.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0256_cb8bba803b_009116_chunk_0002.pkl",
+      "frames": 62,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0257_d3e19e3843_hold_baby_with_wrap_3_clip1_chunk_000",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "haa500/hold_baby_with_wrap_3_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0257_d3e19e3843_hold_baby_with_wrap_3_clip1_chunk_000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0257_d3e19e3843_hold_baby_with_wrap_3_clip1_chunk_000.pkl",
+      "frames": 73,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0258_a417e421b9_Warrior_To_Knee_Tuck_Rz_clip_17_chunk",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "fitness/subset_0058/Warrior_To_Knee_Tuck_Rz_clip_17_chunk_0002.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0258_a417e421b9_Warrior_To_Knee_Tuck_Rz_clip_17_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0258_a417e421b9_Warrior_To_Knee_Tuck_Rz_clip_17_chunk.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0259_957d014e8c_stamp_lift_chunk_0003",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "GRAB/s9/stamp_lift_chunk_0003.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0259_957d014e8c_stamp_lift_chunk_0003.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0259_957d014e8c_stamp_lift_chunk_0003.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0260_27d5a7ceb0_Tai_Chi_step1_two_hands_hold_up_the_h",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "kungfu/Tai_Chi_step1_two_hands_hold_up_the_heavens_1_clip1_chunk_0004.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0260_27d5a7ceb0_Tai_Chi_step1_two_hands_hold_up_the_h.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0260_27d5a7ceb0_Tai_Chi_step1_two_hands_hold_up_the_h.pkl",
+      "frames": 81,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0261_8ea123d526_Warrior_type_3_R_1_clip1_chunk_0000",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "humman/Warrior_type_3_R_1_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0261_8ea123d526_Warrior_type_3_R_1_clip1_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0261_8ea123d526_Warrior_type_3_R_1_clip1_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0262_1398400301_Swimming_while_standing_clip1_chunk_0",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "idea400/Swimming_while_standing_clip1_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0262_1398400301_Swimming_while_standing_clip1_chunk_0.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0262_1398400301_Swimming_while_standing_clip1_chunk_0.pkl",
+      "frames": 53,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0263_c494b0a491_Kick_Blackmail_clip_7_chunk_0001",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "game_motion/subset_0017/Kick_Blackmail_clip_7_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0263_c494b0a491_Kick_Blackmail_clip_7_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0263_c494b0a491_Kick_Blackmail_clip_7_chunk_0001.pkl",
+      "frames": 72,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0264_8378c86fc0_Tai_Chi_step2_drawing_the_bow_to_shoo",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "kungfu/Tai_Chi_step2_drawing_the_bow_to_shoot_the_bird_of_prey_3_clip1_chunk_0003.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0264_8378c86fc0_Tai_Chi_step2_drawing_the_bow_to_shoo.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0264_8378c86fc0_Tai_Chi_step2_drawing_the_bow_to_shoo.pkl",
+      "frames": 124,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0265_7e6844a999_Shaolin_Kung_Fu_Wushu_Straight_Dragon",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "kungfu/Shaolin_Kung_Fu_Wushu_Straight_Dragon_Sword_4_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0265_7e6844a999_Shaolin_Kung_Fu_Wushu_Straight_Dragon.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0265_7e6844a999_Shaolin_Kung_Fu_Wushu_Straight_Dragon.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0266_7770e57154_Tai_Chi_step7_punching_with_strong_fo",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "kungfu/Tai_Chi_step7_punching_with_strong_focused_eyes_2_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0266_7770e57154_Tai_Chi_step7_punching_with_strong_fo.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0266_7770e57154_Tai_Chi_step7_punching_with_strong_fo.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0267_2aae1bcf60_011129_chunk_0001",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "humanml/011129_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0267_2aae1bcf60_011129_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0267_2aae1bcf60_011129_chunk_0001.pkl",
+      "frames": 58,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0268_53ebff2e28_taekwondo_middle_block_14_clip1_chunk",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "haa500/taekwondo_middle_block_14_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0268_53ebff2e28_taekwondo_middle_block_14_clip1_chunk.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0268_53ebff2e28_taekwondo_middle_block_14_clip1_chunk.pkl",
+      "frames": 72,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_yaw_adjust_0269_b9818ee3a8_Tai_Chi_step7_punching_with_strong_fo",
+      "bucket": "yaw_adjust",
+      "source_rel_path": "kungfu/Tai_Chi_step7_punching_with_strong_focused_eyes_3_clip1_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_yaw_adjust_0269_b9818ee3a8_Tai_Chi_step7_punching_with_strong_fo.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_yaw_adjust_0269_b9818ee3a8_Tai_Chi_step7_punching_with_strong_fo.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0270_248cfb928c_004596_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004596_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0270_248cfb928c_004596_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0270_248cfb928c_004596_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0271_d6c50ef164_010916_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/010916_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0271_d6c50ef164_010916_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0271_d6c50ef164_010916_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0272_28cf5b2ee9_run_chunk_0038",
+      "bucket": "normal_walking",
+      "source_rel_path": "custom/run_chunk_0038.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0272_28cf5b2ee9_run_chunk_0038.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0272_28cf5b2ee9_run_chunk_0038.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0273_19600b08ac_004565_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004565_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0273_19600b08ac_004565_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0273_19600b08ac_004565_chunk_0000.pkl",
+      "frames": 89,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0274_7317746beb_014059_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/014059_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0274_7317746beb_014059_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0274_7317746beb_014059_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0275_b7ab638e81_006611_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/006611_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0275_b7ab638e81_006611_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0275_b7ab638e81_006611_chunk_0000.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0276_2c17f641f0_006624_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/006624_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0276_2c17f641f0_006624_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0276_2c17f641f0_006624_chunk_0000.pkl",
+      "frames": 100,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0277_9dbb588eba_011414_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/011414_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0277_9dbb588eba_011414_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0277_9dbb588eba_011414_chunk_0000.pkl",
+      "frames": 77,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0278_bee6a32208_002083_chunk_0001",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/002083_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0278_bee6a32208_002083_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0278_bee6a32208_002083_chunk_0001.pkl",
+      "frames": 55,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0279_1c9d3f8da1_007110_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/007110_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0279_1c9d3f8da1_007110_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0279_1c9d3f8da1_007110_chunk_0000.pkl",
+      "frames": 123,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0280_bacff2a8bc_005481_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/005481_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0280_bacff2a8bc_005481_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0280_bacff2a8bc_005481_chunk_0000.pkl",
+      "frames": 100,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0281_4c5cae82ed_004640_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004640_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0281_4c5cae82ed_004640_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0281_4c5cae82ed_004640_chunk_0000.pkl",
+      "frames": 102,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0282_a297aaecb1_010782_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/010782_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0282_a297aaecb1_010782_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0282_a297aaecb1_010782_chunk_0000.pkl",
+      "frames": 102,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0283_e7d7891984_000133_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/000133_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0283_e7d7891984_000133_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0283_e7d7891984_000133_chunk_0000.pkl",
+      "frames": 90,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0284_91ac15c13e_010381_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/010381_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0284_91ac15c13e_010381_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0284_91ac15c13e_010381_chunk_0000.pkl",
+      "frames": 107,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0285_5c590511cf_013205_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/013205_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0285_5c590511cf_013205_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0285_5c590511cf_013205_chunk_0000.pkl",
+      "frames": 98,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0286_b9863b45ae_008117_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/008117_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0286_b9863b45ae_008117_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0286_b9863b45ae_008117_chunk_0000.pkl",
+      "frames": 99,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0287_1f8373b6b2_009985_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/009985_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0287_1f8373b6b2_009985_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0287_1f8373b6b2_009985_chunk_0000.pkl",
+      "frames": 103,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0288_ee15db0f7d_011830_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/011830_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0288_ee15db0f7d_011830_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0288_ee15db0f7d_011830_chunk_0000.pkl",
+      "frames": 94,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0289_443cab73eb_004848_chunk_0001",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004848_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0289_443cab73eb_004848_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0289_443cab73eb_004848_chunk_0001.pkl",
+      "frames": 131,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0290_4c754b9aa0_001315_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/001315_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0290_4c754b9aa0_001315_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0290_4c754b9aa0_001315_chunk_0000.pkl",
+      "frames": 106,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0291_032885f2dd_012835_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/012835_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0291_032885f2dd_012835_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0291_032885f2dd_012835_chunk_0000.pkl",
+      "frames": 103,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0292_a9c784bf2c_013102_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/013102_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0292_a9c784bf2c_013102_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0292_a9c784bf2c_013102_chunk_0000.pkl",
+      "frames": 112,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0293_7d38083a4f_004651_chunk_0001",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004651_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0293_7d38083a4f_004651_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0293_7d38083a4f_004651_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0294_0fde4e902c_kick_chunk_0047",
+      "bucket": "normal_walking",
+      "source_rel_path": "custom/kick_chunk_0047.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0294_0fde4e902c_kick_chunk_0047.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0294_0fde4e902c_kick_chunk_0047.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0295_7b8a07c945_006320_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/006320_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0295_7b8a07c945_006320_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0295_7b8a07c945_006320_chunk_0000.pkl",
+      "frames": 100,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0296_268489e180_014018_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/014018_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0296_268489e180_014018_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0296_268489e180_014018_chunk_0000.pkl",
+      "frames": 94,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0297_179ea2d61e_005313_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/005313_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0297_179ea2d61e_005313_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0297_179ea2d61e_005313_chunk_0000.pkl",
+      "frames": 104,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0298_a2d208469b_008409_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/008409_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0298_a2d208469b_008409_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0298_a2d208469b_008409_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0299_6b68256ea7_007240_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/007240_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0299_6b68256ea7_007240_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0299_6b68256ea7_007240_chunk_0000.pkl",
+      "frames": 88,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0300_8995d1a959_003224_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/003224_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0300_8995d1a959_003224_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0300_8995d1a959_003224_chunk_0000.pkl",
+      "frames": 114,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0301_d8ae9d6312_011177_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/011177_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0301_d8ae9d6312_011177_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0301_d8ae9d6312_011177_chunk_0000.pkl",
+      "frames": 92,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0302_18d7039377_013009_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/013009_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0302_18d7039377_013009_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0302_18d7039377_013009_chunk_0000.pkl",
+      "frames": 92,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0303_72edf5fad0_011832_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/011832_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0303_72edf5fad0_011832_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0303_72edf5fad0_011832_chunk_0000.pkl",
+      "frames": 111,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0304_aef30f9987_004828_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004828_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0304_aef30f9987_004828_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0304_aef30f9987_004828_chunk_0000.pkl",
+      "frames": 105,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0305_371b3e7af1_003001_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/003001_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0305_371b3e7af1_003001_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0305_371b3e7af1_003001_chunk_0000.pkl",
+      "frames": 99,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0306_f4dde80647_004652_chunk_0001",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/004652_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0306_f4dde80647_004652_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0306_f4dde80647_004652_chunk_0001.pkl",
+      "frames": 124,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0307_d5562f2795_000191_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/000191_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0307_d5562f2795_000191_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0307_d5562f2795_000191_chunk_0000.pkl",
+      "frames": 73,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0308_10502178e5_011613_chunk_0001",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/011613_chunk_0001.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0308_10502178e5_011613_chunk_0001.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0308_10502178e5_011613_chunk_0001.pkl",
+      "frames": 120,
+      "fps": 30.0
+    },
+    {
+      "key": "phuma_precision_normal_walking_0309_eb2debacb3_009693_chunk_0000",
+      "bucket": "normal_walking",
+      "source_rel_path": "humanml/009693_chunk_0000.npy",
+      "robot_pkl": "robot_filtered/phuma_precision_normal_walking_0309_eb2debacb3_009693_chunk_0000.pkl",
+      "smpl_pkl": "smpl_filtered/phuma_precision_normal_walking_0309_eb2debacb3_009693_chunk_0000.pkl",
+      "frames": 79,
+      "fps": 30.0
+    }
+  ],
+  "failures": []
+}

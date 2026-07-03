@@ -226,6 +226,7 @@ class MotionLibBase:
 
         self.debug = motion_lib_cfg.get("debug", False)
         self.use_parallel_fk = motion_lib_cfg.get("use_parallel_fk", False)
+        self.num_load_jobs = motion_lib_cfg.get("num_load_jobs", None)
         self.num_envs = num_envs
         self._device = device
         self.mesh_parsers = None
@@ -1130,14 +1131,18 @@ class MotionLibBase:
         except Exception as e:  # noqa: BLE001
             logger.warning(f"Could not increase file descriptor limit: {e}")
 
-        manager = mp.Manager()
-        queue = manager.Queue()
-        num_jobs = min(min(mp.cpu_count(), 32), len(motion_data_list))  # noqa: PLW3301
+        if self.num_load_jobs is None:
+            num_jobs = min(min(mp.cpu_count(), 32), len(motion_data_list))  # noqa: PLW3301
+            if num_jobs <= 8:
+                num_jobs = 1
+        else:
+            num_jobs = max(1, min(int(self.num_load_jobs), len(motion_data_list)))
 
-        if num_jobs <= 8 or not self.multi_thread or len(motion_data_list) <= 128:
+        if not self.multi_thread or len(motion_data_list) <= 128:
             num_jobs = 1
 
         logger.info(f"Loading motions with {num_jobs} jobs...")
+        queue = mp.Queue() if num_jobs > 1 else None
         self.res_non_nav_dataset = {}
         res_acc = {}  # using dictionary ensures order of the results.
         workers = []
@@ -1223,17 +1228,17 @@ class MotionLibBase:
                     workers.append(worker)
                 res_acc.update(self.load_motion_with_skeleton(*jobs[0], None, 0))
 
-                # Wait for all workers to complete and clean them up
-                for worker in workers:
-                    worker.join()
-                    worker.close()
-                workers = []
-
                 for i in progress.track(  # noqa: B007
                     range(len(jobs) - 1), "Gathering results for non-navigation dataset..."
                 ):
                     res = queue.get()
                     res_acc.update(res)
+
+                # Wait for all workers to complete and clean them up
+                for worker in workers:
+                    worker.join()
+                    worker.close()
+                workers = []
 
                 self.res_non_nav_dataset = res_acc.copy()
 
@@ -1324,6 +1329,10 @@ class MotionLibBase:
                 worker.join()
                 worker.close()
             workers = []
+
+        if queue is not None:
+            queue.close()
+            queue.join_thread()
 
         for f in progress.track(range(len(res_acc)), description="Processing motions..."):
             motion_file_data, curr_motion = res_acc[f]
