@@ -42,7 +42,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-DEFAULT_RUN_DIR = REPO_ROOT / "motion_sonic" / "motion" / "forward_5m_target"
+DEFAULT_RUN_DIR = REPO_ROOT / "motion_sonic" / "motion" 
 DEFAULT_QPOS = DEFAULT_RUN_DIR / "qpos" / "motionbricks_to_target_forward_5m_target.npy"
 DEFAULT_TARGET = DEFAULT_RUN_DIR / "target_reference" / "forward_5m_target.npz"
 DEFAULT_MARKERS = (

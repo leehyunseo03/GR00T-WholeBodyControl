@@ -784,6 +784,170 @@ class TrackingCommand(CommandTerm):
         """Toggle evaluation mode, which disables reset randomizations."""
         self.is_evaluating = is_evaluating
 
+    def install_live_qpos_segment(
+        self,
+        qpos: torch.Tensor | np.ndarray,
+        fps: int = 30,
+        env_ids: Sequence[int] | torch.Tensor | None = None,
+        reset_time: bool = True,
+    ) -> None:
+        """Replace the active reference with a freshly planned qpos segment.
+
+        This is used by receding-horizon planners during evaluation. The policy
+        still observes and tracks the normal SONIC motion-lib tensors; this just
+        refreshes those tensors from a short kinematic plan instead of replaying
+        one fixed offline clip.
+        """
+        if env_ids is None:
+            env_ids_t = torch.arange(self.num_envs, device=self.device, dtype=torch.long)
+        elif isinstance(env_ids, torch.Tensor):
+            env_ids_t = env_ids.to(device=self.device, dtype=torch.long)
+        else:
+            env_ids_t = torch.tensor(list(env_ids), device=self.device, dtype=torch.long)
+        if env_ids_t.numel() == 0:
+            return
+
+        # Humanoid_Batch.fk_batch still computes velocities through NumPy, so
+        # build the live reference on CPU and copy the resulting tensors into
+        # the already-loaded GPU motion buffers below.
+        qpos_t = torch.as_tensor(qpos, dtype=torch.float32, device="cpu")
+        if qpos_t.ndim == 1:
+            qpos_t = qpos_t.unsqueeze(0)
+        if qpos_t.ndim != 2 or qpos_t.shape[1] < 36:
+            raise ValueError(f"Expected qpos shape (T, >=36), got {tuple(qpos_t.shape)}")
+        qpos_t = qpos_t[:, :36]
+
+        pose_aa = self._qpos_to_pose_aa_for_live_segment(qpos_t)
+        trans = qpos_t[:, :3]
+        curr_motion = self.motion_lib.mesh_parsers.fk_batch(
+            pose_aa.unsqueeze(0),
+            trans.unsqueeze(0),
+            return_full=True,
+            fps=int(fps),
+            target_fps=int(self.motion_lib.target_fps),
+            interpolate_data=True,
+            use_parallel_fk=getattr(self.motion_lib, "use_parallel_fk", False),
+        )
+
+        num_frames = int(curr_motion.global_translation.shape[1])
+        motion_id = int(self.motion_ids[int(env_ids_t[0].item())].item())
+        old_start = int(self.motion_lib.length_starts[motion_id].item())
+        old_len = int(self.motion_lib._motion_num_frames[motion_id].item())  # noqa: SLF001
+        replace_len = min(old_len, num_frames)
+        if replace_len < 2:
+            raise ValueError("Live qpos segment must contain at least two frames after FK.")
+
+        src = slice(0, replace_len)
+        dst = slice(old_start, old_start + replace_len)
+        full_body_pos = curr_motion.global_translation[0, src][:, self.mujoco_to_isaaclab_body].to(
+            self.device
+        )
+        full_body_quat = rotations.xyzw_to_wxyz(
+            curr_motion.global_rotation[0, src][:, self.mujoco_to_isaaclab_body].to(self.device)
+        )
+        full_body_lin_vel = curr_motion.global_velocity[0, src][
+            :, self.mujoco_to_isaaclab_body
+        ].to(self.device)
+        full_body_ang_vel = curr_motion.global_angular_velocity[0, src][
+            :, self.mujoco_to_isaaclab_body
+        ].to(self.device)
+        body_indexes = self.motion_lib.m_cfg.body_indexes_data
+        self.motion_lib.body_pos_w[dst] = full_body_pos[:, body_indexes]
+        self.motion_lib.body_quat_w[dst] = full_body_quat[:, body_indexes]
+        self.motion_lib.body_pos_b[dst] = curr_motion.local_rotation[0, src].to(self.device)
+        self.motion_lib.root_linv_vel_w[dst] = curr_motion.global_root_velocity[0, src].to(self.device)
+        self.motion_lib.root_ang_vel_w[dst] = curr_motion.global_root_angular_velocity[0, src].to(self.device)
+        self.motion_lib.body_ang_vel_w[dst] = full_body_ang_vel[:, body_indexes]
+        self.motion_lib.body_lin_vel_w[dst] = full_body_lin_vel[:, body_indexes]
+        self.motion_lib.dof_vel[dst] = curr_motion.dof_vels[0, src][
+            :, self.mujoco_to_isaaclab_dof
+        ].to(self.device)
+        self.motion_lib.dof_pos[dst] = curr_motion.dof_pos[0, src][
+            :, self.mujoco_to_isaaclab_dof
+        ].to(self.device)
+
+        if hasattr(self.motion_lib, "body_pos_w_full"):
+            self.motion_lib.body_pos_w_full[dst] = full_body_pos
+            self.motion_lib.body_quat_w_full[dst] = full_body_quat
+            self.motion_lib.body_lin_vel_w_full[dst] = full_body_lin_vel
+            self.motion_lib.body_ang_vel_w_full[dst] = full_body_ang_vel
+
+        if replace_len < old_len:
+            tail = slice(old_start + replace_len, old_start + old_len)
+            last = old_start + replace_len - 1
+            self.motion_lib.body_pos_w[tail] = self.motion_lib.body_pos_w[last]
+            self.motion_lib.body_quat_w[tail] = self.motion_lib.body_quat_w[last]
+            self.motion_lib.body_pos_b[tail] = self.motion_lib.body_pos_b[last]
+            self.motion_lib.root_linv_vel_w[tail] = 0.0
+            self.motion_lib.root_ang_vel_w[tail] = 0.0
+            self.motion_lib.body_ang_vel_w[tail] = 0.0
+            self.motion_lib.body_lin_vel_w[tail] = 0.0
+            self.motion_lib.dof_vel[tail] = 0.0
+            self.motion_lib.dof_pos[tail] = self.motion_lib.dof_pos[last]
+            if hasattr(self.motion_lib, "body_pos_w_full"):
+                self.motion_lib.body_pos_w_full[tail] = self.motion_lib.body_pos_w_full[last]
+                self.motion_lib.body_quat_w_full[tail] = self.motion_lib.body_quat_w_full[last]
+                self.motion_lib.body_lin_vel_w_full[tail] = 0.0
+                self.motion_lib.body_ang_vel_w_full[tail] = 0.0
+
+        self.motion_lib._motion_num_frames[motion_id] = old_len  # noqa: SLF001
+        self.motion_lib._motion_dt[motion_id] = 1.0 / float(self.motion_lib.target_fps)  # noqa: SLF001
+        self.motion_lib._motion_fps[motion_id] = float(self.motion_lib.target_fps)  # noqa: SLF001
+        self.motion_lib._motion_lengths[motion_id] = (old_len - 1) / float(self.motion_lib.target_fps)  # noqa: SLF001
+
+        self.motion_ids[env_ids_t] = motion_id
+        self.motion_start_time_steps[env_ids_t] = 0
+        if reset_time:
+            self.time_steps[env_ids_t] = 0
+        self.motion_num_steps[env_ids_t] = old_len
+        self.future_motion_ids = self.motion_ids.repeat_interleave(self.num_future_frames)
+        self.smpl_future_motion_ids = self.motion_ids.repeat_interleave(self.smpl_num_future_frames)
+        self.running_ref_root_height[env_ids_t] = self.anchor_pos_w[env_ids_t, 2]
+
+    def _qpos_to_pose_aa_for_live_segment(self, qpos: torch.Tensor) -> torch.Tensor:
+        """Convert MuJoCo G1 qpos into SONIC/MotionLib axis-angle pose."""
+        axes = torch.tensor(
+            [
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 1.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 0.0, 1.0],
+            ],
+            dtype=qpos.dtype,
+            device=qpos.device,
+        )
+        root_quat = qpos[:, 3:7]
+        root_quat = root_quat / (root_quat.norm(dim=-1, keepdim=True) + 1e-8)
+        pose_aa = torch.zeros(qpos.shape[0], 30, 3, dtype=qpos.dtype, device=qpos.device)
+        pose_aa[:, 0, :] = torch_transform.quaternion_to_angle_axis(root_quat)
+        pose_aa[:, 1:, :] = qpos[:, 7:36, None] * axes[None, :, :]
+        return pose_aa
+
     def forward_motion_samples(self, env_ids: Sequence[int]):
         """Assign sequential motion IDs and reset time steps for given envs.
 

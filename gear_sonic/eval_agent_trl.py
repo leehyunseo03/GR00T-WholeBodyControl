@@ -669,11 +669,12 @@ def main(override_config: omegaconf.OmegaConf):
                 )  # noqa: F841
 
                 if eval_step_callbacks:
-                    all_want_exit = all(
+                    callback_exit_votes = [
                         cb.eval_step(env, results) for cb in eval_step_callbacks.values()
-                    )
-                    if all_want_exit:
-                        logger.info("All eval step callbacks signaled exit. Exiting evaluation loop.")
+                    ]
+                    any_wants_exit = any(callback_exit_votes)
+                    if any_wants_exit:
+                        logger.info("An eval step callback signaled exit. Exiting evaluation loop.")
                         break
 
                 if run_once:

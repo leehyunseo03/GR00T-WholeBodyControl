@@ -1,6 +1,6 @@
 {
-  "created_unix": 1782999140.1617935,
-  "elapsed_sec": 0.00495600700378418,
+  "created_unix": 1783322587.0785172,
+  "elapsed_sec": 0.012285709381103516,
   "target": {
     "source_kind": "generated_forward_target",
     "motion_key": "forward_5m_target",
@@ -32,12 +32,13 @@
     "walk_left",
     "walk_right"
   ],
-  "target_vel": 5.0,
-  "target_lookahead_meters": 1.5,
+  "target_vel": 0.2,
+  "target_lookahead_meters": 0.35,
   "fps": 30,
-  "max_steps": 240,
-  "append_target_hold": 30,
+  "max_steps": 750,
+  "append_target_hold": 100,
   "zero_waist": false,
+  "zero_waist_pitch": false,
   "start_from_target_first": false,
   "target_root_xyz": [
     5.0,
@@ -53,7 +54,7 @@
   "final_root_xy_error": 0.0,
   "final_dof_rmse": 0.0,
   "qpos_summary": {
-    "num_frames": 270,
+    "num_frames": 850,
     "root_xyz_first": [
       0.0,
       0.0,
@@ -66,17 +67,17 @@
     ],
     "root_xyz_min": [
       0.0,
-      -0.02884100005030632,
-      0.7282289862632751
+      -0.06054399907588959,
+      0.7714499831199646
     ],
     "root_xyz_max": [
       5.0,
-      0.06543300300836563,
-      0.7840819954872131
+      0.045844998210668564,
+      0.7856670022010803
     ],
-    "dof_mean": 0.07149728387594223,
-    "dof_min": -0.711637556552887,
-    "dof_max": 1.2983204126358032
+    "dof_mean": 0.0634400025010109,
+    "dof_min": -0.7413766384124756,
+    "dof_max": 1.2595635652542114
   },
   "robot_pkl": "motion_sonic/motion/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_target.pkl",
   "qpos_npy": "motion_sonic/motion/qpos/motionbricks_to_target_forward_5m_target.npy",
@@ -84,10 +85,7 @@
   "visualization": {
     "trajectory_markers_json": "motion_sonic/motion/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.json",
     "trajectory_markers_xml": "motion_sonic/motion/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.xml",
-    "marker_count": 24,
+    "marker_count": 75,
     "marker_stride": 10
-  },
-  "zero_waist_postprocessed": false,
-  "zero_waist_pitch": true,
-  "zero_waist_pitch_postprocessed": true
+  }
 }
