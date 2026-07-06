@@ -50,6 +50,10 @@ class MotionBricksRecedingHorizonCallback:
         warm_start_context: int = 4,
         install_on_first_step: bool = True,
         stop_at_target: bool = False,
+        use_motion_lib_final_target: bool = True,
+        final_approach_radius: float = 0.80,
+        final_snap_frames: int = 12,
+        final_hold_frames: int = 24,
         result_dir: str | None = None,
         data_root: str | None = None,
         humanoid_xml: str | None = None,
@@ -71,6 +75,10 @@ class MotionBricksRecedingHorizonCallback:
         self.warm_start_context = max(4, int(warm_start_context))
         self.install_on_first_step = bool(install_on_first_step)
         self.stop_at_target = bool(stop_at_target)
+        self.use_motion_lib_final_target = bool(use_motion_lib_final_target)
+        self.final_approach_radius = max(0.0, float(final_approach_radius))
+        self.final_snap_frames = max(0, int(final_snap_frames))
+        self.final_hold_frames = max(0, int(final_hold_frames))
         self.result_dir = result_dir
         self.data_root = data_root
         self.humanoid_xml = humanoid_xml
@@ -81,6 +89,8 @@ class MotionBricksRecedingHorizonCallback:
         self._step = 0
         self._installed_once = False
         self._target_qpos = mb_traj.make_forward_target(self.forward_meters, self.target_height)
+        self._motion_lib_final_target_qpos: np.ndarray | None = None
+        self._ending_active = False
 
     def on_step_end(self, *_args, **_kwargs) -> None:
         """Compatibility hook called once before the eval loop."""
@@ -89,6 +99,7 @@ class MotionBricksRecedingHorizonCallback:
     def eval_step(self, env, _results) -> bool:
         command = env.motion_command
         env_idx = min(self.env_index, env.num_envs - 1)
+        self._ensure_motion_lib_final_target(command, env_idx)
         current_qpos = self._robot_qpos_mujoco(command, env_idx)
         self._qpos_history.append(current_qpos)
 
@@ -109,7 +120,7 @@ class MotionBricksRecedingHorizonCallback:
         )
         self._installed_once = True
 
-        remaining = float(np.linalg.norm(current_qpos[:2] - self._target_qpos[:2]))
+        remaining = float(np.linalg.norm(current_qpos[:2] - self._active_final_target_qpos()[:2]))
         return bool(self.stop_at_target and remaining <= self.arrival_radius)
 
     def _ensure_motionbricks(self) -> None:
@@ -136,7 +147,7 @@ class MotionBricksRecedingHorizonCallback:
         self._ensure_motionbricks()
         assert self._demo is not None
 
-        target_qpos, mode_name = self._lookahead_target(current_qpos)
+        target_qpos, mode_name, is_final_approach = self._lookahead_target(current_qpos)
         context = self._context_tensor(current_qpos)
         control = self._control_signals(context, current_qpos, target_qpos, mode_name)
         with torch.no_grad():
@@ -151,19 +162,68 @@ class MotionBricksRecedingHorizonCallback:
         if planned.shape[0] < self.segment_frames:
             pad = np.repeat(planned[-1:], self.segment_frames - planned.shape[0], axis=0)
             planned = np.concatenate([planned, pad], axis=0)
+        if is_final_approach:
+            planned = self._append_final_target_transition(planned, target_qpos)
         return planned
 
-    def _lookahead_target(self, current_qpos: np.ndarray) -> tuple[np.ndarray, str]:
-        target = self._target_qpos.copy()
+    def _active_final_target_qpos(self) -> np.ndarray:
+        if self.use_motion_lib_final_target and self._motion_lib_final_target_qpos is not None:
+            return self._motion_lib_final_target_qpos
+        return self._target_qpos
+
+    def _lookahead_target(self, current_qpos: np.ndarray) -> tuple[np.ndarray, str, bool]:
+        final_target = self._active_final_target_qpos()
+        target = final_target.copy()
         delta = target[:2] - current_qpos[:2]
         dist = float(np.linalg.norm(delta))
-        if dist <= self.arrival_radius:
-            target[:2] = self._target_qpos[:2]
-            target[7:] = 0.0
-            return target, self.arrival_mode
+        if dist <= self.final_approach_radius:
+            self._ending_active = True
+            mode_name = self.arrival_mode if dist <= self.arrival_radius else self.mode
+            return target, mode_name, True
         if dist > self.lookahead_meters:
             target[:2] = current_qpos[:2] + delta / max(dist, 1e-6) * self.lookahead_meters
-        return target, self.mode
+        return target, self.mode, False
+
+    def _append_final_target_transition(self, planned: np.ndarray, target_qpos: np.ndarray) -> np.ndarray:
+        pieces = [planned]
+        if self.final_snap_frames > 0:
+            start = planned[-1].copy()
+            transition = []
+            for idx in range(1, self.final_snap_frames + 1):
+                alpha = idx / float(self.final_snap_frames)
+                frame = (1.0 - alpha) * start + alpha * target_qpos
+                frame[3:7] = target_qpos[3:7]
+                transition.append(frame.astype(np.float32))
+            pieces.append(np.asarray(transition, dtype=np.float32))
+        if self.final_hold_frames > 0:
+            pieces.append(
+                np.repeat(target_qpos[None, :], self.final_hold_frames, axis=0).astype(np.float32)
+            )
+        return np.concatenate(pieces, axis=0)
+
+    def _ensure_motion_lib_final_target(self, command, env_idx: int) -> None:
+        if not self.use_motion_lib_final_target or self._motion_lib_final_target_qpos is not None:
+            return
+
+        motion_id = int(command.motion_ids[env_idx].item())
+        num_frames = int(command.motion_lib._motion_num_frames[motion_id].item())  # noqa: SLF001
+        final_step = max(0, num_frames - 1)
+        motion_ids = torch.tensor([motion_id], device=command.device, dtype=torch.long)
+        motion_steps = torch.tensor([final_step], device=command.device, dtype=torch.long)
+
+        root_pos = command.motion_lib.get_root_pos_w(motion_ids, motion_steps)[0]
+        root_quat_wxyz = command.motion_lib.get_root_quat_w(motion_ids, motion_steps)[0]
+        dof_isaaclab = command.motion_lib.get_dof_pos(motion_ids, motion_steps)[0]
+        dof_mujoco = dof_isaaclab[command.isaaclab_to_mujoco_dof][:29]
+
+        qpos = torch.cat([root_pos, root_quat_wxyz, dof_mujoco], dim=0)
+        qpos_np = qpos.detach().cpu().numpy().astype(np.float32)
+        if qpos_np.shape[0] < 36:
+            padded = np.zeros(36, dtype=np.float32)
+            padded[: qpos_np.shape[0]] = qpos_np
+            qpos_np = padded
+        self._motion_lib_final_target_qpos = qpos_np[:36]
+        self._target_qpos = self._motion_lib_final_target_qpos.copy()
 
     def _context_tensor(self, current_qpos: np.ndarray) -> torch.Tensor:
         while len(self._qpos_history) < self.warm_start_context:

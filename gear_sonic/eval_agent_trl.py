@@ -159,6 +159,13 @@ def main(override_config: omegaconf.OmegaConf):
     simulator_type = "IsaacSim"
     env_config = config.manager_env
 
+    if config.get("motionbricks_metrics_scene", False):
+        with omegaconf.open_dict(env_config.config):
+            env_config.config.terrain_type = "plane"
+        with omegaconf.open_dict(env_config.commands.motion):
+            env_config.commands.motion.debug_vis = True
+            env_config.commands.motion.visualize_motion_root_trajectory = True
+
     import datetime as dt
 
     import accelerate

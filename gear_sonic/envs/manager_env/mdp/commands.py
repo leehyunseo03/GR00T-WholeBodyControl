@@ -362,6 +362,7 @@ class TrackingCommand(CommandTerm):
         self.motion_num_steps = self.motion_lib.get_motion_num_steps(self.motion_ids)
 
         self.time_steps = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)
+        self._original_motion_final_body_pos_w = self._capture_original_motion_final_body_pos_w()
 
         # Object position randomization offset (per-env, resampled at reset)
         self._object_position_offset = torch.zeros(self.num_envs, 3, device=self.device)
@@ -783,6 +784,17 @@ class TrackingCommand(CommandTerm):
     def set_is_evaluating(self, is_evaluating: bool = True):
         """Toggle evaluation mode, which disables reset randomizations."""
         self.is_evaluating = is_evaluating
+
+    def _capture_original_motion_final_body_pos_w(self) -> torch.Tensor:
+        """Store selected PKL motions' final body poses before live replanning mutates motion buffers."""
+        final_body_pos = []
+        for motion_id_t in self.motion_ids:
+            motion_id = int(motion_id_t.item())
+            start = int(self.motion_lib.length_starts[motion_id].item())
+            num_frames = int(self.motion_lib._motion_num_frames[motion_id].item())  # noqa: SLF001
+            final_idx = start + max(0, num_frames - 1)
+            final_body_pos.append(self.motion_lib.body_pos_w[final_idx].clone())
+        return torch.stack(final_body_pos, dim=0)
 
     def install_live_qpos_segment(
         self,
@@ -3647,7 +3659,7 @@ class TrackingCommand(CommandTerm):
                         prim_path="/Visuals/Command/motion_final_target",
                         markers={
                             "target": sim_utils.SphereCfg(
-                                radius=self.cfg.motion_final_target_marker_radius,
+                                radius=self.cfg.motion_final_pose_marker_radius,
                                 visual_material=sim_utils.PreviewSurfaceCfg(
                                     diffuse_color=(0.0, 0.25, 1.0),
                                 ),
@@ -3799,7 +3811,10 @@ class TrackingCommand(CommandTerm):
             ).long()
             root_path = root_path[sample_ids]
 
-        final_target = self.motion_lib.body_pos_w[end - 1, 0, :].view(1, 3).clone()
+        if hasattr(self, "_original_motion_final_body_pos_w"):
+            final_target = self._original_motion_final_body_pos_w[0].clone()
+        else:
+            final_target = self.motion_lib.body_pos_w[end - 1].clone()
         final_target = final_target + self._env.scene.env_origins[0].view(1, 3)
         final_target[:, 2] += float(self.cfg.motion_root_trajectory_marker_z_offset)
         self.motion_root_trajectory_visualizer.visualize(translations=root_path)
@@ -4521,6 +4536,7 @@ class TrackingCommandCfg(CommandTermCfg):
     motion_root_trajectory_max_markers: int = 200
     motion_root_trajectory_marker_radius: float = 0.045
     motion_final_target_marker_radius: float = 0.10
+    motion_final_pose_marker_radius: float = 0.045
     motion_root_trajectory_marker_z_offset: float = 0.0
 
     feet_contact_visualizer_cfg: VisualizationMarkersCfg = DEFORMABLE_TARGET_MARKER_CFG.replace(
