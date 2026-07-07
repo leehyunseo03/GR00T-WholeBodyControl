@@ -5,7 +5,7 @@ python3 motion_sonic/generate_to_target_motion_lib.py \
   --reference forward \
   --output_dir motion_sonic/motion/ \
   --motion_name motionbricks_to_target_forward_5m_target \
-  --forward_meters 5.0 \
+  --forward_meters 4.0 \
   --forward_target_name forward_5m_target \
   --mode walk \
   --target_vel 0.20 \

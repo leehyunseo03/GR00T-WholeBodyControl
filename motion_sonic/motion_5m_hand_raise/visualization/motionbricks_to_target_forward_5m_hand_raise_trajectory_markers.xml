@@ -1,0 +1,28 @@
+<mujoco model="motionbricks hand raise trajectory markers">
+  <worldbody>
+    <geom name="mb_path_0000" type="sphere" size="0.035" pos="0.000000 0.000000 0.779602" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0001" type="sphere" size="0.035" pos="1.014456 0.004295 0.800408" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0002" type="sphere" size="0.035" pos="2.415494 -0.013746 0.721075" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0003" type="sphere" size="0.035" pos="3.689123 -0.056645 0.657975" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0004" type="sphere" size="0.035" pos="4.532852 -0.019803 0.594686" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0005" type="sphere" size="0.035" pos="4.848591 0.006699 0.756755" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0006" type="sphere" size="0.035" pos="4.927011 0.000060 0.783340" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0007" type="sphere" size="0.035" pos="4.959521 0.000033 0.781852" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0008" type="sphere" size="0.035" pos="4.993924 0.000005 0.780278" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0009" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0010" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0011" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0012" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0013" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0014" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0015" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0016" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0017" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0018" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0019" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0020" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0021" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_path_0022" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="mb_target" type="sphere" size="0.08" pos="5.000000 0.000000 0.780000" rgba="0.1 0.35 1 1"/>
+  </worldbody>
+</mujoco>

@@ -690,11 +690,20 @@ def _lookahead_target_qpos(qpos, target_qpos, args):
     return clipped_target
 
 
-def _target_control(demo_agent, args, qpos, target_qpos, mode_idx: int):
+def _target_control(
+    demo_agent,
+    args,
+    qpos,
+    target_qpos,
+    mode_idx: int,
+    *,
+    target_vel: float | None = None,
+    force_final_target: bool = False,
+):
     import numpy as np
     import torch as t
 
-    control_target_qpos = _lookahead_target_qpos(qpos, target_qpos, args)
+    control_target_qpos = target_qpos if force_final_target else _lookahead_target_qpos(qpos, target_qpos, args)
     root_xy = qpos[:2]
     target_xy = control_target_qpos[:2]
     delta = target_xy - root_xy
@@ -721,8 +730,9 @@ def _target_control(demo_agent, args, qpos, target_qpos, mode_idx: int):
         "has_specific_target": t.tensor([[True]], dtype=t.bool),
     }
     control["allowed_pred_num_tokens"] = demo_agent.controller.get_default_allowed_pred_num_tokens(mode_idx)
-    if args.target_vel > 0:
-        control["target_vel"] = t.tensor([[args.target_vel]], dtype=t.float32)
+    effective_target_vel = args.target_vel if target_vel is None else target_vel
+    if effective_target_vel > 0:
+        control["target_vel"] = t.tensor([[effective_target_vel]], dtype=t.float32)
     return control
 
 
@@ -749,16 +759,47 @@ def generate_to_target(demo_agent, args, target_qpos, start_qpos=None):
         _set_start_context(demo_agent, start_qpos)
 
     mode_idx, modes = _mode_index(demo_agent, args.mode)
+    arrival_mode_idx = None
+    if args.arrival_radius_meters > 0:
+        arrival_mode_idx, _ = _mode_index(demo_agent, args.arrival_mode)
+
     frames = []
+    arrival_active = False
+    arrival_frames = 0
 
     for step in range(1, args.max_steps + 1):
         qpos = demo_agent.full_agent.get_next_frame()
         frames.append(np.asarray(qpos, dtype=np.float32).copy())
+        root_err = float(np.linalg.norm(qpos[:2] - target_qpos[:2]))
+
+        if (
+            arrival_mode_idx is not None
+            and not arrival_active
+            and root_err <= args.arrival_radius_meters
+        ):
+            arrival_active = True
+            print(
+                f"arrival phase: step={step:05d} root_xy_err={root_err:.4f} m; "
+                f"switching to mode={args.arrival_mode!r}, target_vel={args.arrival_target_vel}.",
+                flush=True,
+            )
 
         context_mujoco_qpos = demo_agent.full_agent.get_context_mujoco_qpos()
         demo_agent.mj_data.qpos[:] = qpos
 
-        control_signals = _target_control(demo_agent, args, qpos, target_qpos, mode_idx)
+        if arrival_active:
+            arrival_frames += 1
+            control_signals = _target_control(
+                demo_agent,
+                args,
+                qpos,
+                target_qpos,
+                arrival_mode_idx,
+                target_vel=args.arrival_target_vel,
+                force_final_target=bool(args.arrival_force_final_target),
+            )
+        else:
+            control_signals = _target_control(demo_agent, args, qpos, target_qpos, mode_idx)
         control_signals["context_mujoco_qpos"] = context_mujoco_qpos
 
         with t.no_grad():
@@ -771,9 +812,16 @@ def generate_to_target(demo_agent, args, target_qpos, start_qpos=None):
         mujoco.mj_forward(demo_agent.mj_model, demo_agent.mj_data)
 
         if step % args.print_every == 0 or step == args.max_steps:
-            root_err = float(np.linalg.norm(qpos[:2] - target_qpos[:2]))
             dof_err = float(np.linalg.norm(qpos[7:] - target_qpos[7:]) / np.sqrt(29))
             print(f"step={step:05d} root_xy_err={root_err:.4f} dof_rmse={dof_err:.4f}", flush=True)
+
+        if arrival_active and arrival_frames >= args.arrival_settle_frames:
+            print(
+                f"arrival phase complete: settle_frames={arrival_frames}, "
+                f"root_xy_err={root_err:.4f} m.",
+                flush=True,
+            )
+            break
 
     qpos_seq = np.stack(frames, axis=0)
     if args.append_target_hold > 0:
@@ -831,6 +879,11 @@ def export_qpos_sequence(args, output_dir: Path, qpos_seq, target_qpos, target_i
         "available_modes": modes,
         "target_vel": float(args.target_vel),
         "target_lookahead_meters": float(args.target_lookahead_meters),
+        "arrival_radius_meters": float(args.arrival_radius_meters),
+        "arrival_mode": args.arrival_mode,
+        "arrival_target_vel": float(args.arrival_target_vel),
+        "arrival_settle_frames": int(args.arrival_settle_frames),
+        "arrival_force_final_target": bool(args.arrival_force_final_target),
         "fps": args.fps,
         "max_steps": args.max_steps,
         "append_target_hold": args.append_target_hold,
@@ -1067,6 +1120,40 @@ if __name__ == "__main__":
         ),
     )
     parser.add_argument("--bypass_spring_model", type=int, default=0)
+    parser.add_argument(
+        "--arrival_radius_meters",
+        type=float,
+        default=0.0,
+        help=(
+            "When >0, switch from the requested locomotion mode to --arrival_mode once root XY is "
+            "within this radius of the final target. Use this to stop at the destination instead "
+            "of continuing to walk."
+        ),
+    )
+    parser.add_argument(
+        "--arrival_mode",
+        type=str,
+        default="idle",
+        help="MotionBricks mode used after entering --arrival_radius_meters.",
+    )
+    parser.add_argument(
+        "--arrival_target_vel",
+        type=float,
+        default=0.0,
+        help="Target velocity command during arrival settle. 0 disables positive walking velocity.",
+    )
+    parser.add_argument(
+        "--arrival_settle_frames",
+        type=int,
+        default=30,
+        help="Number of generated frames to keep after entering arrival mode before stopping generation.",
+    )
+    parser.add_argument(
+        "--arrival_force_final_target",
+        type=int,
+        default=1,
+        help="1 feeds the final target directly during arrival instead of the lookahead waypoint.",
+    )
 
     parser.add_argument("--arm_swing_seconds", type=float, default=6.0)
     parser.add_argument("--arm_swing_frequency", type=float, default=0.5)

@@ -357,6 +357,61 @@ def plot_absolute_xy_by_step(
     plt.close(fig)
 
 
+def plot_absolute_x_zoom_4000_5000_mm(
+    data: dict[str, np.ndarray],
+    qpos: np.ndarray,
+    target_qpos: np.ndarray,
+    out_path: Path,
+    root_idx: int,
+    root_name: str,
+    scale: float,
+    unit: str,
+) -> None:
+    """Plot absolute X coordinate with the y-axis zoomed to 4000-5000 mm."""
+    robot_body = np.asarray(data["robot_body_pos_w"], dtype=float)
+    robot_root = robot_body[:, root_idx, :]
+    offset = motionbricks_world_offset(data, qpos, root_idx)
+    ref_root = np.asarray(qpos[:, :3], dtype=float) + offset[None, :]
+    target = np.asarray(target_qpos[:3], dtype=float) + offset
+
+    t_robot = frame_axis(data, len(robot_root))
+    t_ref = np.arange(len(ref_root), dtype=float)
+    t_max = max(float(t_robot[-1]) if len(t_robot) else 0.0, float(t_ref[-1]) if len(t_ref) else 0.0)
+
+    fig, ax = plt.subplots(figsize=(12, 4.8))
+    ax.plot(
+        t_robot,
+        robot_root[:, 0] * scale,
+        label=f"GEAR-Sonic actual {root_name}",
+        linewidth=1.8,
+    )
+    ax.plot(
+        t_ref,
+        ref_root[:, 0] * scale,
+        label="MotionBricks reference root",
+        linewidth=1.5,
+        alpha=0.8,
+    )
+    ax.hlines(
+        target[0] * scale,
+        xmin=0.0,
+        xmax=t_max,
+        colors="tab:red",
+        linestyles="--",
+        linewidth=1.8,
+        label="target reference frame",
+    )
+    ax.set_title("Absolute X coordinate vs step (4000-5000 mm zoom)")
+    ax.set_xlabel("step")
+    ax.set_ylabel(f"x ({unit})")
+    ax.set_ylim(4000.0, 5000.0)
+    ax.grid(alpha=0.25)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=180)
+    plt.close(fig)
+
+
 def plot_motionbricks_vs_gearsonic_absolute_xy(
     data: dict[str, np.ndarray],
     qpos: np.ndarray,
@@ -736,6 +791,16 @@ def main() -> None:
         qpos,
         target_qpos,
         out_dir / f"absolute_xy_by_step_{unit}.png",
+        root_idx,
+        root_name,
+        scale,
+        unit,
+    )
+    plot_absolute_x_zoom_4000_5000_mm(
+        data,
+        qpos,
+        target_qpos,
+        out_dir / f"absolute_x_zoom_4000_5000_{unit}.png",
         root_idx,
         root_name,
         scale,

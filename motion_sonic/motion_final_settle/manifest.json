@@ -1,14 +1,14 @@
 {
-  "created_unix": 1783393735.334735,
-  "elapsed_sec": 0.01252889633178711,
+  "created_unix": 1783393663.597535,
+  "elapsed_sec": 0.010053873062133789,
   "target": {
     "source_kind": "generated_forward_target",
     "motion_key": "forward_5m_target",
     "frame": -1,
     "forward_meters": 4.0,
     "target_height": 0.78,
-    "npz_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion/target_reference/forward_5m_target.npz",
-    "pkl_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion/target_reference/forward_5m_target.pkl",
+    "npz_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion_final_settle/target_reference/forward_5m_target.npz",
+    "pkl_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion_final_settle/target_reference/forward_5m_target.pkl",
     "target_dof_order": "mujoco"
   },
   "mode": "walk",
@@ -32,16 +32,16 @@
     "walk_left",
     "walk_right"
   ],
-  "target_vel": 0.2,
-  "target_lookahead_meters": 0.35,
+  "target_vel": 0.6,
+  "target_lookahead_meters": 0.6,
   "arrival_radius_meters": 0.0,
   "arrival_mode": "idle",
   "arrival_target_vel": 0.0,
   "arrival_settle_frames": 30,
   "arrival_force_final_target": true,
   "fps": 30,
-  "max_steps": 750,
-  "append_target_hold": 100,
+  "max_steps": 600,
+  "append_target_hold": 1,
   "zero_waist": false,
   "zero_waist_pitch": false,
   "start_from_target_first": false,
@@ -59,7 +59,7 @@
   "final_root_xy_error": 0.0,
   "final_dof_rmse": 0.0,
   "qpos_summary": {
-    "num_frames": 850,
+    "num_frames": 601,
     "root_xyz_first": [
       0.0,
       0.0,
@@ -72,25 +72,25 @@
     ],
     "root_xyz_min": [
       0.0,
-      -0.060423001646995544,
-      0.7712399959564209
+      -0.06129100173711777,
+      0.761650025844574
     ],
     "root_xyz_max": [
       4.0,
-      0.039076998829841614,
-      0.7847779989242554
+      0.032280001789331436,
+      0.7857699990272522
     ],
-    "dof_mean": 0.06400829553604126,
-    "dof_min": -0.7429050803184509,
+    "dof_mean": 0.07527322322130203,
+    "dof_min": -0.749323308467865,
     "dof_max": 1.2595635652542114
   },
-  "robot_pkl": "motion_sonic/motion/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_target.pkl",
-  "qpos_npy": "motion_sonic/motion/qpos/motionbricks_to_target_forward_5m_target.npy",
-  "qpos_npz": "motion_sonic/motion/qpos/motionbricks_to_target_forward_5m_target.npz",
+  "robot_pkl": "motion_sonic/motion_final_settle/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_target.pkl",
+  "qpos_npy": "motion_sonic/motion_final_settle/qpos/motionbricks_to_target_forward_5m_target.npy",
+  "qpos_npz": "motion_sonic/motion_final_settle/qpos/motionbricks_to_target_forward_5m_target.npz",
   "visualization": {
-    "trajectory_markers_json": "motion_sonic/motion/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.json",
-    "trajectory_markers_xml": "motion_sonic/motion/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.xml",
-    "marker_count": 75,
+    "trajectory_markers_json": "motion_sonic/motion_final_settle/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.json",
+    "trajectory_markers_xml": "motion_sonic/motion_final_settle/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.xml",
+    "marker_count": 60,
     "marker_stride": 10
   }
 }

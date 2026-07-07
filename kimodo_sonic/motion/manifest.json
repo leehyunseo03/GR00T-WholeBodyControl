@@ -1,0 +1,38 @@
+{
+  "created_unix": 1783399445.1018405,
+  "source": "GR00T-WholeBodyControl/kimodo_sonic/motion/kimodo_raw/kimodo_to_target_forward_5m_hand_raise.csv",
+  "fps": 30,
+  "motion_name": "kimodo_to_target_forward_5m_hand_raise",
+  "forward_meters": 5.0,
+  "target_height": 0.78,
+  "target_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "target_yaw": 0.0,
+  "target_dof": "both-hand raise pose in MuJoCo 29DOF order",
+  "frames": 310,
+  "append_target_hold": 100,
+  "snap_to_target_frames": 30,
+  "final_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "final_root_xy_error": 0.0,
+  "final_dof_rmse": 0.0,
+  "robot_pkl": "GR00T-WholeBodyControl/kimodo_sonic/motion/robot_filtered/kimodo_target/kimodo_to_target_forward_5m_hand_raise.pkl",
+  "qpos_npy": "GR00T-WholeBodyControl/kimodo_sonic/motion/qpos/kimodo_to_target_forward_5m_hand_raise.npy",
+  "qpos_npz": "GR00T-WholeBodyControl/kimodo_sonic/motion/qpos/kimodo_to_target_forward_5m_hand_raise.npz",
+  "target_npz": "GR00T-WholeBodyControl/kimodo_sonic/motion/target_reference/forward_5m_hand_raise_target.npz",
+  "target_pkl": "GR00T-WholeBodyControl/kimodo_sonic/motion/target_reference/forward_5m_hand_raise_target.pkl",
+  "visualization": {
+    "trajectory_markers_json": "GR00T-WholeBodyControl/kimodo_sonic/motion/visualization/kimodo_to_target_forward_5m_hand_raise_trajectory_markers.json",
+    "trajectory_markers_xml": "GR00T-WholeBodyControl/kimodo_sonic/motion/visualization/kimodo_to_target_forward_5m_hand_raise_trajectory_markers.xml",
+    "marker_stride": 10
+  },
+  "gearsonic_motion_file": "/workspace/GR00T-WholeBodyControl/kimodo_sonic/motion/robot_filtered/kimodo_target/kimodo_to_target_forward_5m_hand_raise.pkl",
+  "smpl_motion_file": "dummy",
+  "viewer_command": "LIVESTREAM=2 /workspace/isaaclab/isaaclab.sh -p kimodo_sonic/kimodo_metrics.py --livestream 2"
+}

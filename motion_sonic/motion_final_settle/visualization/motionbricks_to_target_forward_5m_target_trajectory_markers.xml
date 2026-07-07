@@ -1,0 +1,81 @@
+<mujoco model="motionbricks target trajectory markers">
+  <include file="/workspace/GR00T-WholeBodyControl/motionbricks/assets/skeletons/g1/g1_29dof.xml"/>
+
+  <statistic center="2.818362 -0.009218 0.776765" extent="5.000000"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <global azimuth="-130" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="8 8" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+    <geom name="motionbricks_traj_0000" type="sphere" pos="0.000000 0.000000 0.779602" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0001" type="sphere" pos="0.030303 0.019164 0.775390" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0002" type="sphere" pos="0.095368 0.027202 0.770827" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0003" type="sphere" pos="0.220954 -0.009819 0.762601" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0004" type="sphere" pos="0.335543 -0.027389 0.772778" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0005" type="sphere" pos="0.466156 -0.004587 0.767060" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0006" type="sphere" pos="0.595453 0.006380 0.771470" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0007" type="sphere" pos="0.717831 -0.024539 0.772662" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0008" type="sphere" pos="0.844910 -0.028524 0.764458" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0009" type="sphere" pos="0.972922 -0.002827 0.773947" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0010" type="sphere" pos="1.101993 -0.026144 0.767243" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0011" type="sphere" pos="1.231665 -0.045808 0.767731" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0012" type="sphere" pos="1.358502 -0.013878 0.773907" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0013" type="sphere" pos="1.490818 -0.025410 0.765412" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0014" type="sphere" pos="1.613221 -0.045015 0.769760" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0015" type="sphere" pos="1.731891 -0.003186 0.773348" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0016" type="sphere" pos="1.861725 0.002352 0.768738" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0017" type="sphere" pos="1.984398 -0.038015 0.774467" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0018" type="sphere" pos="2.111357 -0.030213 0.774175" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0019" type="sphere" pos="2.226762 0.019206 0.770676" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0020" type="sphere" pos="2.338027 0.009945 0.771142" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0021" type="sphere" pos="2.449503 -0.035912 0.770464" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0022" type="sphere" pos="2.544655 -0.060831 0.775414" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0023" type="sphere" pos="2.670381 -0.051794 0.773252" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0024" type="sphere" pos="2.794786 0.004697 0.769215" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0025" type="sphere" pos="2.909236 0.011694 0.770455" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0026" type="sphere" pos="3.029940 -0.016466 0.768472" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0027" type="sphere" pos="3.145084 -0.036438 0.771836" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0028" type="sphere" pos="3.275574 -0.002992 0.768665" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0029" type="sphere" pos="3.395962 0.020939 0.777575" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0030" type="sphere" pos="3.534918 -0.012972 0.765923" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0031" type="sphere" pos="3.631900 -0.044550 0.775806" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0032" type="sphere" pos="3.733638 -0.043540 0.777429" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0033" type="sphere" pos="3.827052 -0.008592 0.779691" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0034" type="sphere" pos="3.889494 -0.002781 0.785174" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0035" type="sphere" pos="3.933393 -0.006010 0.784114" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0036" type="sphere" pos="3.958992 -0.005545 0.784415" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0037" type="sphere" pos="3.975255 -0.003127 0.783858" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0038" type="sphere" pos="3.983279 -0.001735 0.783506" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0039" type="sphere" pos="3.988734 -0.000591 0.783833" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0040" type="sphere" pos="3.991896 0.000165 0.783064" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0041" type="sphere" pos="3.993396 0.000760 0.784384" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0042" type="sphere" pos="3.994402 0.001519 0.784201" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0043" type="sphere" pos="3.995027 0.001934 0.783913" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0044" type="sphere" pos="3.995791 0.002122 0.783593" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0045" type="sphere" pos="3.997293 0.002257 0.783281" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0046" type="sphere" pos="3.997369 0.001468 0.782653" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0047" type="sphere" pos="3.997910 0.001010 0.783251" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0048" type="sphere" pos="3.998096 0.000011 0.782107" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0049" type="sphere" pos="3.998003 -0.000631 0.782507" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0050" type="sphere" pos="3.998258 -0.000632 0.782920" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0051" type="sphere" pos="3.998683 -0.001220 0.782245" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0052" type="sphere" pos="3.998604 -0.001008 0.782687" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0053" type="sphere" pos="3.998814 -0.001149 0.782694" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0054" type="sphere" pos="3.997131 -0.001564 0.784809" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0055" type="sphere" pos="3.992030 -0.005599 0.785451" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0056" type="sphere" pos="3.992104 -0.007067 0.783640" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0057" type="sphere" pos="3.993520 -0.007282 0.782923" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0058" type="sphere" pos="3.995301 -0.005903 0.783034" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="motionbricks_traj_0059" type="sphere" pos="3.994897 -0.003862 0.782790" size="0.0450" rgba="1.0 0.86 0.0 0.85" contype="0" conaffinity="0"/>
+    <geom name="final_target_blue" type="sphere" pos="4.000000 0.000000 0.780000" size="0.1000" rgba="0.0 0.25 1.0 0.95" contype="0" conaffinity="0"/>
+  </worldbody>
+</mujoco>

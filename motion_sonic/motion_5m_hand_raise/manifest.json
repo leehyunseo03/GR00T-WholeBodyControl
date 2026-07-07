@@ -1,0 +1,69 @@
+{
+  "created_unix": 1783394527.7266002,
+  "source": "MotionBricks navigation_demo root trajectory plus terminal qpos hand-raise blend",
+  "motion_name": "motionbricks_to_target_forward_5m_hand_raise",
+  "mode": "walk",
+  "requested_mode": "walk",
+  "available_modes": [
+    "idle",
+    "slow_walk",
+    "walk",
+    "hand_crawling",
+    "walk_boxing",
+    "elbow_crawling",
+    "stealth_walk",
+    "injured_walk",
+    "walk_stealth",
+    "walk_happy_dance",
+    "walk_zombie",
+    "walk_gun",
+    "walk_scared",
+    "walk_left",
+    "walk_right"
+  ],
+  "fps": 30,
+  "forward_meters": 5.0,
+  "target_vel": 0.2,
+  "arrival_radius_meters": 0.08,
+  "root_settle_frames": 30,
+  "raise_frames": 45,
+  "hold_frames": 90,
+  "hand": "both",
+  "target_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "final_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "final_root_xy_error_m": 0.0,
+  "final_hand_raise_dof": {
+    "left_shoulder_pitch": -1.5499999523162842,
+    "left_shoulder_roll": 0.3499999940395355,
+    "left_shoulder_yaw": 0.0,
+    "left_elbow": 0.44999998807907104,
+    "left_wrist_roll": 0.0,
+    "left_wrist_pitch": 0.0,
+    "left_wrist_yaw": 0.0,
+    "right_shoulder_pitch": -1.5499999523162842,
+    "right_shoulder_roll": -0.3499999940395355,
+    "right_shoulder_yaw": 0.0,
+    "right_elbow": 0.44999998807907104,
+    "right_wrist_roll": 0.0,
+    "right_wrist_pitch": 0.0,
+    "right_wrist_yaw": 0.0
+  },
+  "qpos_npy": "motion_sonic/motion_5m_hand_raise/qpos/motionbricks_to_target_forward_5m_hand_raise.npy",
+  "qpos_npz": "motion_sonic/motion_5m_hand_raise/qpos/motionbricks_to_target_forward_5m_hand_raise.npz",
+  "target_npz": "motion_sonic/motion_5m_hand_raise/target_reference/forward_5m_hand_raise_target.npz",
+  "robot_pkl": "motion_sonic/motion_5m_hand_raise/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_hand_raise.pkl",
+  "visualization": {
+    "trajectory_markers_json": "motion_sonic/motion_5m_hand_raise/visualization/motionbricks_to_target_forward_5m_hand_raise_trajectory_markers.json",
+    "trajectory_markers_xml": "motion_sonic/motion_5m_hand_raise/visualization/motionbricks_to_target_forward_5m_hand_raise_trajectory_markers.xml",
+    "marker_count": 23,
+    "marker_stride": 10
+  }
+}

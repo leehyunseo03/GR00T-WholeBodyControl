@@ -42,7 +42,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-DEFAULT_RUN_DIR = REPO_ROOT / "motion_sonic" / "motion" 
+#DEFAULT_RUN_DIR = REPO_ROOT / "motion_sonic" / "motion" 
+DEFAULT_RUN_DIR = REPO_ROOT / "motion_sonic" / "motion_final_settle"
+
 DEFAULT_QPOS = DEFAULT_RUN_DIR / "qpos" / "motionbricks_to_target_forward_5m_target.npy"
 DEFAULT_TARGET = DEFAULT_RUN_DIR / "target_reference" / "forward_5m_target.npz"
 DEFAULT_MARKERS = (
@@ -255,7 +257,7 @@ def strip_target_hold(qpos: np.ndarray, target_qpos: np.ndarray, eps: float) -> 
         first_tail -= 1
     if first_tail == 0:
         return qpos
-    return qpos[:first_tail]
+    return qpos[:first_tail+1]
 
 
 def compute_metrics(qpos: np.ndarray, motion_qpos: np.ndarray, target_qpos: np.ndarray, fps: float) -> dict[str, float]:
@@ -672,7 +674,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--fps", type=float, default=30.0)
     parser.add_argument("--sim_fps", type=float, default=200.0)
     parser.add_argument("--playback_speed", type=float, default=1.0)
-    parser.add_argument("--loop", type=int, default=1)
+    parser.add_argument("--loop", type=int, default=0)
     parser.add_argument("--max_render_steps", type=int, default=0, help="0 means run until Ctrl+C/window close.")
     parser.add_argument("--warmup_frames", type=int, default=30)
     parser.add_argument("--strip_target_hold", type=int, default=1)

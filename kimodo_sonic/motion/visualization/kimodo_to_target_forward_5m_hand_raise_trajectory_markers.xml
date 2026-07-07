@@ -1,0 +1,36 @@
+<mujoco model="kimodo trajectory markers">
+  <worldbody>
+    <geom name="kimodo_path_0000" type="sphere" size="0.035" pos="0.000000 0.000000 0.787057" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0001" type="sphere" size="0.035" pos="0.312316 -0.005999 0.763529" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0002" type="sphere" size="0.035" pos="0.601708 -0.018160 0.782449" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0003" type="sphere" size="0.035" pos="0.906252 -0.000362 0.771583" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0004" type="sphere" size="0.035" pos="1.176021 -0.010171 0.772856" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0005" type="sphere" size="0.035" pos="1.479407 -0.026775 0.778999" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0006" type="sphere" size="0.035" pos="1.744512 -0.001104 0.763341" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0007" type="sphere" size="0.035" pos="2.013583 0.020463 0.776751" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0008" type="sphere" size="0.035" pos="2.319688 0.016514 0.768944" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0009" type="sphere" size="0.035" pos="2.547287 0.017091 0.765219" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0010" type="sphere" size="0.035" pos="2.853990 0.020848 0.774308" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0011" type="sphere" size="0.035" pos="3.162536 0.008428 0.752957" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0012" type="sphere" size="0.035" pos="3.466967 -0.002170 0.784371" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0013" type="sphere" size="0.035" pos="3.752691 0.002568 0.765162" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0014" type="sphere" size="0.035" pos="4.043785 0.001932 0.766639" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0015" type="sphere" size="0.035" pos="4.363957 -0.003464 0.755150" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0016" type="sphere" size="0.035" pos="4.621917 -0.000918 0.757761" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0017" type="sphere" size="0.035" pos="4.873813 0.000572 0.772148" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0018" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0019" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0020" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0021" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0022" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0023" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0024" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0025" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0026" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0027" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0028" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0029" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_path_0030" type="sphere" size="0.035" pos="5.000000 0.000000 0.780000" rgba="1 0.72 0.05 0.85"/>
+    <geom name="kimodo_target" type="sphere" size="0.07" pos="5.000000 0.000000 0.780000" rgba="0.1 0.35 1 1"/>
+  </worldbody>
+</mujoco>
