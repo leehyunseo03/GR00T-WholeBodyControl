@@ -3706,7 +3706,9 @@ class TrackingCommand(CommandTerm):
         if not hasattr(self, "goal_pos_visualizer"):
             return
 
-        self.goal_pos_visualizer.visualize(self.body_pos_w.view(-1, 3))
+        body_pos_markers = self.body_pos_w.clone()
+        body_pos_markers[..., 2] += float(self.cfg.body_pos_visualizer_z_offset)
+        self.goal_pos_visualizer.visualize(body_pos_markers.view(-1, 3))
 
         if hasattr(self, "feet_contact_goal_visualizers"):
             for i in range(len(self.cfg.body_names)):
@@ -4528,6 +4530,7 @@ class TrackingCommandCfg(CommandTermCfg):
     body_pos_visualizer_cfg.markers["target"].visual_material = sim_utils.PreviewSurfaceCfg(
         diffuse_color=(1.0, 1.0, 0.0)
     )
+    body_pos_visualizer_z_offset: float = 0.0
 
     # Optional livestream/debug overlay for the active env-0 root trajectory:
     # yellow spheres for reference path samples, blue sphere for its last frame.

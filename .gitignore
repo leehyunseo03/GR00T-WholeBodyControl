@@ -217,6 +217,7 @@ sonic_release/
 *.bvh
 *.usd
 *.pyc 
+*.png
 
 # Training output logs
 logs_rl/

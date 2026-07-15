@@ -197,3 +197,7 @@ class BodyTrackingCallback:
             return True
 
         return False
+
+    def on_eval_end(self, *_args, **_kwargs) -> None:
+        """Flush partial recordings when another eval callback stops the loop."""
+        self._save()

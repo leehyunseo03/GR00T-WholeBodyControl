@@ -29,6 +29,7 @@ LANDING_HOLD_SECONDS="${LANDING_HOLD_SECONDS:-2.0}"   # extra tracking of the fr
 HOLD_SECONDS="${HOLD_SECONDS:-3.0}"        # hold at the destination this long after arriving
 SHOW_TARGET_MARKERS="${SHOW_TARGET_MARKERS:-True}"   # draw destination pose as blue spheres
 SHOW_PLAN_MARKERS="${SHOW_PLAN_MARKERS:-True}"       # draw each Ardy plan's root path (orange ground track)
+MARKER_Z_OFFSET="${MARKER_Z_OFFSET:-0.06}"            # visual-only lift for reference/debug markers (m)
 MAX_PLAN_DISTANCE="${MAX_PLAN_DISTANCE:-6.0}"
 SECONDS_PER_METER="${SECONDS_PER_METER:-2.0}"
 TRACK_FRACTION="${TRACK_FRACTION:-0.9}"
@@ -141,6 +142,7 @@ echo "[run_ardy_sonic] placeholder=${PLACEHOLDER}"
 echo "[run_ardy_sonic] goal_mode=${GOAL_MODE} forward_meters=${FORWARD_METERS}"
 echo "[run_ardy_sonic] stop condition: Ardy goal-reaching plan completes, then hold ${HOLD_SECONDS}s"
 echo "[run_ardy_sonic] diagnostic tolerances: pos<=${ARRIVAL_RADIUS}m yaw<=${YAW_TOL_DEG}deg joint<=${JOINT_TOL_RAD}rad"
+echo "[run_ardy_sonic] marker z offset=${MARKER_Z_OFFSET}m (visual only)"
 echo "[run_ardy_sonic] Make sure the host Ardy planner server is running (--serve)."
 
 # NOTE: '++manager_env.terminations.time_out=null' below is required. That term
@@ -178,6 +180,7 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.hold_seconds=${HOLD_SECONDS}" \
   "++callbacks.ardy_replan.show_target_markers=${SHOW_TARGET_MARKERS}" \
   "++callbacks.ardy_replan.show_plan_markers=${SHOW_PLAN_MARKERS}" \
+  "++callbacks.ardy_replan.marker_z_offset=${MARKER_Z_OFFSET}" \
   "++callbacks.ardy_replan.max_plan_distance=${MAX_PLAN_DISTANCE}" \
   "++callbacks.ardy_replan.seconds_per_meter=${SECONDS_PER_METER}" \
   "++callbacks.ardy_replan.track_fraction=${TRACK_FRACTION}" \
@@ -197,4 +200,6 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++manager_env.commands.motion.motion_lib_cfg.motion_file=${PLACEHOLDER}" \
   "++manager_env.commands.motion.motion_lib_cfg.smpl_motion_file=dummy" \
   "++manager_env.commands.motion.motion_lib_cfg.multi_thread=False" \
+  "++manager_env.commands.motion.body_pos_visualizer_z_offset=${MARKER_Z_OFFSET}" \
+  "++manager_env.commands.motion.motion_root_trajectory_marker_z_offset=${MARKER_Z_OFFSET}" \
   "++manager_env.commands.motion.visualize_motion_root_trajectory=False"

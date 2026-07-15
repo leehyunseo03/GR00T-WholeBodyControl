@@ -88,6 +88,10 @@ then exits. `MAX_STEPS` is only a hard safety cap.
 bash ardy_sonic/run_ardy_sonic.sh
 ```
 
+Reference/debug marker spheres are visually lifted by `MARKER_Z_OFFSET`, default
+`0.06` m, to match the MotionBricks-style marker height without changing the Ardy
+qpos/reference itself.
+
 For a shorter diagnostic capture:
 
 ```

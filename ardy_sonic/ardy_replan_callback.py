@@ -75,6 +75,7 @@ class ArdyReplanCallback:
         target_marker_radius: float = 0.05,  # radius of each destination sphere (m)
         show_plan_markers: bool = True,      # draw each installed Ardy plan's root path as an orange ground track
         plan_marker_radius: float = 0.03,    # radius of each plan-path sphere (m)
+        marker_z_offset: float = 0.06,       # visual-only marker lift; does not change qpos/reference
         max_plan_distance: float = 6.0,      # cap per-plan forward distance (m)
         seconds_per_meter: float = 2.0,      # plan duration = max(min_duration, distance * this)
         min_duration: float = 2.5,
@@ -85,7 +86,7 @@ class ArdyReplanCallback:
         placeholder_frames: int = 1500,      # length of the placeholder clip (caps installable segment)
         env_index: int = 0,
         plan_timeout_s: float = 900.0,
-        prompt: str = "A person walks slowly forward with an upright torso, level hips, small steady steps, and comes to a gentle balanced stop.",
+        prompt: str = "A person walks forward at a steady natural pace and comes to a stop.",
         cfg_weight: Sequence[float] = (2.0, 3.0),
         seed: int = 0,
         runtime_dir: Optional[str] = None,
@@ -108,6 +109,7 @@ class ArdyReplanCallback:
         self.target_marker_radius = float(target_marker_radius)
         self.show_plan_markers = bool(show_plan_markers)
         self.plan_marker_radius = float(plan_marker_radius)
+        self.marker_z_offset = float(marker_z_offset)
         self.max_plan_distance = float(max_plan_distance)
         self.seconds_per_meter = float(seconds_per_meter)
         self.min_duration = float(min_duration)
@@ -379,7 +381,7 @@ class ArdyReplanCallback:
             pts = np.asarray(qpos[::stride, :3], dtype=np.float32).copy()
             if (qpos.shape[0] - 1) % stride != 0:
                 pts = np.vstack([pts, qpos[-1, :3]])
-            pts[:, 2] = 0.05  # draw the root xy path as a track on the ground
+            pts[:, 2] = 0.05 + self.marker_z_offset  # draw the root xy path as a lifted ground track
             t = torch.as_tensor(pts, dtype=torch.float32, device=command.device)
             env_origins = getattr(command._env.scene, "env_origins", None)  # noqa: SLF001
             if env_origins is not None:
@@ -443,6 +445,7 @@ class ArdyReplanCallback:
         env_origins = getattr(command._env.scene, "env_origins", None)  # noqa: SLF001
         if env_origins is not None:
             body_pos = body_pos + env_origins[env_idx].to(body_pos.device)
+        body_pos[:, 2] += self.marker_z_offset
         return body_pos
 
     # -- helpers ---------------------------------------------------------------

@@ -44,6 +44,35 @@ def repo_or_workspace_path(path_text: str | Path) -> Path:
     return base.repo_path(path)
 
 
+def recording_candidates(path_text: str | Path) -> list[Path]:
+    requested = repo_or_workspace_path(path_text)
+    candidates = [requested]
+    text = str(path_text)
+    if text in (str(DEFAULT_RECORDING), "ardy_sonic/metrics/recording"):
+        for value in (
+            WORKSPACE_ROOT / "shared_io" / "ardy_sonic" / "metrics" / "recording",
+            Path("/workspace/shared_io/ardy_sonic/metrics/recording"),
+        ):
+            candidate = repo_or_workspace_path(value)
+            if candidate not in candidates:
+                candidates.append(candidate)
+    return candidates
+
+
+def resolve_recording(path_text: str | Path) -> Path:
+    checked: list[str] = []
+    for path in recording_candidates(path_text):
+        candidate = path / "first_episode_body_tracking.npz" if path.is_dir() else path
+        checked.append(str(candidate))
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(
+        "Recording not found. Checked: "
+        + ", ".join(checked)
+        + ". Re-run ardy_sonic/run_ardy_sonic.sh with the updated BodyTrackingCallback."
+    )
+
+
 def runtime_candidates(runtime_text: str | None) -> list[Path]:
     candidates: list[Path] = []
     for value in (
@@ -165,7 +194,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    recording_path = base.resolve_recording(repo_or_workspace_path(args.recording))
+    recording_path = resolve_recording(args.recording)
     qpos, qpos_meta, qpos_path = load_ardy_qpos(args.ardy_qpos, args.runtime)
     target_qpos = target_qpos_from_args(qpos, qpos_meta, args.target)
     data = base.load_recording(recording_path)

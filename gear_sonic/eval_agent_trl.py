@@ -699,6 +699,12 @@ def main(override_config: omegaconf.OmegaConf):
                 for obs_key in obs_dict.keys():  # noqa: SIM118
                     obs_dict[obs_key] = obs_dict[obs_key].to(device)
 
+        for callback_name, callback in callbacks.items():  # noqa: B007
+            on_eval_end = getattr(callback, "on_eval_end", None)
+            if callable(on_eval_end):
+                logger.info(f"Calling eval-end hook for callback: {callback_name}")
+                on_eval_end(env=env, model=model, accelerator=accelerator)
+
     if simulator_type == "IsaacSim":
         os._exit(0)
 
