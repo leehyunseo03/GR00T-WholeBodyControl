@@ -24,6 +24,15 @@ Request  (JSON, written atomically to ``runtime/requests/<id>.json``):
     prompt            : str
     cfg_weight        : [text, constraint]
     target_height     : float
+    goal_xy           : [x, y] | null world goal root xy; required when anchor == "goal"
+    anchor            : "start" | "goal"
+                        "start": plan frame 0 sits at start_xy (continuous with the
+                                 robot; endpoint inherits Ardy's small canonical
+                                 start offset).
+                        "goal" : plan LAST frame sits exactly at goal_xy (used for
+                                 settle plans so the reference terminal root xy --
+                                 and with reach_target_pose the terminal heading +
+                                 29-DOF pose -- is exact).
 
 Response (NPZ, written atomically to ``runtime/responses/<id>.npz``):
     qpos          : (T, 36) float32  world-frame MuJoCo qpos
@@ -103,6 +112,8 @@ class PlanRequest:
     prompt: str = "A person walks forward at a steady natural pace and comes to a stop."
     cfg_weight: Sequence[float] = field(default_factory=lambda: [2.0, 3.0])
     target_height: float = 0.72
+    goal_xy: Optional[Sequence[float]] = None
+    anchor: str = "start"
 
     def to_json(self) -> str:
         return json.dumps(asdict(self), indent=2)
@@ -182,6 +193,7 @@ def transform_qpos_traj_se2(
     origin_xy: Sequence[float],
     heading: float,
     anchor_start: bool = True,
+    anchor_end_xy: Optional[Sequence[float]] = None,
 ) -> np.ndarray:
     """Rotate a canonical Ardy qpos trajectory by ``heading`` about +z and place it.
 
@@ -190,18 +202,31 @@ def transform_qpos_traj_se2(
     and translates it so (with ``anchor_start``) the plan's first frame sits exactly
     at ``origin_xy`` -- i.e. the robot's current planar position. Root z and the 29
     joint angles are untouched; the root wxyz quaternion is pre-rotated about +z.
+
+    ``anchor_end_xy`` (overrides ``anchor_start``): translate so the plan's LAST
+    frame sits exactly at that world xy instead. After the terminal landing pins the
+    canonical last frame to the exact target pose, this makes the world-frame
+    reference end exactly at the goal root xy -- Ardy's small canonical start offset
+    lands on the (re-plannable) start side instead of the goal side.
     """
     qpos = np.asarray(qpos, dtype=np.float32)
     if qpos.ndim != 2 or qpos.shape[1] < QPOS_DIM:
         raise ValueError(f"expected (T,>={QPOS_DIM}) qpos, got {qpos.shape}")
     out = qpos.copy()
     c, s = math.cos(heading), math.sin(heading)
-    x0 = float(qpos[0, 0]) if anchor_start else 0.0
-    y0 = float(qpos[0, 1]) if anchor_start else 0.0
+    if anchor_end_xy is not None:
+        x0, y0 = float(qpos[-1, 0]), float(qpos[-1, 1])
+        ox, oy = float(anchor_end_xy[0]), float(anchor_end_xy[1])
+    elif anchor_start:
+        x0, y0 = float(qpos[0, 0]), float(qpos[0, 1])
+        ox, oy = float(origin_xy[0]), float(origin_xy[1])
+    else:
+        x0, y0 = 0.0, 0.0
+        ox, oy = float(origin_xy[0]), float(origin_xy[1])
     x = qpos[:, 0] - x0
     y = qpos[:, 1] - y0
-    out[:, 0] = c * x - s * y + float(origin_xy[0])
-    out[:, 1] = s * x + c * y + float(origin_xy[1])
+    out[:, 0] = c * x - s * y + ox
+    out[:, 1] = s * x + c * y + oy
     # z (col 2) unchanged.
 
     # Pre-multiply root quat (wxyz) by yaw rotation q_yaw = (cos(h/2),0,0,sin(h/2)).

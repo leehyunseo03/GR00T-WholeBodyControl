@@ -18,16 +18,26 @@ PLACEHOLDER="${PLACEHOLDER:-${REPO_ROOT}/ardy_sonic/runtime/placeholder_motion.p
 # Goal / replanning behaviour (env-overridable).
 GOAL_MODE="${GOAL_MODE:-forward}"          # forward | absolute
 FORWARD_METERS="${FORWARD_METERS:-5.0}"
-ARRIVAL_RADIUS="${ARRIVAL_RADIUS:-0.30}"
+# Diagnostics printed when the Ardy goal-reaching plan finishes.
+ARRIVAL_RADIUS="${ARRIVAL_RADIUS:-0.10}"   # root xy diagnostic tolerance (m)
+YAW_TOL_DEG="${YAW_TOL_DEG:-8.0}"          # root heading diagnostic tolerance (deg)
+JOINT_TOL_RAD="${JOINT_TOL_RAD:-0.35}"     # max per-joint diagnostic tolerance vs target 29-DOF (rad)
+# Landing: within FINAL_LEG_DISTANCE the active plan is NOT cut -- it is tracked
+# through its exact-landing frames (one continuous walk, no correction stage).
+FINAL_LEG_DISTANCE="${FINAL_LEG_DISTANCE:-1.0}"       # stop cutting within this distance of the goal (m)
+LANDING_HOLD_SECONDS="${LANDING_HOLD_SECONDS:-2.0}"   # extra tracking of the frozen exact-pose tail (s)
 HOLD_SECONDS="${HOLD_SECONDS:-3.0}"        # hold at the destination this long after arriving
 SHOW_TARGET_MARKERS="${SHOW_TARGET_MARKERS:-True}"   # draw destination pose as blue spheres
+SHOW_PLAN_MARKERS="${SHOW_PLAN_MARKERS:-True}"       # draw each Ardy plan's root path (orange ground track)
 MAX_PLAN_DISTANCE="${MAX_PLAN_DISTANCE:-6.0}"
 SECONDS_PER_METER="${SECONDS_PER_METER:-2.0}"
 TRACK_FRACTION="${TRACK_FRACTION:-0.9}"
-MAX_REPLANS="${MAX_REPLANS:-12}"
-MAX_STEPS="${MAX_STEPS:-6000}"
+MAX_REPLANS="${MAX_REPLANS:-40}"
+MAX_STEPS="${MAX_STEPS:-12000}"
 PLACEHOLDER_FRAMES="${PLACEHOLDER_FRAMES:-1500}"
 EPISODE_LENGTH_S="${EPISODE_LENGTH_S:-300}"
+BODY_TRACKING_SAVE_PATH="${BODY_TRACKING_SAVE_PATH:-${REPO_ROOT}/ardy_sonic/metrics/recording}"
+BODY_TRACKING_MAX_STEPS="${BODY_TRACKING_MAX_STEPS:-${MAX_STEPS}}"
 
 NUM_ENVS="${NUM_ENVS:-1}"
 HEADLESS="${HEADLESS:-False}"
@@ -49,6 +59,8 @@ chmod 777 "${SHARED_IO}" 2>/dev/null || true
 RUN_STAMP="$(date +%Y%m%d_%H%M%S)"
 RUN_DIR="${SHARED_IO}/eval/${RUN_STAMP}"
 mkdir -p "${RUN_DIR}" 2>/dev/null || true
+mkdir -p "${BODY_TRACKING_SAVE_PATH}" 2>/dev/null || true
+chmod 777 "${BODY_TRACKING_SAVE_PATH}" 2>/dev/null || true
 
 # The Ardy<->SONIC request/response dir must live in the shared writable folder too
 # (the default ardy_sonic/runtime is host-owned and not writable by the container).
@@ -124,9 +136,18 @@ STAGED_CHECKPOINT="${CKPT_STAGE}/$(basename "${CHECKPOINT}")"
 
 echo "[run_ardy_sonic] checkpoint=${STAGED_CHECKPOINT}  (staged from ${CHECKPOINT})"
 echo "[run_ardy_sonic] shared IO=${SHARED_IO}  run dir=${RUN_DIR}"
+echo "[run_ardy_sonic] body tracking=${BODY_TRACKING_SAVE_PATH}"
 echo "[run_ardy_sonic] placeholder=${PLACEHOLDER}"
-echo "[run_ardy_sonic] goal_mode=${GOAL_MODE} forward_meters=${FORWARD_METERS} arrival_radius=${ARRIVAL_RADIUS}"
+echo "[run_ardy_sonic] goal_mode=${GOAL_MODE} forward_meters=${FORWARD_METERS}"
+echo "[run_ardy_sonic] stop condition: Ardy goal-reaching plan completes, then hold ${HOLD_SECONDS}s"
+echo "[run_ardy_sonic] diagnostic tolerances: pos<=${ARRIVAL_RADIUS}m yaw<=${YAW_TOL_DEG}deg joint<=${JOINT_TOL_RAD}rad"
 echo "[run_ardy_sonic] Make sure the host Ardy planner server is running (--serve)."
+
+# NOTE: '++manager_env.terminations.time_out=null' below is required. That term
+# (config/manager_env/terminations/terms/motion_time_out.yaml, key 'time_out') fires
+# when the motion clock reaches the placeholder clip end; ANY termination makes
+# IsaacLab auto-reset the env, and TrackingCommand._resample_command then teleports
+# the robot back to the reference start frame. The callback owns the episode end.
 
 # NOTE: eval_agent_trl.py is a @hydra.main script -> Hydra parses argv first and
 # rejects non-override flags like `--livestream`. The WebRTC viewer is enabled purely
@@ -145,13 +166,18 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "+manager_env/terminations=tracking/eval" \
   "++num_envs=${NUM_ENVS}" \
   "++manager_env.config.episode_length_s=${EPISODE_LENGTH_S}" \
-  "++eval_callbacks=[ardy_replan]" \
+  "++eval_callbacks=[ardy_replan,body_tracking]" \
   "++callbacks.ardy_replan._target_=ardy_sonic.ardy_replan_callback.ArdyReplanCallback" \
   "++callbacks.ardy_replan.goal_mode=${GOAL_MODE}" \
   "++callbacks.ardy_replan.forward_meters=${FORWARD_METERS}" \
   "++callbacks.ardy_replan.arrival_radius=${ARRIVAL_RADIUS}" \
+  "++callbacks.ardy_replan.yaw_tol_deg=${YAW_TOL_DEG}" \
+  "++callbacks.ardy_replan.joint_tol_rad=${JOINT_TOL_RAD}" \
+  "++callbacks.ardy_replan.final_leg_distance=${FINAL_LEG_DISTANCE}" \
+  "++callbacks.ardy_replan.landing_hold_seconds=${LANDING_HOLD_SECONDS}" \
   "++callbacks.ardy_replan.hold_seconds=${HOLD_SECONDS}" \
   "++callbacks.ardy_replan.show_target_markers=${SHOW_TARGET_MARKERS}" \
+  "++callbacks.ardy_replan.show_plan_markers=${SHOW_PLAN_MARKERS}" \
   "++callbacks.ardy_replan.max_plan_distance=${MAX_PLAN_DISTANCE}" \
   "++callbacks.ardy_replan.seconds_per_meter=${SECONDS_PER_METER}" \
   "++callbacks.ardy_replan.track_fraction=${TRACK_FRACTION}" \
@@ -159,11 +185,15 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.max_steps=${MAX_STEPS}" \
   "++callbacks.ardy_replan.placeholder_frames=${PLACEHOLDER_FRAMES}" \
   "++callbacks.ardy_replan.runtime_dir=${ARDY_SONIC_RUNTIME}" \
+  "++callbacks.body_tracking._target_=metrics.body_tracking_callback.BodyTrackingCallback" \
+  "++callbacks.body_tracking.save_path=${BODY_TRACKING_SAVE_PATH}" \
+  "++callbacks.body_tracking.max_steps=${BODY_TRACKING_MAX_STEPS}" \
   "++manager_env.terminations.anchor_pos.params.threshold=1000" \
   "++manager_env.terminations.anchor_pos.params.down_threshold=1000" \
   "++manager_env.terminations.ee_body_pos.params.threshold=1000" \
   "++manager_env.terminations.ee_body_pos.params.down_threshold=1000" \
   "++manager_env.terminations.anchor_ori_full.params.threshold=1000" \
+  "++manager_env.terminations.time_out=null" \
   "++manager_env.commands.motion.motion_lib_cfg.motion_file=${PLACEHOLDER}" \
   "++manager_env.commands.motion.motion_lib_cfg.smpl_motion_file=dummy" \
   "++manager_env.commands.motion.motion_lib_cfg.multi_thread=False" \

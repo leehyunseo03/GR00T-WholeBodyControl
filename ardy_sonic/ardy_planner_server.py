@@ -74,6 +74,38 @@ def _default_history_frames(fps: float, gen_horizon_len: int, num_frames_per_tok
     return ((max_window_len - gen_horizon_len) // num_frames_per_token) * num_frames_per_token
 
 
+def _pin_canonical_start(canonical: np.ndarray) -> np.ndarray:
+    """Fade the generated first-frame root-xy offset out along the trajectory.
+
+    Ardy is conditioned to start at the canonical origin but the diffusion output is
+    only near it (cm-level). Start-anchoring alone would carry that offset to the
+    ENDPOINT (world end = start + R @ (target - frame0)). Removing ``(1-s)*frame0``
+    (s: smoothstep 0 -> 1) pins frame 0 exactly to (0,0) while leaving the last frame
+    -- already pinned to the exact target by the terminal landing -- untouched, so a
+    start-anchored plan both attaches exactly to the robot AND ends exactly on goal.
+    """
+    canonical = np.asarray(canonical, dtype=np.float32)
+    f0 = canonical[0, :2].copy()
+    if float(np.linalg.norm(f0)) < 1e-9 or canonical.shape[0] < 2:
+        return canonical
+    t = np.linspace(0.0, 1.0, canonical.shape[0], dtype=np.float32)
+    fade = (1.0 - t * t * (3.0 - 2.0 * t))[:, None]  # 1 -> 0 (smoothstep)
+    canonical[:, :2] = canonical[:, :2] - fade * f0
+    return canonical
+
+
+def _place_in_world(canonical: np.ndarray, req: P.PlanRequest) -> np.ndarray:
+    """SE(2)-place a canonical plan: anchor the start at the robot, or (``anchor ==
+    "goal"``, unused by the current callback) anchor the LAST frame at the world goal."""
+    canonical = _pin_canonical_start(canonical)
+    if getattr(req, "anchor", "start") == "goal":
+        if req.goal_xy is None:
+            raise ValueError(f"request '{req.id}' has anchor='goal' but no goal_xy")
+        return P.transform_qpos_traj_se2(canonical, req.start_xy, req.heading,
+                                         anchor_end_xy=req.goal_xy)
+    return P.transform_qpos_traj_se2(canonical, req.start_xy, req.heading, anchor_start=True)
+
+
 # --------------------------------------------------------------------------- #
 # In-process Ardy planner                                                      #
 # --------------------------------------------------------------------------- #
@@ -240,7 +272,7 @@ class ArdyWalkPlanner:
         canonical = np.loadtxt(csv_path, delimiter=",").astype(np.float32)
         if canonical.ndim == 1:
             canonical = canonical[None, :]
-        world = P.transform_qpos_traj_se2(canonical, req.start_xy, req.heading, anchor_start=True)
+        world = _place_in_world(canonical, req)
         return world, self.fps
 
 
@@ -271,7 +303,7 @@ def plan_via_subprocess(req: P.PlanRequest, ardy_repo: Path, work_dir: Path,
     canonical = np.loadtxt(str(stem) + ".csv", delimiter=",").astype(np.float32)
     if canonical.ndim == 1:
         canonical = canonical[None, :]
-    world = P.transform_qpos_traj_se2(canonical, req.start_xy, req.heading, anchor_start=True)
+    world = _place_in_world(canonical, req)
     return world, fps
 
 

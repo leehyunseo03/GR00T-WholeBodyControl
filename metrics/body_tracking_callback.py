@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import atexit
 import json
 import os
 from typing import Any
@@ -46,6 +47,7 @@ class BodyTrackingCallback:
         }
         self._command_metrics: dict[str, list] = {}
         self._joint_names: list[str] | None = None
+        atexit.register(self._save)
 
     def on_step_end(self, *_args, **_kwargs) -> None:
         """Compatibility hook called once before the eval loop."""

@@ -76,3 +76,40 @@ python3 motion_sonic/motionsonic_metrics.py \
   --unit mm \
   --plot-reference-dof
 ```
+
+# 4. Ardy + GearSonic Replanning Metrics
+Recordings are saved by `ardy_sonic/run_ardy_sonic.sh` into
+`ardy_sonic/metrics/recording`. The launcher records until a goal-reaching Ardy
+plan has been tracked through its exact landing, prints the robot diagnostic
+errors, holds the destination reference for `HOLD_SECONDS` seconds (default `3`),
+then exits. `MAX_STEPS` is only a hard safety cap.
+
+```
+bash ardy_sonic/run_ardy_sonic.sh
+```
+
+For a shorter diagnostic capture:
+
+```
+BODY_TRACKING_MAX_STEPS=1000 bash ardy_sonic/run_ardy_sonic.sh
+```
+
+```
+python3 ardy_sonic/ardysonic_metrics.py \
+  --recording ardy_sonic/metrics/recording \
+  --out-dir ardy_sonic/metrics/plot \
+  --unit mm \
+  --plot-reference-dof
+```
+
+By default the metrics script uses the newest Ardy response qpos from the active
+runtime directory. To pin a specific plan:
+
+```
+python3 ardy_sonic/ardysonic_metrics.py \
+  --recording ardy_sonic/metrics/recording \
+  --ardy-qpos ardy_sonic/runtime/responses/plan_0004.npz \
+  --out-dir ardy_sonic/metrics/plot \
+  --unit mm \
+  --plot-reference-dof
+```

@@ -97,22 +97,57 @@ cd /workspace/GR00T-WholeBodyControl
 bash ardy_sonic/run_ardy_sonic.sh
 # open the WebRTC viewer at  http://<server-ip>:8211/streaming/client/
 ```
-The robot repeatedly: gets an Ardy plan for the residual path → SONIC tracks ~90 % of
-it → re-plans from the real pose → stops when within `arrival_radius` of the goal.
+The robot walks to the goal in **one continuous motion** — there is no separate
+settle/correction stage — and still lands on the FULL goal pose (root x,y + heading
++ 29-DOF joints):
+
+1. **Every plan attaches to the robot and ends exactly on the goal pose.** Each plan
+   is start-anchored at the G1's *actual current* pose (each replan visibly
+   re-attaches), and the planner pins the canonical start to (0,0) while the
+   terminal landing pins the last frames to the target — so a plan that reaches the
+   goal terminates *exactly* at goal x,y + heading + 29-DOF.
+2. **Drift is corrected during the walk.** While far from the goal, each plan is
+   tracked for `TRACK_FRACTION` of its length, then re-planned from the real pose.
+3. **The final plan is not cut.** At a replan boundary within `FINAL_LEG_DISTANCE`
+   of the goal, the active plan is tracked to COMPLETION through its exact-landing
+   frames plus `LANDING_HOLD_SECONDS` (the installed reference tail freezes on the
+   exact pose). Arrival is declared only when **all** of `pos_err ≤ ARRIVAL_RADIUS`,
+   `yaw_err ≤ YAW_TOL_DEG`, `max|Δjoint| ≤ JOINT_TOL_RAD` hold after such a landing;
+   then the pose is held `HOLD_SECONDS` and the eval stops. If a landing misses the
+   gate it re-plans from the real pose (same mechanism); after `STALL_PATIENCE`
+   landings without improvement it stops and prints the *achieved* errors instead of
+   faking arrival.
+
+Visual aids: the destination 29-DOF pose is drawn as **blue spheres**
+(`/Visuals/ArdyDestinationPose`) and every installed Ardy plan's root path as an
+**orange ground track** (`/Visuals/ArdyPlanPath`) that re-draws from the robot on
+each replan.
 
 ### Tuning (env vars for `run_ardy_sonic.sh`)
 | var | default | meaning |
 |---|---|---|
 | `FORWARD_METERS` | `5.0` | goal distance ahead of the start pose |
 | `GOAL_MODE` | `forward` | `forward` (ahead of start heading) or `absolute` |
-| `ARRIVAL_RADIUS` | `0.30` | start the arrival hold when the pelvis is this close to the goal (m) |
+| `ARRIVAL_RADIUS` | `0.10` | arrival gate: root xy error tolerance (m) |
+| `YAW_TOL_DEG` | `8.0` | arrival gate: root heading error tolerance (deg) |
+| `JOINT_TOL_RAD` | `0.35` | arrival gate: max per-joint error vs the target 29-DOF pose (rad) |
+| `FINAL_LEG_DISTANCE` | `1.0` | within this of the goal, stop cutting: track the plan to its exact landing (m) |
+| `LANDING_HOLD_SECONDS` | `2.0` | extra tracking of the frozen exact-pose tail after a landing (s) |
+| `STALL_PATIENCE` | `3` | landings without improvement before an honest stop |
+| `MIN_IMPROVE` | `0.05` | required improvement of the normalized worst error per landing |
 | `HOLD_SECONDS` | `3.0` | after arriving, hold at the destination this long before stopping |
 | `SHOW_TARGET_MARKERS` | `True` | draw the destination 29-DOF pose as blue spheres (one per body) |
+| `SHOW_PLAN_MARKERS` | `True` | draw each Ardy plan's root path as an orange ground track |
 | `MAX_PLAN_DISTANCE` | `6.0` | cap per-plan walk distance (chunk longer goals) |
 | `SECONDS_PER_METER` | `2.0` | plan duration = max(min, distance × this) → ~0.5 m/s |
-| `TRACK_FRACTION` | `0.9` | replan after tracking this fraction of a segment |
-| `MAX_REPLANS` / `MAX_STEPS` | `12` / `6000` | safety caps |
+| `TRACK_FRACTION` | `0.9` | replan after tracking this fraction of a non-final plan |
+| `MAX_REPLANS` / `MAX_STEPS` | `40` / `12000` | safety caps |
 | `CHECKPOINT` | `sonic_release/last.pt` | SONIC policy checkpoint |
+
+Want a tighter/looser landing? The gate is just the three tolerances, e.g.
+`ARRIVAL_RADIUS=0.05 YAW_TOL_DEG=5 JOINT_TOL_RAD=0.25 bash ardy_sonic/run_ardy_sonic.sh`.
+The kinematic reference itself ends *exactly* on the goal pose; the residual error is
+pure SONIC tracking error, so tighter gates mostly cost extra landings.
 
 Absolute goal example:
 ```bash
@@ -134,10 +169,17 @@ standing pose.
 - **Segment length cap.** `install_live_qpos_segment` truncates an injected segment to
   the placeholder clip's frame count. The default placeholder is 1500 frames (30 s @
   50 fps); keep `PLACEHOLDER_FRAMES` ≥ the longest plan you inject.
-- **Early terminations disabled.** `run_ardy_sonic.sh` raises the tracking-error
-  termination thresholds and `episode_length_s` so the episode never auto-resets
-  mid-navigation; arrival is decided solely by the callback. A fall will therefore not
-  auto-reset — tune thresholds back down if you want that.
+- **Early terminations disabled (incl. the teleport fix).** `run_ardy_sonic.sh` raises
+  the tracking-error termination thresholds, sets a long `episode_length_s`, **and
+  nulls the `time_out` term** (`++manager_env.terminations.time_out=null`). Any firing
+  termination makes IsaacLab auto-reset the env, and
+  `TrackingCommand._resample_command` then writes the robot back to the reference
+  start frame — which looks like the robot *teleporting* to a previous position.
+  The `time_out` term (from `terminations/terms/motion_time_out.yaml`; note the key is
+  `time_out`, not `motion_time_out`) fires when the motion clock reaches the
+  placeholder clip end, so it must stay nulled. Arrival is decided solely by the
+  callback. A fall will therefore not auto-reset — tune thresholds back down if you
+  want that.
 - **Shared output folder (uid mismatch).** The container process runs as uid 1000
   while the mounted host files are owned by uid 1001, so eval cannot write under
   host-owned paths (`logs_eval/`, the checkpoint dir, ...). `run_ardy_sonic.sh`
