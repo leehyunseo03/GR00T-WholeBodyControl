@@ -19,6 +19,8 @@ PLACEHOLDER="${PLACEHOLDER:-${REPO_ROOT}/ardy_sonic/runtime/placeholder_motion.p
 GOAL_MODE="${GOAL_MODE:-forward}"          # forward | absolute
 FORWARD_METERS="${FORWARD_METERS:-5.0}"
 ARRIVAL_RADIUS="${ARRIVAL_RADIUS:-0.30}"
+HOLD_SECONDS="${HOLD_SECONDS:-3.0}"        # hold at the destination this long after arriving
+SHOW_TARGET_MARKERS="${SHOW_TARGET_MARKERS:-True}"   # draw destination pose as blue spheres
 MAX_PLAN_DISTANCE="${MAX_PLAN_DISTANCE:-6.0}"
 SECONDS_PER_METER="${SECONDS_PER_METER:-2.0}"
 TRACK_FRACTION="${TRACK_FRACTION:-0.9}"
@@ -148,6 +150,8 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.goal_mode=${GOAL_MODE}" \
   "++callbacks.ardy_replan.forward_meters=${FORWARD_METERS}" \
   "++callbacks.ardy_replan.arrival_radius=${ARRIVAL_RADIUS}" \
+  "++callbacks.ardy_replan.hold_seconds=${HOLD_SECONDS}" \
+  "++callbacks.ardy_replan.show_target_markers=${SHOW_TARGET_MARKERS}" \
   "++callbacks.ardy_replan.max_plan_distance=${MAX_PLAN_DISTANCE}" \
   "++callbacks.ardy_replan.seconds_per_meter=${SECONDS_PER_METER}" \
   "++callbacks.ardy_replan.track_fraction=${TRACK_FRACTION}" \

@@ -105,7 +105,9 @@ it → re-plans from the real pose → stops when within `arrival_radius` of the
 |---|---|---|
 | `FORWARD_METERS` | `5.0` | goal distance ahead of the start pose |
 | `GOAL_MODE` | `forward` | `forward` (ahead of start heading) or `absolute` |
-| `ARRIVAL_RADIUS` | `0.30` | stop when the pelvis is this close to the goal (m) |
+| `ARRIVAL_RADIUS` | `0.30` | start the arrival hold when the pelvis is this close to the goal (m) |
+| `HOLD_SECONDS` | `3.0` | after arriving, hold at the destination this long before stopping |
+| `SHOW_TARGET_MARKERS` | `True` | draw the destination 29-DOF pose as blue spheres (one per body) |
 | `MAX_PLAN_DISTANCE` | `6.0` | cap per-plan walk distance (chunk longer goals) |
 | `SECONDS_PER_METER` | `2.0` | plan duration = max(min, distance × this) → ~0.5 m/s |
 | `TRACK_FRACTION` | `0.9` | replan after tracking this fraction of a segment |

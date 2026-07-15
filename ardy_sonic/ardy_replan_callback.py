@@ -39,6 +39,9 @@ class ArdyReplanCallback:
         target_joint_qpos: Optional[Sequence[float]] = None,  # terminal 29-DOF pose (None -> zeros)
         target_height: float = 0.72,
         arrival_radius: float = 0.30,        # stop when within this planar distance of the goal (m)
+        hold_seconds: float = 3.0,           # after arriving, hold at the destination this long before stopping
+        show_target_markers: bool = True,    # draw the destination 29-DOF pose as blue spheres
+        target_marker_radius: float = 0.05,  # radius of each destination sphere (m)
         max_plan_distance: float = 6.0,      # cap per-plan forward distance (m)
         seconds_per_meter: float = 2.0,      # plan duration = max(min_duration, distance * this)
         min_duration: float = 2.5,
@@ -61,6 +64,9 @@ class ArdyReplanCallback:
         self.target_joint_qpos = None if target_joint_qpos is None else [float(v) for v in target_joint_qpos]
         self.target_height = float(target_height)
         self.arrival_radius = float(arrival_radius)
+        self.hold_seconds = max(0.0, float(hold_seconds))
+        self.show_target_markers = bool(show_target_markers)
+        self.target_marker_radius = float(target_marker_radius)
         self.max_plan_distance = float(max_plan_distance)
         self.seconds_per_meter = float(seconds_per_meter)
         self.min_duration = float(min_duration)
@@ -89,10 +95,18 @@ class ArdyReplanCallback:
         self._seg_end_step = 0
         self._goal_xy = np.zeros(2, dtype=np.float32)
         self._start_xy = np.zeros(2, dtype=np.float32)
+        self._goal_heading = 0.0
+        # arrival hold
+        self._arrived = False
+        self._hold_until_step = 0
+        # destination markers
+        self._markers = None
+        self._markers_failed = False
+        self._target_body_pos_w = None
 
     # -- lifecycle hooks -------------------------------------------------------
     def on_step_end(self, *args, **kwargs) -> None:
-        """Called once before the eval loop. Clear any stale responses."""
+        """Called once before the eval loop. Clear stale responses + create markers."""
         for f in self._paths.responses.glob("plan_*.npz"):
             try:
                 f.unlink()
@@ -100,6 +114,34 @@ class ArdyReplanCallback:
                 pass
         self._log(f"[ardy_replan] runtime={self._paths.root} goal_mode={self.goal_mode} "
                   f"forward_meters={self.forward_meters} arrival_radius={self.arrival_radius}")
+        # Create the destination-pose marker prim BEFORE the eval loop so it attaches to
+        # the renderer (creating markers mid-loop can leave them invisible). Positions
+        # are filled in on the first eval_step once the goal is known.
+        if self.show_target_markers and self._markers is None:
+            try:
+                from isaaclab.markers import VisualizationMarkers, VisualizationMarkersCfg
+                import isaaclab.sim as sim_utils
+
+                cfg = VisualizationMarkersCfg(
+                    prim_path="/Visuals/ArdyDestinationPose",
+                    markers={
+                        "pt": sim_utils.SphereCfg(
+                            radius=self.target_marker_radius,
+                            visual_material=sim_utils.PreviewSurfaceCfg(
+                                diffuse_color=(0.0, 0.25, 1.0), opacity=0.9
+                            ),
+                        )
+                    },
+                )
+                self._markers = VisualizationMarkers(cfg)
+                self._markers.set_visibility(True)
+                self._log("[ardy_replan] destination marker prim created at /Visuals/ArdyDestinationPose")
+            except Exception as exc:  # noqa: BLE001
+                import traceback
+
+                traceback.print_exc()
+                self._markers_failed = True
+                self._log(f"[ardy_replan] marker prim creation failed: {exc}; continuing without markers.")
 
     # -- main step -------------------------------------------------------------
     def eval_step(self, env, _results) -> bool:
@@ -114,12 +156,27 @@ class ArdyReplanCallback:
         if not self._initialized:
             self._start_xy = cur_xy.copy()
             self._goal_xy = self._compute_goal(cur_xy, cur_yaw)
+            d = self._goal_xy - self._start_xy
+            self._goal_heading = math.atan2(float(d[1]), float(d[0])) if float(np.linalg.norm(d)) > 1e-6 else cur_yaw
             self._initialized = True
             self._need_replan = True
             self._log(f"[ardy_replan] start_xy={cur_xy.round(3).tolist()} "
-                      f"start_yaw={math.degrees(cur_yaw):.1f}deg goal_xy={self._goal_xy.round(3).tolist()}")
+                      f"start_yaw={math.degrees(cur_yaw):.1f}deg goal_xy={self._goal_xy.round(3).tolist()} "
+                      f"goal_heading={math.degrees(self._goal_heading):.1f}deg")
+
+        # Draw / refresh the destination pose as blue spheres (prim created in on_step_end).
+        self._update_target_markers(command, env_idx)
 
         self._step += 1
+
+        # Holding at the destination after arrival: keep tracking (the reference tail
+        # holds the target pose) until the hold window elapses, then stop.
+        if self._arrived:
+            if self._step >= self._hold_until_step:
+                self._log("[ardy_replan] hold complete; stopping at destination.")
+                self._done = True
+                return True
+            return False
 
         replan_now = self._need_replan or (self._step >= self._seg_end_step)
         if replan_now:
@@ -127,9 +184,11 @@ class ArdyReplanCallback:
             self._log(f"[ardy_replan] step={self._step} cur_xy={cur_xy.round(3).tolist()} "
                       f"remaining={remaining:.3f} replans={self._replans}")
             if remaining <= self.arrival_radius:
-                self._log(f"[ardy_replan] ARRIVED: remaining={remaining:.3f} <= {self.arrival_radius}. Stopping.")
-                self._done = True
-                return True
+                self._arrived = True
+                self._hold_until_step = self._step + max(1, int(self.hold_seconds * self.control_hz))
+                self._log(f"[ardy_replan] ARRIVED: remaining={remaining:.3f} <= {self.arrival_radius}. "
+                          f"Holding {self.hold_seconds:.1f}s at destination.")
+                return False
             if self._replans >= self.max_replans:
                 self._log(f"[ardy_replan] max_replans={self.max_replans} reached; remaining={remaining:.3f}. Stopping.")
                 self._done = True
@@ -168,6 +227,53 @@ class ArdyReplanCallback:
             self._done = True
             return True
         return False
+
+    # -- destination markers ---------------------------------------------------
+    def _update_target_markers(self, command, env_idx: int) -> None:
+        """Fill the destination-pose spheres with FK body positions, then re-visualize."""
+        if self._markers is None or self._markers_failed or not self._initialized:
+            return
+        try:
+            if self._target_body_pos_w is None:
+                self._target_body_pos_w = self._compute_target_body_pos(command, env_idx)
+                if self._target_body_pos_w is not None:
+                    self._log(f"[ardy_replan] destination pose = {int(self._target_body_pos_w.shape[0])} "
+                              f"blue spheres at goal_xy={self._goal_xy.round(3).tolist()} "
+                              f"z={self.target_height:.2f} heading={math.degrees(self._goal_heading):.1f}deg")
+            if self._target_body_pos_w is not None:
+                self._markers.visualize(translations=self._target_body_pos_w)
+        except Exception as exc:  # noqa: BLE001
+            import traceback
+
+            traceback.print_exc()
+            self._markers_failed = True
+            self._log(f"[ardy_replan] marker update failed: {exc}; continuing without markers.")
+
+    def _compute_target_body_pos(self, command, env_idx: int):
+        """World body positions of the destination 29-DOF pose via the motion-lib FK."""
+        h = self._goal_heading
+        quat = [math.cos(h * 0.5), 0.0, 0.0, math.sin(h * 0.5)]  # wxyz, yaw about +z
+        joints = self.target_joint_qpos if self.target_joint_qpos is not None else [0.0] * 29
+        row = [float(self._goal_xy[0]), float(self._goal_xy[1]), float(self.target_height), *quat, *joints]
+        parser = command.motion_lib.mesh_parsers
+        try:
+            qpos = torch.tensor(row, dtype=torch.float32, device=command.device)
+            body_pos, _ = parser.qpos_to_global_transforms(qpos, root_quat_wxyz=True)  # (num_bodies, 3)
+        except Exception:  # noqa: BLE001  # fall back to the exact FK path install uses
+            qpos2 = torch.tensor([row, row], dtype=torch.float32, device="cpu")  # 2 frames for velocities
+            pose_aa = command._qpos_to_pose_aa_for_live_segment(qpos2)  # noqa: SLF001  (2, 30, 3)
+            curr = parser.fk_batch(
+                pose_aa.unsqueeze(0), qpos2[:, :3].unsqueeze(0),
+                return_full=True, fps=int(command.motion_lib.target_fps),
+                target_fps=int(command.motion_lib.target_fps), interpolate_data=False,
+                use_parallel_fk=getattr(command.motion_lib, "use_parallel_fk", False),
+            )
+            body_pos = curr.global_translation[0, 0].to(command.device)
+        body_pos = body_pos.reshape(-1, 3)
+        env_origins = getattr(command._env.scene, "env_origins", None)  # noqa: SLF001
+        if env_origins is not None:
+            body_pos = body_pos + env_origins[env_idx].to(body_pos.device)
+        return body_pos
 
     # -- helpers ---------------------------------------------------------------
     def _compute_goal(self, cur_xy: np.ndarray, cur_yaw: float) -> np.ndarray:
