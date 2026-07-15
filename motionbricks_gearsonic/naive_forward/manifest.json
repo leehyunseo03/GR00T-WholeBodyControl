@@ -1,0 +1,57 @@
+{
+  "created_unix": 1783495890.8791542,
+  "source": "naive MotionBricks forward walk without target position or terminal pose constraint",
+  "motion_name": "motionbricks_naive_forward_walk",
+  "mode": "walk_gun",
+  "available_modes": [
+    "idle",
+    "slow_walk",
+    "walk",
+    "hand_crawling",
+    "walk_boxing",
+    "elbow_crawling",
+    "stealth_walk",
+    "injured_walk",
+    "walk_stealth",
+    "walk_happy_dance",
+    "walk_zombie",
+    "walk_gun",
+    "walk_scared",
+    "walk_left",
+    "walk_right"
+  ],
+  "target_vel": 0.4,
+  "fps": 30,
+  "max_steps": 900,
+  "generate_dt": 2.0,
+  "random_seed": 1234,
+  "robot_pkl": "motionbricks_gearsonic/naive_forward/robot_filtered/naive_forward/motionbricks_naive_forward_walk.pkl",
+  "qpos_npy": "motionbricks_gearsonic/naive_forward/qpos/motionbricks_naive_forward_walk.npy",
+  "qpos_npz": "motionbricks_gearsonic/naive_forward/qpos/motionbricks_naive_forward_walk.npz",
+  "qpos_summary": {
+    "num_frames": 900,
+    "root_xyz_first": [
+      0.0,
+      0.0,
+      0.7796019911766052
+    ],
+    "root_xyz_last": [
+      15.856283187866211,
+      -1.9508800506591797,
+      0.6544439792633057
+    ],
+    "root_xyz_min": [
+      0.0,
+      -1.9593759775161743,
+      0.611611008644104
+    ],
+    "root_xyz_max": [
+      15.856283187866211,
+      0.0024999999441206455,
+      0.7841349840164185
+    ],
+    "dof_mean": -0.038651131093502045,
+    "dof_min": -2.05611515045166,
+    "dof_max": 1.743055820465088
+  }
+}

@@ -1,0 +1,12 @@
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/CMakeFiles/edit_cache.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/CMakeFiles/rebuild_cache.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/CMakeFiles/list_install_components.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/CMakeFiles/install.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/CMakeFiles/install/local.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/CMakeFiles/install/strip.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/thirdparty/CMakeFiles/edit_cache.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/thirdparty/CMakeFiles/rebuild_cache.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/thirdparty/CMakeFiles/list_install_components.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/thirdparty/CMakeFiles/install.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/thirdparty/CMakeFiles/install/local.dir
+/workspace/GR00T-WholeBodyControl/gear_sonic_deploy/thirdparty/unitree_sdk2/build/thirdparty/CMakeFiles/install/strip.dir

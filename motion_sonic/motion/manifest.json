@@ -1,11 +1,11 @@
 {
-  "created_unix": 1783393735.334735,
-  "elapsed_sec": 0.01252889633178711,
+  "created_unix": 1783490331.1786397,
+  "elapsed_sec": 0.012647390365600586,
   "target": {
     "source_kind": "generated_forward_target",
     "motion_key": "forward_5m_target",
     "frame": -1,
-    "forward_meters": 4.0,
+    "forward_meters": 5.0,
     "target_height": 0.78,
     "npz_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion/target_reference/forward_5m_target.npz",
     "pkl_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion/target_reference/forward_5m_target.pkl",
@@ -32,8 +32,9 @@
     "walk_left",
     "walk_right"
   ],
-  "target_vel": 0.2,
-  "target_lookahead_meters": 0.35,
+  "target_vel": 0.4,
+  "target_lookahead_meters": 0.5,
+  "target_pose_condition": true,
   "arrival_radius_meters": 0.0,
   "arrival_mode": "idle",
   "arrival_target_vel": 0.0,
@@ -46,13 +47,13 @@
   "zero_waist_pitch": false,
   "start_from_target_first": false,
   "target_root_xyz": [
-    4.0,
+    5.0,
     0.0,
     0.7799999713897705
   ],
   "target_yaw": 0.0,
   "final_root_xyz": [
-    4.0,
+    5.0,
     0.0,
     0.7799999713897705
   ],
@@ -66,22 +67,22 @@
       0.7796019911766052
     ],
     "root_xyz_last": [
-      4.0,
+      5.0,
       0.0,
       0.7799999713897705
     ],
     "root_xyz_min": [
       0.0,
-      -0.060423001646995544,
-      0.7712399959564209
+      -0.004978999961167574,
+      0.7580209970474243
     ],
     "root_xyz_max": [
-      4.0,
-      0.039076998829841614,
-      0.7847779989242554
+      5.0,
+      0.06917300075292587,
+      0.786221981048584
     ],
-    "dof_mean": 0.06400829553604126,
-    "dof_min": -0.7429050803184509,
+    "dof_mean": 0.003708204487338662,
+    "dof_min": -0.4696364104747772,
     "dof_max": 1.2595635652542114
   },
   "robot_pkl": "motion_sonic/motion/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_target.pkl",

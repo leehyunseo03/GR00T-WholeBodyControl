@@ -5,11 +5,11 @@ python3 motion_sonic/generate_to_target_motion_lib.py \
   --reference forward \
   --output_dir motion_sonic/motion/ \
   --motion_name motionbricks_to_target_forward_5m_target \
-  --forward_meters 4.0 \
+  --forward_meters 5.0 \
   --forward_target_name forward_5m_target \
   --mode walk \
-  --target_vel 0.20 \
-  --target_lookahead_meters 0.35 \
+  --target_vel 0.40 \
+  --target_lookahead_meters 0.5 \
   --max_steps 750 \
   --append_target_hold 100
 ```
@@ -60,6 +60,10 @@ LIVESTREAM=2 /workspace/isaaclab/isaaclab.sh -p gear_sonic/eval_agent_trl.py \
 ```
 +motionbricks_metrics_scene=True \
 ++manager_env.commands.motion.visualize_motion_root_trajectory=True
+```
+
+```
+LIVESTREAM=2 /workspace/isaaclab/isaaclab.sh -p motion_sonic/motionbricks_metrics.py --livestream 2
 ```
 
 # 3. Metrics

@@ -19,22 +19,41 @@ DEFAULT_MOTION_NAME = "kimodo_to_target_forward_5m_hand_raise"
 DEFAULT_TARGET_NAME = "forward_5m_hand_raise_target"
 
 
+class HiddenMetricsPanel:
+    def __init__(self, metrics, target_qpos, endpoint_qpos):
+        pass
+
+    def update(self, frame_idx, xyz, target_error, progress) -> None:
+        pass
+
+
 def build_parser():
     parser = viewer.build_parser()
     parser.description = "Isaac Sim WebRTC viewer for a Kimodo 5 m zero-DOF target trajectory."
+    parser.add_argument(
+        "--show_metrics_panel",
+        type=int,
+        default=0,
+        help="Show the floating metrics UI panel. Default 0 hides it for livestream playback.",
+    )
     parser.set_defaults(
         qpos=str(DEFAULT_RUN_DIR / "qpos" / f"{DEFAULT_MOTION_NAME}.npy"),
         target=str(DEFAULT_RUN_DIR / "target_reference" / f"{DEFAULT_TARGET_NAME}.npz"),
         marker_json=str(DEFAULT_RUN_DIR / "visualization" / f"{DEFAULT_MOTION_NAME}_trajectory_markers.json"),
+        camera_back=-2.2,
+        camera_side=8.5,
+        camera_height=5.8,
         loop=0,
         strip_target_hold=1,
-        show_dof_panel=1,
+        show_dof_panel=0,
     )
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
+    if not args.show_metrics_panel:
+        viewer.MetricsPanel = HiddenMetricsPanel
     viewer.run_viewer(args)
 
 

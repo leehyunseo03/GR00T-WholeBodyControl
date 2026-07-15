@@ -1,11 +1,11 @@
 {
-  "created_unix": 1783393663.597535,
-  "elapsed_sec": 0.010053873062133789,
+  "created_unix": 1783508991.8541114,
+  "elapsed_sec": 0.008769512176513672,
   "target": {
     "source_kind": "generated_forward_target",
     "motion_key": "forward_5m_target",
     "frame": -1,
-    "forward_meters": 4.0,
+    "forward_meters": 5.0,
     "target_height": 0.78,
     "npz_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion_final_settle/target_reference/forward_5m_target.npz",
     "pkl_path": "/workspace/GR00T-WholeBodyControl/motion_sonic/motion_final_settle/target_reference/forward_5m_target.pkl",
@@ -32,56 +32,57 @@
     "walk_left",
     "walk_right"
   ],
-  "target_vel": 0.6,
-  "target_lookahead_meters": 0.6,
-  "arrival_radius_meters": 0.0,
+  "target_vel": 0.4,
+  "target_lookahead_meters": 0.5,
+  "target_pose_condition": true,
+  "arrival_radius_meters": 0.2,
   "arrival_mode": "idle",
   "arrival_target_vel": 0.0,
-  "arrival_settle_frames": 30,
+  "arrival_settle_frames": 45,
   "arrival_force_final_target": true,
   "fps": 30,
-  "max_steps": 600,
-  "append_target_hold": 1,
+  "max_steps": 750,
+  "append_target_hold": 20,
   "zero_waist": false,
   "zero_waist_pitch": false,
   "start_from_target_first": false,
   "target_root_xyz": [
-    4.0,
+    5.0,
     0.0,
     0.7799999713897705
   ],
   "target_yaw": 0.0,
   "final_root_xyz": [
-    4.0,
+    5.0,
     0.0,
     0.7799999713897705
   ],
   "final_root_xy_error": 0.0,
   "final_dof_rmse": 0.0,
   "qpos_summary": {
-    "num_frames": 601,
+    "num_frames": 478,
     "root_xyz_first": [
       0.0,
       0.0,
       0.7796019911766052
     ],
     "root_xyz_last": [
-      4.0,
+      5.0,
       0.0,
       0.7799999713897705
     ],
     "root_xyz_min": [
       0.0,
-      -0.06129100173711777,
-      0.761650025844574
+      -0.0029039999935775995,
+      0.7580209970474243
     ],
     "root_xyz_max": [
-      4.0,
-      0.032280001789331436,
-      0.7857699990272522
+      5.0,
+      0.06917300075292587,
+      0.7837619781494141
     ],
-    "dof_mean": 0.07527322322130203,
-    "dof_min": -0.749323308467865,
+    "dof_mean": 0.006106169894337654,
+    "dof_min": -0.4678381085395813,
     "dof_max": 1.2595635652542114
   },
   "robot_pkl": "motion_sonic/motion_final_settle/robot_filtered/motionbricks_target/motionbricks_to_target_forward_5m_target.pkl",
@@ -90,7 +91,7 @@
   "visualization": {
     "trajectory_markers_json": "motion_sonic/motion_final_settle/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.json",
     "trajectory_markers_xml": "motion_sonic/motion_final_settle/visualization/motionbricks_to_target_forward_5m_target_trajectory_markers.xml",
-    "marker_count": 60,
+    "marker_count": 46,
     "marker_stride": 10
   }
 }

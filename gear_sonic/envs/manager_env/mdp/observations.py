@@ -373,6 +373,7 @@ class TokenizerCfg(ObsGroup):
     motion_anchor_ori_heading_b = None
     motion_anchor_ori_b_nonflat = None
     motion_anchor_ori_b_mf_nonflat = None
+    motion_anchor_pos_b_mf_nonflat = None
     motion_anchor_ori_w_mf_nonflat = None
     command_multi_future_egocentric_joint_transforms = None
     command_multi_future_egocentric_joint_transforms_nonflat = None
@@ -896,6 +897,23 @@ def motion_anchor_pos_b(env: ManagerBasedEnv, command_name: str, mask_out_z=Fals
         pos = pos[:, :2]
 
     return pos.view(env.num_envs, -1)
+
+
+def motion_anchor_pos_b_mf(
+    env: ManagerBasedEnv, command_name: str, mask_out_z=False, non_flatten=False
+) -> torch.Tensor:
+    """Reference anchor position error in robot-local frame, repeated over future frames.
+
+    This is the position analogue of the non-flat G1 token inputs: it keeps the
+    ``num_future_frames`` axis so it can be concatenated with
+    ``command_multi_future_nonflat`` and ``motion_anchor_ori_b_mf_nonflat``.
+    """
+    command: commands.TrackingCommand = env.command_manager.get_term(command_name)
+    pos = motion_anchor_pos_b(env, command_name, mask_out_z=mask_out_z)
+    pos_mf = pos.view(env.num_envs, 1, -1).repeat(1, command.num_future_frames, 1)
+    if non_flatten:
+        return pos_mf
+    return pos_mf.reshape(env.num_envs, -1)
 
 
 def motion_anchor_yaw_b(env: ManagerBasedEnv, command_name: str) -> torch.Tensor:

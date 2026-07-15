@@ -729,6 +729,15 @@ def _target_control(
         "specific_target_headings": t.from_numpy(target_headings).view(1, demo_agent.full_agent.NUM_FRAMES_PER_TOKEN),
         "has_specific_target": t.tensor([[True]], dtype=t.bool),
     }
+    if args.target_pose_condition:
+        target_qpos_seq = np.repeat(
+            control_target_qpos[None, :36],
+            demo_agent.full_agent.NUM_FRAMES_PER_TOKEN,
+            axis=0,
+        ).astype(np.float32)
+        control["specific_target_mujoco_qpos"] = t.from_numpy(target_qpos_seq).view(
+            1, demo_agent.full_agent.NUM_FRAMES_PER_TOKEN, 36
+        )
     control["allowed_pred_num_tokens"] = demo_agent.controller.get_default_allowed_pred_num_tokens(mode_idx)
     effective_target_vel = args.target_vel if target_vel is None else target_vel
     if effective_target_vel > 0:
@@ -879,6 +888,7 @@ def export_qpos_sequence(args, output_dir: Path, qpos_seq, target_qpos, target_i
         "available_modes": modes,
         "target_vel": float(args.target_vel),
         "target_lookahead_meters": float(args.target_lookahead_meters),
+        "target_pose_condition": bool(args.target_pose_condition),
         "arrival_radius_meters": float(args.arrival_radius_meters),
         "arrival_mode": args.arrival_mode,
         "arrival_target_vel": float(args.arrival_target_vel),
@@ -1073,7 +1083,7 @@ if __name__ == "__main__":
         metavar="RAD",
         help="Optional 29-DOF final target pose. Defaults to all-zero neutral joints.",
     )
-    parser.add_argument("--target_dof_order", choices=["mujoco", "isaaclab"], default="mujoco")
+    parser.add_argument("--ctarget_dof_order", choices=["mujoco", "isaaclab"], default="mujoco")
     parser.add_argument(
         "--zero_waist",
         type=int,
@@ -1120,6 +1130,15 @@ if __name__ == "__main__":
         ),
     )
     parser.add_argument("--bypass_spring_model", type=int, default=0)
+    parser.add_argument(
+        "--target_pose_condition",
+        type=int,
+        default=1,
+        help=(
+            "1 passes the target MuJoCo qpos into MotionBricks as the ending pose condition; "
+            "0 restores the original clip-sampled target pose behavior."
+        ),
+    )
     parser.add_argument(
         "--arrival_radius_meters",
         type=float,

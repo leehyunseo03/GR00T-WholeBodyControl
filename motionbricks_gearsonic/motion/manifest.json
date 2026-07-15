@@ -1,0 +1,113 @@
+{
+  "created_unix": 1783491597.8117926,
+  "elapsed_sec": 2.180150032043457,
+  "target": {
+    "source_kind": "generated_forward_target",
+    "motion_key": "forward_5m_zero_pose_target",
+    "frame": -1,
+    "forward_meters": 5.0,
+    "target_height": 0.78,
+    "npz_path": "/workspace/GR00T-WholeBodyControl/motionbricks_gearsonic/motion/target_reference/forward_5m_zero_pose_target.npz",
+    "pkl_path": "/workspace/GR00T-WholeBodyControl/motionbricks_gearsonic/motion/target_reference/forward_5m_zero_pose_target.pkl",
+    "target_dof_order": "mujoco"
+  },
+  "mode": "walk",
+  "requested_mode": "walk",
+  "effective_mode": "walk",
+  "mode_preset": "native",
+  "available_modes": [
+    "idle",
+    "slow_walk",
+    "walk",
+    "hand_crawling",
+    "walk_boxing",
+    "elbow_crawling",
+    "stealth_walk",
+    "injured_walk",
+    "walk_stealth",
+    "walk_happy_dance",
+    "walk_zombie",
+    "walk_gun",
+    "walk_scared",
+    "walk_left",
+    "walk_right"
+  ],
+  "target_vel": 0.4,
+  "target_lookahead_meters": 0.5,
+  "target_pose_condition": false,
+  "arrival_radius_meters": 0.15,
+  "arrival_mode": "idle",
+  "arrival_target_vel": 0.0,
+  "arrival_settle_frames": 24,
+  "arrival_force_final_target": true,
+  "fps": 30,
+  "max_steps": 750,
+  "append_target_hold": 100,
+  "zero_waist": false,
+  "zero_waist_pitch": false,
+  "start_from_target_first": true,
+  "target_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "target_yaw": 0.0,
+  "final_root_xyz": [
+    5.0,
+    0.0,
+    0.7799999713897705
+  ],
+  "final_root_xy_error": 0.0,
+  "final_dof_rmse": 0.0,
+  "qpos_summary": {
+    "num_frames": 675,
+    "root_xyz_first": [
+      0.0,
+      0.0,
+      0.7799999713897705
+    ],
+    "root_xyz_last": [
+      5.0,
+      0.0,
+      0.7799999713897705
+    ],
+    "root_xyz_min": [
+      0.0,
+      -0.05378499999642372,
+      0.7677270174026489
+    ],
+    "root_xyz_max": [
+      5.0,
+      0.03235900029540062,
+      0.785377025604248
+    ],
+    "dof_mean": 0.06055657938122749,
+    "dof_min": -0.712562084197998,
+    "dof_max": 1.166322946548462
+  },
+  "robot_pkl": "motionbricks_gearsonic/motion/robot_filtered/native_stop/motionbricks_native_forward_5m_zero_pose.pkl",
+  "qpos_npy": "motionbricks_gearsonic/motion/qpos/motionbricks_native_forward_5m_zero_pose.npy",
+  "qpos_npz": "motionbricks_gearsonic/motion/qpos/motionbricks_native_forward_5m_zero_pose.npz",
+  "visualization": {
+    "trajectory_markers_json": "motionbricks_gearsonic/motion/visualization/motionbricks_native_forward_5m_zero_pose_trajectory_markers.json",
+    "trajectory_markers_xml": "motionbricks_gearsonic/motion/visualization/motionbricks_native_forward_5m_zero_pose_trajectory_markers.xml",
+    "marker_count": 58,
+    "marker_stride": 10
+  },
+  "native_stop": {
+    "motionbricks_goal_semantics": "root_position_heading_only",
+    "motionbricks_target_pose_condition": false,
+    "stop_radius_meters": 0.15,
+    "final_pose_blend_frames": 60,
+    "final_pose_hold_frames": 100,
+    "terminal_pose_owner": "gear_sonic_reference_tail",
+    "motionbricks_stop_root_xyz": [
+      4.936564922332764,
+      0.00558099988847971,
+      0.7838190197944641
+    ],
+    "motionbricks_stop_root_xy_error": 0.06368013471364975,
+    "final_root_xy_error": 0.0,
+    "final_dof_rmse": 0.0
+  }
+}

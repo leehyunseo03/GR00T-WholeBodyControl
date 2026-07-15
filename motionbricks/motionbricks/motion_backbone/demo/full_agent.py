@@ -374,6 +374,30 @@ class full_navigation_agent(t.nn.Module):
             global_root_positions[:, :, 0] += input['target_root_position'][:, 0]
             global_root_positions[:, :, 2] += input['target_root_position'][:, 1]
 
+        if 'specific_target_mujoco_qpos' in input:
+            target_qpos = input['specific_target_mujoco_qpos']
+            target_global_joint_positions, target_global_joint_rotations = \
+                self._converter.convert_mujoco_qpos_to_motion_transforms(target_qpos)
+            target_global_root_positions = target_global_joint_positions[:, :, 0] * \
+                t.tensor([1.0, 0.0, 1.0], device=target_global_joint_positions.device,
+                         dtype=target_global_joint_positions.dtype)
+            target_global_joint_positions = target_global_joint_positions - target_global_root_positions[:, :, None, :]
+
+            if target_global_joint_positions.shape[1] == 1 and NUM_FRAMES_PER_TOKEN > 1:
+                target_global_joint_positions = target_global_joint_positions.repeat(1, NUM_FRAMES_PER_TOKEN, 1, 1)
+                target_global_joint_rotations = target_global_joint_rotations.repeat(1, NUM_FRAMES_PER_TOKEN, 1, 1, 1)
+                target_global_root_positions = target_global_root_positions.repeat(1, NUM_FRAMES_PER_TOKEN, 1)
+
+            if target_global_joint_positions.shape[1] != NUM_FRAMES_PER_TOKEN:
+                target_global_joint_positions = target_global_joint_positions[:, -NUM_FRAMES_PER_TOKEN:]
+                target_global_joint_rotations = target_global_joint_rotations[:, -NUM_FRAMES_PER_TOKEN:]
+                target_global_root_positions = target_global_root_positions[:, -NUM_FRAMES_PER_TOKEN:]
+
+            global_joint_positions = target_global_joint_positions
+            global_joint_rotations = target_global_joint_rotations
+            global_root_positions = target_global_root_positions
+            global_root_positions[:, :, [0, 2]] = input['target_root_positions'].transpose(1, 2).float()
+
         if self._source_root_realignment:
             context_headings = t.atan2(input['context_global_joint_rotations'][:, :, 0, 0, 2],
                                        input['context_global_joint_rotations'][:, :, 0, 2, 2])  # y-axis rotation
@@ -559,6 +583,17 @@ class full_navigation_agent(t.nn.Module):
             input['specific_target_positions'] = \
                 t.matmul(inverse_first_frame_rot_heading[:, None, :, :],
                          (input['specific_target_positions'] - first_frame_position[:, None, :])[..., None])[..., 0]
+        if 'specific_target_mujoco_qpos' in input:
+            target_qpos = input['specific_target_mujoco_qpos'].clone()
+            target_qpos[:, :, :3] = \
+                t.matmul(inverse_first_frame_rot_heading[:, None, :, :],
+                         (target_qpos[:, :, :3] - first_frame_position[:, None, :])[..., None])[..., 0]
+            target_rot = t.matmul(
+                inverse_first_frame_rot_heading[:, None, :, :],
+                quaternion_to_matrix(target_qpos[:, :, 3: 7])
+            )
+            target_qpos[:, :, 3: 7] = matrix_to_quaternion(target_rot)
+            input['specific_target_mujoco_qpos'] = target_qpos
 
     def _uncanonicalize_mujoco_qpos(self, input: dict):
         mujoco_qpos = input['mujoco_qpos']

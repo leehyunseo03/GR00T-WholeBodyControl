@@ -54,6 +54,7 @@ class MotionBricksRecedingHorizonCallback:
         final_approach_radius: float = 0.80,
         final_snap_frames: int = 0,
         final_hold_frames: int = 60,
+        target_pose_condition: bool = True,
         result_dir: str | None = None,
         data_root: str | None = None,
         humanoid_xml: str | None = None,
@@ -79,6 +80,7 @@ class MotionBricksRecedingHorizonCallback:
         self.final_approach_radius = max(0.0, float(final_approach_radius))
         self.final_snap_frames = max(0, int(final_snap_frames))
         self.final_hold_frames = max(0, int(final_hold_frames))
+        self.target_pose_condition = bool(target_pose_condition)
         self.result_dir = result_dir
         self.data_root = data_root
         self.humanoid_xml = humanoid_xml
@@ -254,7 +256,7 @@ class MotionBricksRecedingHorizonCallback:
             dtype=np.float32,
         )
         mode = torch.tensor([[mode_id]], dtype=torch.long)
-        return {
+        control = {
             "movement_direction": torch.tensor([[direction[0], direction[1], 0.0]], dtype=torch.float32),
             "facing_direction": torch.tensor([[facing[0], facing[1], 0.0]], dtype=torch.float32),
             "mode": mode,
@@ -266,6 +268,16 @@ class MotionBricksRecedingHorizonCallback:
             "random_seed": torch.tensor([self.random_seed + self._step], dtype=torch.long),
             "allowed_pred_num_tokens": self._demo.controller.get_default_allowed_pred_num_tokens(mode_id),
         }
+        if self.target_pose_condition:
+            target_qpos_seq = np.repeat(
+                target_qpos[None, :36].astype(np.float32),
+                self._demo.full_agent.NUM_FRAMES_PER_TOKEN,
+                axis=0,
+            )
+            control["specific_target_mujoco_qpos"] = torch.from_numpy(target_qpos_seq).view(
+                1, self._demo.full_agent.NUM_FRAMES_PER_TOKEN, 36
+            )
+        return control
 
     def _robot_qpos_mujoco(self, command, env_idx: int) -> np.ndarray:
         root_pos = command.robot.data.root_pos_w[env_idx].detach().clone()

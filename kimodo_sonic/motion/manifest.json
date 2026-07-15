@@ -1,22 +1,22 @@
 {
-  "created_unix": 1783399445.1018405,
+  "created_unix": 1783670211.202748,
   "source": "GR00T-WholeBodyControl/kimodo_sonic/motion/kimodo_raw/kimodo_to_target_forward_5m_hand_raise.csv",
   "fps": 30,
   "motion_name": "kimodo_to_target_forward_5m_hand_raise",
-  "forward_meters": 5.0,
+  "forward_meters": 0.1,
   "target_height": 0.78,
   "target_root_xyz": [
-    5.0,
+    0.10000000149011612,
     0.0,
     0.7799999713897705
   ],
   "target_yaw": 0.0,
   "target_dof": "both-hand raise pose in MuJoCo 29DOF order",
-  "frames": 310,
-  "append_target_hold": 100,
+  "frames": 120,
+  "append_target_hold": 30,
   "snap_to_target_frames": 30,
   "final_root_xyz": [
-    5.0,
+    0.10000000149011612,
     0.0,
     0.7799999713897705
   ],

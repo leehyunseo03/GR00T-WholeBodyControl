@@ -1,0 +1,23 @@
+{
+  "npz_file": "first_episode_body_tracking.npz",
+  "num_frames": 2000,
+  "env_index": 0,
+  "motion_id": 0,
+  "body_error_mean": 0.029966081909602506,
+  "body_error_max": 0.16446083784103394,
+  "joint_error_mean": 0.038778236190322786,
+  "joint_error_max": 0.4031985402107239,
+  "anchor_pos_error_mean": 0.029557770474639256,
+  "vr3_error_mean": 0.029295829526905435,
+  "foot_error_mean": 0.03299490195163526,
+  "error_anchor_pos_mean": 0.029557770474639256,
+  "error_anchor_rot_mean": 0.04247799306188244,
+  "error_anchor_lin_vel_mean": 0.1290579067147337,
+  "error_anchor_ang_vel_mean": 0.30565161831816656,
+  "error_body_pos_mean": 0.015247463244013488,
+  "error_body_rot_mean": 0.07074645513948054,
+  "error_joint_pos_mean": 0.03877823605574667,
+  "error_joint_vel_mean": 0.27330900678783654,
+  "error_body_lin_vel_mean": 0.16199373983591794,
+  "error_body_ang_vel_mean": 0.4874266396164894
+}
