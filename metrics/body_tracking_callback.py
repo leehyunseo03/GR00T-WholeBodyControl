@@ -26,6 +26,7 @@ class BodyTrackingCallback:
         self.max_steps = int(max_steps)
         self.stop_on_done = bool(stop_on_done)
         self._saved = False
+        self._done_logged = False
         self._body_names: list[str] | None = None
         self._frames: dict[str, list] = {
             "time_step": [],
@@ -183,6 +184,15 @@ class BodyTrackingCallback:
         dones = self._as_done_mask(results[2])
         env_idx = min(self.env_index, len(dones) - 1)
         done = bool(dones[env_idx])
+
+        if done and not self._done_logged:
+            self._done_logged = True
+            print(
+                "[body_tracking] env done observed "
+                f"(env_index={env_idx}, stop_on_done={self.stop_on_done}, "
+                f"recorded_frames={len(self._frames['body_error'])}).",
+                flush=True,
+            )
 
         # In IsaacLab, done envs may already have reset by the time callbacks run.
         # So skip the done frame and save what we collected before reset.

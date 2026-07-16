@@ -35,12 +35,15 @@ SECONDS_PER_METER="${SECONDS_PER_METER:-2.0}"
 TRACK_FRACTION="${TRACK_FRACTION:-0.9}"                       # legacy compatibility
 REPLAN_REQUEST_FRACTION="${REPLAN_REQUEST_FRACTION:-0.8}"     # request next plan after this fraction of current plan
 MAX_ASYNC_START_XY_ERROR="${MAX_ASYNC_START_XY_ERROR:-0.75}"  # discard async plan if its start is too stale (m)
+HANDOFF_BLEND_FRAMES="${HANDOFF_BLEND_FRAMES:-12}"            # smooth non-first replans from current robot qpos
 MAX_REPLANS="${MAX_REPLANS:-40}"
 MAX_STEPS="${MAX_STEPS:-12000}"
 PLACEHOLDER_FRAMES="${PLACEHOLDER_FRAMES:-1500}"
 EPISODE_LENGTH_S="${EPISODE_LENGTH_S:-300}"
 BODY_TRACKING_SAVE_PATH="${BODY_TRACKING_SAVE_PATH:-${REPO_ROOT}/ardy_sonic/metrics/recording}"
 BODY_TRACKING_MAX_STEPS="${BODY_TRACKING_MAX_STEPS:-${MAX_STEPS}}"
+BODY_TRACKING_STOP_ON_DONE="${BODY_TRACKING_STOP_ON_DONE:-False}"
+ARDY_REPLAN_CALLBACK_TARGET="${ARDY_REPLAN_CALLBACK_TARGET:-ardy_sonic.ardy_replan_callback.ArdyReplanCallback}"
 
 NUM_ENVS="${NUM_ENVS:-1}"
 HEADLESS="${HEADLESS:-False}"
@@ -139,13 +142,14 @@ STAGED_CHECKPOINT="${CKPT_STAGE}/$(basename "${CHECKPOINT}")"
 
 echo "[run_ardy_sonic] checkpoint=${STAGED_CHECKPOINT}  (staged from ${CHECKPOINT})"
 echo "[run_ardy_sonic] shared IO=${SHARED_IO}  run dir=${RUN_DIR}"
-echo "[run_ardy_sonic] body tracking=${BODY_TRACKING_SAVE_PATH}"
+echo "[run_ardy_sonic] body tracking=${BODY_TRACKING_SAVE_PATH} max_steps=${BODY_TRACKING_MAX_STEPS} stop_on_done=${BODY_TRACKING_STOP_ON_DONE}"
 echo "[run_ardy_sonic] placeholder=${PLACEHOLDER}"
 echo "[run_ardy_sonic] goal_mode=${GOAL_MODE} forward_meters=${FORWARD_METERS}"
+echo "[run_ardy_sonic] callback=${ARDY_REPLAN_CALLBACK_TARGET}"
 echo "[run_ardy_sonic] stop condition: Ardy goal-reaching plan completes, then hold ${HOLD_SECONDS}s"
 echo "[run_ardy_sonic] diagnostic tolerances: pos<=${ARRIVAL_RADIUS}m yaw<=${YAW_TOL_DEG}deg joint<=${JOINT_TOL_RAD}rad"
 echo "[run_ardy_sonic] marker z offset=${MARKER_Z_OFFSET}m (visual only)"
-echo "[run_ardy_sonic] async replan request fraction=${REPLAN_REQUEST_FRACTION} max stale start=${MAX_ASYNC_START_XY_ERROR}m"
+echo "[run_ardy_sonic] async replan request fraction=${REPLAN_REQUEST_FRACTION} max stale start=${MAX_ASYNC_START_XY_ERROR}m handoff_blend_frames=${HANDOFF_BLEND_FRAMES}"
 echo "[run_ardy_sonic] Make sure the host Ardy planner server is running (--serve)."
 
 # NOTE: '++manager_env.terminations.time_out=null' below is required. That term
@@ -172,7 +176,7 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++num_envs=${NUM_ENVS}" \
   "++manager_env.config.episode_length_s=${EPISODE_LENGTH_S}" \
   "++eval_callbacks=[ardy_replan,body_tracking]" \
-  "++callbacks.ardy_replan._target_=ardy_sonic.ardy_replan_callback.ArdyReplanCallback" \
+  "++callbacks.ardy_replan._target_=${ARDY_REPLAN_CALLBACK_TARGET}" \
   "++callbacks.ardy_replan.goal_mode=${GOAL_MODE}" \
   "++callbacks.ardy_replan.forward_meters=${FORWARD_METERS}" \
   "++callbacks.ardy_replan.arrival_radius=${ARRIVAL_RADIUS}" \
@@ -189,6 +193,7 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.track_fraction=${TRACK_FRACTION}" \
   "++callbacks.ardy_replan.replan_request_fraction=${REPLAN_REQUEST_FRACTION}" \
   "++callbacks.ardy_replan.max_async_start_xy_error=${MAX_ASYNC_START_XY_ERROR}" \
+  "++callbacks.ardy_replan.handoff_blend_frames=${HANDOFF_BLEND_FRAMES}" \
   "++callbacks.ardy_replan.max_replans=${MAX_REPLANS}" \
   "++callbacks.ardy_replan.max_steps=${MAX_STEPS}" \
   "++callbacks.ardy_replan.placeholder_frames=${PLACEHOLDER_FRAMES}" \
@@ -196,6 +201,7 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.body_tracking._target_=metrics.body_tracking_callback.BodyTrackingCallback" \
   "++callbacks.body_tracking.save_path=${BODY_TRACKING_SAVE_PATH}" \
   "++callbacks.body_tracking.max_steps=${BODY_TRACKING_MAX_STEPS}" \
+  "++callbacks.body_tracking.stop_on_done=${BODY_TRACKING_STOP_ON_DONE}" \
   "++manager_env.terminations.anchor_pos.params.threshold=1000" \
   "++manager_env.terminations.anchor_pos.params.down_threshold=1000" \
   "++manager_env.terminations.ee_body_pos.params.threshold=1000" \

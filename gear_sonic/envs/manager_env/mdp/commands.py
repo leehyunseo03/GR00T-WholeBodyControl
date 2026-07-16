@@ -802,6 +802,7 @@ class TrackingCommand(CommandTerm):
         fps: int = 30,
         env_ids: Sequence[int] | torch.Tensor | None = None,
         reset_time: bool = True,
+        install_at_current_time: bool = False,
     ) -> None:
         """Replace the active reference with a freshly planned qpos segment.
 
@@ -842,15 +843,23 @@ class TrackingCommand(CommandTerm):
         )
 
         num_frames = int(curr_motion.global_translation.shape[1])
-        motion_id = int(self.motion_ids[int(env_ids_t[0].item())].item())
+        first_env_id = int(env_ids_t[0].item())
+        motion_id = int(self.motion_ids[first_env_id].item())
         old_start = int(self.motion_lib.length_starts[motion_id].item())
         old_len = int(self.motion_lib._motion_num_frames[motion_id].item())  # noqa: SLF001
-        replace_len = min(old_len, num_frames)
+        dst_offset = 0
+        if install_at_current_time:
+            dst_offset = int(
+                (self.motion_start_time_steps[first_env_id] + self.time_steps[first_env_id]).item()
+            )
+            dst_offset = max(0, min(dst_offset, old_len - 1))
+        dst_capacity = old_len - dst_offset
+        replace_len = min(dst_capacity, num_frames)
         if replace_len < 2:
             raise ValueError("Live qpos segment must contain at least two frames after FK.")
 
         src = slice(0, replace_len)
-        dst = slice(old_start, old_start + replace_len)
+        dst = slice(old_start + dst_offset, old_start + dst_offset + replace_len)
         full_body_pos = curr_motion.global_translation[0, src][:, self.mujoco_to_isaaclab_body].to(
             self.device
         )
@@ -884,9 +893,9 @@ class TrackingCommand(CommandTerm):
             self.motion_lib.body_lin_vel_w_full[dst] = full_body_lin_vel
             self.motion_lib.body_ang_vel_w_full[dst] = full_body_ang_vel
 
-        if replace_len < old_len:
-            tail = slice(old_start + replace_len, old_start + old_len)
-            last = old_start + replace_len - 1
+        if dst_offset + replace_len < old_len:
+            tail = slice(old_start + dst_offset + replace_len, old_start + old_len)
+            last = old_start + dst_offset + replace_len - 1
             self.motion_lib.body_pos_w[tail] = self.motion_lib.body_pos_w[last]
             self.motion_lib.body_quat_w[tail] = self.motion_lib.body_quat_w[last]
             self.motion_lib.body_pos_b[tail] = self.motion_lib.body_pos_b[last]

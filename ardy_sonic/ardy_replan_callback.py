@@ -83,6 +83,7 @@ class ArdyReplanCallback:
         track_fraction: float = 0.9,         # legacy compatibility; async replans use replan_request_fraction
         replan_request_fraction: float = 0.8,  # asynchronously request the next non-final plan here
         max_async_start_xy_error: float = 0.75,  # discard async plans whose start became too stale (m)
+        handoff_blend_frames: int = 12,       # non-first replans start from current robot qpos, then blend into Ardy
         max_replans: int = 40,
         max_steps: int = 12000,              # hard stop on total control steps
         control_hz: float = 50.0,
@@ -119,6 +120,7 @@ class ArdyReplanCallback:
         self.track_fraction = float(np.clip(track_fraction, 0.1, 1.0))
         self.replan_request_fraction = float(np.clip(replan_request_fraction, 0.05, 0.98))
         self.max_async_start_xy_error = max(0.0, float(max_async_start_xy_error))
+        self.handoff_blend_frames = max(0, int(handoff_blend_frames))
         self.max_replans = int(max_replans)
         self.max_steps = int(max_steps)
         self.control_hz = float(control_hz)
@@ -383,11 +385,16 @@ class ArdyReplanCallback:
         return dist, heading, duration, reach_target
 
     def _install_plan(self, command, env_idx: int, qpos: np.ndarray, fps: float, meta: dict) -> None:
+        first_install = self._replans == 0
+        if not first_install and self.handoff_blend_frames > 0:
+            cur = self._robot_qpos_mujoco(command, env_idx)
+            qpos = self._blend_plan_start_from_current(cur, qpos)
         command.install_live_qpos_segment(
             torch.as_tensor(qpos, dtype=torch.float32),
             fps=int(round(fps)),
             env_ids=torch.tensor([env_idx], device=command.device),
-            reset_time=True,
+            reset_time=first_install,
+            install_at_current_time=not first_install,
         )
         self._replans += 1
         self._need_replan = False
@@ -416,7 +423,33 @@ class ArdyReplanCallback:
         self._cur_plan_reaches_goal = reach_target
         self._log(f"[ardy_replan] plan installed ({self._phase}): {qpos.shape[0]}x{qpos.shape[1]} "
                   f"@ {fps:g}fps dist={dist:.3f} dur={duration:.2f}s reach_target={reach_target} "
+                  f"handoff_blend_frames={0 if first_install else self.handoff_blend_frames} "
                   f"request_next_step={self._seg_request_step} track_until_step={self._seg_end_step}")
+
+    def _blend_plan_start_from_current(self, cur_qpos: np.ndarray, qpos: np.ndarray) -> np.ndarray:
+        """Replace the beginning of a replan with a smooth current-robot handoff."""
+        qpos = np.asarray(qpos, dtype=np.float32).copy()
+        if qpos.ndim != 2 or qpos.shape[0] < 2:
+            return qpos
+        n = min(self.handoff_blend_frames, qpos.shape[0])
+        if n <= 0:
+            return qpos
+
+        target = qpos[n - 1].copy()
+        cur = np.asarray(cur_qpos[:P.QPOS_DIM], dtype=np.float32).copy()
+        start_yaw = P.yaw_from_quat_wxyz(cur[3:7])
+        target_yaw = P.yaw_from_quat_wxyz(target[3:7])
+        yaw_delta = _wrap_angle(target_yaw - start_yaw)
+
+        for i in range(n):
+            denom = max(1, n - 1)
+            t = float(i) / float(denom)
+            a = t * t * (3.0 - 2.0 * t)
+            qpos[i, :3] = (1.0 - a) * cur[:3] + a * target[:3]
+            yaw = start_yaw + a * yaw_delta
+            qpos[i, 3:7] = [math.cos(yaw * 0.5), 0.0, 0.0, math.sin(yaw * 0.5)]
+            qpos[i, 7:36] = (1.0 - a) * cur[7:36] + a * target[7:36]
+        return qpos
 
     # -- errors / reporting -------------------------------------------------------
     def _errors(self, cur: np.ndarray) -> tuple[float, float, float]:

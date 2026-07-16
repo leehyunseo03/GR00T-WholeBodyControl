@@ -99,7 +99,7 @@ class _FakeCommand:
         self._seg_end = None  # (xy, yaw, joints) of the installed segment's last frame
         self.install_count = 0
 
-    def install_live_qpos_segment(self, qpos, fps, env_ids, reset_time=True):
+    def install_live_qpos_segment(self, qpos, fps, env_ids, reset_time=True, install_at_current_time=False):
         q = torch.as_tensor(qpos).cpu().numpy()
         assert q.ndim == 2 and q.shape[1] >= 36, q.shape
         assert q.shape[0] >= 2
