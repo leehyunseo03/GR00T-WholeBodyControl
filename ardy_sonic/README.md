@@ -96,6 +96,10 @@ docker exec -it gear-sonic-base bash
 cd /workspace/GR00T-WholeBodyControl
 bash ardy_sonic/run_ardy_sonic.sh
 # open the WebRTC viewer at  http://<server-ip>:8211/streaming/client/
+
+LIVESTREAM=2 \
+CHECKPOINT=/workspace/GR00T-WholeBodyControl/sonic_release/exported/kimodo_position_finetune/kimodo_pos_track_20260708_142052-20260708_142059/last.pt \
+bash ardy_sonic/run_ardy_sonic.sh
 ```
 The robot walks to the goal in **one continuous motion** — there is no separate
 settle/correction stage — and still lands on the FULL goal pose (root x,y + heading
@@ -106,17 +110,17 @@ settle/correction stage — and still lands on the FULL goal pose (root x,y + he
    re-attaches), and the planner pins the canonical start to (0,0) while the
    terminal landing pins the last frames to the target — so a plan that reaches the
    goal terminates *exactly* at goal x,y + heading + 29-DOF.
-2. **Drift is corrected during the walk.** While far from the goal, each plan is
-   tracked for `TRACK_FRACTION` of its length, then re-planned from the real pose.
-3. **The final plan is not cut.** At a replan boundary within `FINAL_LEG_DISTANCE`
+2. **Drift is corrected during the walk without freezing the sim.** While far
+   from the goal, the callback sends the next planner request at
+   `REPLAN_REQUEST_FRACTION` of the current plan. During planner latency the robot
+   keeps tracking the remaining installed reference; when the response passes shape,
+   finite-value, final-goal, and stale-start validation, it is installed.
+3. **The final plan is not cut.** When the active goal-reaching plan gets within `FINAL_LEG_DISTANCE`
    of the goal, the active plan is tracked to COMPLETION through its exact-landing
    frames plus `LANDING_HOLD_SECONDS` (the installed reference tail freezes on the
-   exact pose). Arrival is declared only when **all** of `pos_err ≤ ARRIVAL_RADIUS`,
-   `yaw_err ≤ YAW_TOL_DEG`, `max|Δjoint| ≤ JOINT_TOL_RAD` hold after such a landing;
-   then the pose is held `HOLD_SECONDS` and the eval stops. If a landing misses the
-   gate it re-plans from the real pose (same mechanism); after `STALL_PATIENCE`
-   landings without improvement it stops and prints the *achieved* errors instead of
-   faking arrival.
+   exact pose). Arrival is planner-centric: once that exact-landing reference has
+   completed, the callback prints robot tracking errors as diagnostics, holds
+   `HOLD_SECONDS`, and stops.
 
 Visual aids: the destination 29-DOF pose is drawn as **blue spheres**
 (`/Visuals/ArdyDestinationPose`) and every installed Ardy plan's root path as an
@@ -128,19 +132,19 @@ each replan.
 |---|---|---|
 | `FORWARD_METERS` | `5.0` | goal distance ahead of the start pose |
 | `GOAL_MODE` | `forward` | `forward` (ahead of start heading) or `absolute` |
-| `ARRIVAL_RADIUS` | `0.10` | arrival gate: root xy error tolerance (m) |
-| `YAW_TOL_DEG` | `8.0` | arrival gate: root heading error tolerance (deg) |
-| `JOINT_TOL_RAD` | `0.35` | arrival gate: max per-joint error vs the target 29-DOF pose (rad) |
+| `ARRIVAL_RADIUS` | `0.10` | diagnostic root xy tolerance printed at planner-arrival (m) |
+| `YAW_TOL_DEG` | `8.0` | diagnostic root heading tolerance printed at planner-arrival (deg) |
+| `JOINT_TOL_RAD` | `0.35` | diagnostic max per-joint tolerance printed at planner-arrival (rad) |
 | `FINAL_LEG_DISTANCE` | `1.0` | within this of the goal, stop cutting: track the plan to its exact landing (m) |
 | `LANDING_HOLD_SECONDS` | `2.0` | extra tracking of the frozen exact-pose tail after a landing (s) |
-| `STALL_PATIENCE` | `3` | landings without improvement before an honest stop |
-| `MIN_IMPROVE` | `0.05` | required improvement of the normalized worst error per landing |
 | `HOLD_SECONDS` | `3.0` | after arriving, hold at the destination this long before stopping |
 | `SHOW_TARGET_MARKERS` | `True` | draw the destination 29-DOF pose as blue spheres (one per body) |
 | `SHOW_PLAN_MARKERS` | `True` | draw each Ardy plan's root path as an orange ground track |
 | `MAX_PLAN_DISTANCE` | `6.0` | cap per-plan walk distance (chunk longer goals) |
 | `SECONDS_PER_METER` | `2.0` | plan duration = max(min, distance × this) → ~0.5 m/s |
-| `TRACK_FRACTION` | `0.9` | replan after tracking this fraction of a non-final plan |
+| `REPLAN_REQUEST_FRACTION` | `0.8` | request the next non-final plan after this fraction of the current plan |
+| `MAX_ASYNC_START_XY_ERROR` | `0.75` | discard an async response if its first frame is this far from the current robot xy |
+| `TRACK_FRACTION` | `0.9` | legacy compatibility knob; async requests use `REPLAN_REQUEST_FRACTION` |
 | `MAX_REPLANS` / `MAX_STEPS` | `40` / `12000` | safety caps |
 | `CHECKPOINT` | `sonic_release/last.pt` | SONIC policy checkpoint |
 

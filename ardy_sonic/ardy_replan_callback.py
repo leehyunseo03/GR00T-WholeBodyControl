@@ -16,9 +16,10 @@ the loop between the Ardy motion planner (a separate process on the host, in the
 There is no separate settle/correction stage. The robot walks to the goal in one
 continuous motion:
 
-  * While far from the goal, each plan is tracked for ``track_fraction`` of its
-    length and then re-planned from the robot's real pose (drift is corrected
-    DURING the walk, not after it).
+  * While far from the goal, the next plan is requested once the current plan is
+    about ``replan_request_fraction`` consumed. The sim keeps tracking the
+    remaining current reference while the planner works; when a valid response is
+    available, it is installed without blocking the eval loop.
   * At a replan boundary where the active plan already reaches the goal and the
     robot is within ``final_leg_distance``, the plan is NOT cut: it is tracked to
     COMPLETION (including the exact-landing frames) plus ``landing_hold_seconds``
@@ -79,7 +80,9 @@ class ArdyReplanCallback:
         max_plan_distance: float = 6.0,      # cap per-plan forward distance (m)
         seconds_per_meter: float = 2.0,      # plan duration = max(min_duration, distance * this)
         min_duration: float = 2.5,
-        track_fraction: float = 0.9,         # replan after tracking this fraction of a non-final plan
+        track_fraction: float = 0.9,         # legacy compatibility; async replans use replan_request_fraction
+        replan_request_fraction: float = 0.8,  # asynchronously request the next non-final plan here
+        max_async_start_xy_error: float = 0.75,  # discard async plans whose start became too stale (m)
         max_replans: int = 40,
         max_steps: int = 12000,              # hard stop on total control steps
         control_hz: float = 50.0,
@@ -114,6 +117,8 @@ class ArdyReplanCallback:
         self.seconds_per_meter = float(seconds_per_meter)
         self.min_duration = float(min_duration)
         self.track_fraction = float(np.clip(track_fraction, 0.1, 1.0))
+        self.replan_request_fraction = float(np.clip(replan_request_fraction, 0.05, 0.98))
+        self.max_async_start_xy_error = max(0.0, float(max_async_start_xy_error))
         self.max_replans = int(max_replans)
         self.max_steps = int(max_steps)
         self.control_hz = float(control_hz)
@@ -146,9 +151,12 @@ class ArdyReplanCallback:
         # currently tracked segment
         self._phase = "walk"                 # "walk" (may be cut+replanned) | "landing" (tracked to completion)
         self._seg_end_step = 0
+        self._seg_request_step = 0
         self._install_step = 0
         self._seg_total_steps = 0
         self._cur_plan_reaches_goal = False
+        self._pending_plan = None
+        self._tail_wait_logged = False
         # landing bookkeeping
         self._landings = 0
         self._best_score = float("inf")
@@ -259,18 +267,26 @@ class ArdyReplanCallback:
             self._stop_with_report(cur, f"max_steps={self.max_steps} reached")
             return True
 
-        if not (self._need_replan or self._step >= self._seg_end_step):
+        pos_err, yaw_err, joint_err = self._errors(cur)
+
+        try:
+            pending = self._poll_pending_plan(cur_xy)
+        except Exception as exc:  # noqa: BLE001
+            self._log(f"[ardy_replan] planning failed: {exc}. Stopping.")
+            self._done = True
+            return True
+        if pending is not None:
+            qpos, fps, meta = pending
+            try:
+                self._install_plan(command, env_idx, qpos, fps, meta)
+            except Exception as exc:  # noqa: BLE001
+                self._log(f"[ardy_replan] plan install failed: {exc}. Stopping.")
+                self._done = True
+                return True
             return False
 
-        # ---- segment boundary: measure the full pose error and decide ------------
-        pos_err, yaw_err, joint_err = self._errors(cur)
-        self._log(f"[ardy_replan] step={self._step} phase={self._phase} "
-                  f"cur_xy={cur_xy.round(3).tolist()} pos_err={pos_err:.3f}m "
-                  f"yaw_err={math.degrees(yaw_err):.1f}deg joint_err={joint_err:.3f}rad "
-                  f"replans={self._replans}")
-
         if not self._need_replan:
-            if self._phase == "landing":
+            if self._phase == "landing" and self._step >= self._seg_end_step:
                 # The Ardy goal-reaching plan was tracked through its exact landing.
                 # Stop based on the planner/reference reaching the goal; print robot
                 # tracking errors only as diagnostics.
@@ -284,7 +300,7 @@ class ArdyReplanCallback:
                           f"max_joint={joint_err:.3f}rad (tol {self.joint_tol_rad}). "
                           f"Holding {self.hold_seconds:.1f}s, then stopping.")
                 return False
-            elif self._cur_plan_reaches_goal and pos_err <= self.final_leg_distance:
+            elif self._phase == "walk" and self._cur_plan_reaches_goal and pos_err <= self.final_leg_distance:
                 # Close to the goal and the active plan already ends exactly on the
                 # goal pose: do NOT cut it -- extend tracking through its exact-landing
                 # frames plus the frozen-pose tail. One continuous walk, no correction leg.
@@ -296,16 +312,38 @@ class ArdyReplanCallback:
                           f"landing (until step {self._seg_end_step}, no replan).")
                 return False
 
-        if self._replans >= self.max_replans:
-            self._stop_with_report(cur, f"max_replans={self.max_replans} reached")
-            return True
+        if self._need_replan:
+            self._log(f"[ardy_replan] step={self._step} phase={self._phase} "
+                      f"cur_xy={cur_xy.round(3).tolist()} pos_err={pos_err:.3f}m "
+                      f"yaw_err={math.degrees(yaw_err):.1f}deg joint_err={joint_err:.3f}rad "
+                      f"replans={self._replans}")
+            if self._replans >= self.max_replans:
+                self._stop_with_report(cur, f"max_replans={self.max_replans} reached")
+                return True
+            try:
+                self._plan_leg(command, env_idx, cur_xy, pos_err)
+            except Exception as exc:  # noqa: BLE001
+                self._log(f"[ardy_replan] planning failed: {exc}. Stopping.")
+                self._done = True
+                return True
+            return False
 
-        try:
-            self._plan_leg(command, env_idx, cur_xy, pos_err)
-        except Exception as exc:  # noqa: BLE001
-            self._log(f"[ardy_replan] planning failed: {exc}. Stopping.")
-            self._done = True
-            return True
+        if self._phase == "walk" and not self._cur_plan_reaches_goal:
+            if self._pending_plan is None and self._step >= self._seg_request_step:
+                if self._replans >= self.max_replans:
+                    self._stop_with_report(cur, f"max_replans={self.max_replans} reached")
+                    return True
+                try:
+                    self._request_next_plan(cur_xy, pos_err, wait=False)
+                except Exception as exc:  # noqa: BLE001
+                    self._log(f"[ardy_replan] planning failed: {exc}. Stopping.")
+                    self._done = True
+                    return True
+            if self._pending_plan is not None and self._step >= self._seg_end_step and not self._tail_wait_logged:
+                self._tail_wait_logged = True
+                self._log(f"[ardy_replan] step={self._step} reached current plan end while "
+                          f"'{self._pending_plan['id']}' is still pending; continuing the "
+                          "current reference tail instead of blocking.")
         return False
 
     # -- planning ----------------------------------------------------------------
@@ -314,11 +352,25 @@ class ArdyReplanCallback:
 
         The plan is start-anchored at ``cur_xy`` (it visibly re-attaches to the G1)
         and, when it reaches the goal, ends exactly on the goal pose. Short legs are
-        tracked straight through their landing; longer legs are cut at
-        ``track_fraction`` and re-planned.
+        tracked straight through their landing; longer legs are prefetched
+        asynchronously before the current reference ends.
         """
-        dist = min(remaining, self.max_plan_distance)
-        reach_target = dist >= remaining - 1e-6
+        self._request_next_plan(cur_xy, remaining, wait=True)
+        qpos, fps, meta = self._wait_for_pending_plan()
+        self._install_plan(command, env_idx, qpos, fps, meta)
+
+    def _request_next_plan(self, cur_xy: np.ndarray, remaining: float, wait: bool):
+        """Create a planner request. When ``wait`` is False, eval keeps stepping."""
+        if self._pending_plan is not None:
+            return self._pending_plan
+        dist, heading, duration, reach_target = self._plan_params(cur_xy, remaining)
+        meta = self._start_plan_request(cur_xy, heading, dist, duration, reach_target, wait=wait)
+        self._pending_plan = meta
+        return meta
+
+    def _plan_params(self, cur_xy: np.ndarray, remaining: float) -> tuple[float, float, float, bool]:
+        dist = min(float(remaining), self.max_plan_distance)
+        reach_target = dist >= float(remaining) - 1e-6
         if remaining < 0.30:
             # Residual too small for atan2 to give a meaningful walk direction (and a
             # tiny leg must still END facing the goal heading): walk out the residual
@@ -328,8 +380,9 @@ class ArdyReplanCallback:
             delta = self._goal_xy - cur_xy
             heading = math.atan2(float(delta[1]), float(delta[0]))
         duration = max(self.min_duration, dist * self.seconds_per_meter)
+        return dist, heading, duration, reach_target
 
-        qpos, fps = self._request_plan(cur_xy, heading, dist, duration, reach_target)
+    def _install_plan(self, command, env_idx: int, qpos: np.ndarray, fps: float, meta: dict) -> None:
         command.install_live_qpos_segment(
             torch.as_tensor(qpos, dtype=torch.float32),
             fps=int(round(fps)),
@@ -338,22 +391,32 @@ class ArdyReplanCallback:
         )
         self._replans += 1
         self._need_replan = False
+        self._pending_plan = None
+        self._tail_wait_logged = False
         self._set_plan_marker_positions(command, env_idx, qpos, fps)
 
         self._install_step = self._step
+        duration = float(meta["duration"])
+        dist = float(meta["dist"])
+        reach_target = bool(meta["reach_target"])
         self._seg_total_steps = min(int(round(duration * self.control_hz)), self.placeholder_frames)
         final_leg = reach_target and dist <= self.final_leg_distance
         if final_leg:
             self._phase = "landing"
             self._seg_end_step = (self._install_step + self._seg_total_steps
                                   + int(self.landing_hold_seconds * self.control_hz))
+            self._seg_request_step = self._seg_end_step
         else:
             self._phase = "walk"
-            self._seg_end_step = self._install_step + max(1, int(self.track_fraction * self._seg_total_steps))
+            self._seg_end_step = self._install_step + self._seg_total_steps
+            self._seg_request_step = (
+                self._install_step
+                + max(1, int(self.replan_request_fraction * self._seg_total_steps))
+            )
         self._cur_plan_reaches_goal = reach_target
         self._log(f"[ardy_replan] plan installed ({self._phase}): {qpos.shape[0]}x{qpos.shape[1]} "
                   f"@ {fps:g}fps dist={dist:.3f} dur={duration:.2f}s reach_target={reach_target} "
-                  f"track_until_step={self._seg_end_step}")
+                  f"request_next_step={self._seg_request_step} track_until_step={self._seg_end_step}")
 
     # -- errors / reporting -------------------------------------------------------
     def _errors(self, cur: np.ndarray) -> tuple[float, float, float]:
@@ -458,7 +521,7 @@ class ArdyReplanCallback:
         return (cur_xy + self.forward_meters * np.array([math.cos(cur_yaw), math.sin(cur_yaw)],
                                                         dtype=np.float32)).astype(np.float32)
 
-    def _request_plan(self, start_xy, heading, dist, duration, reach_target):
+    def _start_plan_request(self, start_xy, heading, dist, duration, reach_target, wait: bool):
         req_id = f"plan_{self._req_counter:04d}"
         self._req_counter += 1
         req = P.PlanRequest(
@@ -478,22 +541,80 @@ class ArdyReplanCallback:
         if resp_path.exists():
             resp_path.unlink()
         P.atomic_write_text(self._paths.request_path(req_id), req.to_json())
+        mode = "waiting for planner ..." if wait else "continuing current reference while planner runs"
         self._log(f"[ardy_replan] requested plan '{req_id}' dist={dist:.3f} dur={duration:.2f}s "
-                  f"heading={math.degrees(heading):.1f}deg; waiting for planner ...")
-        t0 = time.time()
-        while not resp_path.exists():
-            if time.time() - t0 > self.plan_timeout_s:
-                raise TimeoutError(f"planner did not respond within {self.plan_timeout_s}s for '{req_id}'")
+                  f"heading={math.degrees(heading):.1f}deg; {mode}")
+        return {
+            "id": req_id,
+            "resp_path": resp_path,
+            "t0": time.time(),
+            "start_xy": np.asarray(start_xy, dtype=np.float32).copy(),
+            "heading": float(heading),
+            "dist": float(dist),
+            "duration": float(duration),
+            "reach_target": bool(reach_target),
+            "wait": bool(wait),
+        }
+
+    def _wait_for_pending_plan(self):
+        while True:
+            ready = self._poll_pending_plan(cur_xy=None)
+            if ready is not None:
+                return ready
             time.sleep(0.1)
+
+    def _poll_pending_plan(self, cur_xy: Optional[np.ndarray]):
+        meta = self._pending_plan
+        if meta is None:
+            return None
+        resp_path = meta["resp_path"]
+        req_id = meta["id"]
+        while not resp_path.exists():
+            if time.time() - meta["t0"] > self.plan_timeout_s:
+                raise TimeoutError(f"planner did not respond within {self.plan_timeout_s}s for '{req_id}'")
+            return None
         resp = P.read_response(resp_path)
         if not resp["ok"]:
             raise RuntimeError(f"planner error for '{req_id}': {resp['error']}")
+        qpos, fps = self._validate_plan_response(req_id, resp, meta, cur_xy)
+        if qpos is None:
+            self._pending_plan = None
+            return None
+        self._pending_plan = None
+        self._log(f"[ardy_replan] received valid plan '{req_id}' in {time.time()-meta['t0']:.1f}s "
+                  f"frames={qpos.shape[0]} final_xy={resp['final_root_xy'].round(3).tolist()}")
+        return qpos, fps, meta
+
+    def _validate_plan_response(self, req_id: str, resp: dict, meta: dict, cur_xy: Optional[np.ndarray]):
         qpos = resp["qpos"]
+        fps = float(resp["fps"])
         if qpos.ndim != 2 or qpos.shape[1] < P.QPOS_DIM or qpos.shape[0] < 2:
             raise ValueError(f"planner returned bad qpos shape {qpos.shape}")
-        self._log(f"[ardy_replan] received plan '{req_id}' in {time.time()-t0:.1f}s "
-                  f"frames={qpos.shape[0]} final_xy={resp['final_root_xy'].round(3).tolist()}")
-        return qpos, resp["fps"]
+        if not np.isfinite(qpos[:, :P.QPOS_DIM]).all():
+            raise ValueError(f"planner returned non-finite qpos for '{req_id}'")
+        if not math.isfinite(fps) or fps <= 0.0:
+            raise ValueError(f"planner returned bad fps={fps} for '{req_id}'")
+
+        if cur_xy is not None:
+            start_err = float(np.linalg.norm(qpos[0, :2] - np.asarray(cur_xy, dtype=np.float32)))
+            if start_err > self.max_async_start_xy_error:
+                self._log(f"[ardy_replan] discarded stale async plan '{req_id}': "
+                          f"start_xy_error={start_err:.3f}m > {self.max_async_start_xy_error:.3f}m")
+                return None, None
+
+        if meta["reach_target"]:
+            final_xy = qpos[-1, :2]
+            goal_err = float(np.linalg.norm(final_xy - self._goal_xy))
+            final_yaw = P.yaw_from_quat_wxyz(qpos[-1, 3:7])
+            yaw_err = abs(float(_wrap_angle(final_yaw - self._goal_heading)))
+            joint_err = float(np.abs(_wrap_angle(qpos[-1, 7:36] - self._target_joints)).max())
+            if goal_err > max(self.arrival_radius, 0.25):
+                raise ValueError(f"goal-reaching plan '{req_id}' final_xy is {goal_err:.3f}m from goal")
+            if yaw_err > max(self.yaw_tol_rad, math.radians(20.0)):
+                raise ValueError(f"goal-reaching plan '{req_id}' final yaw error is {math.degrees(yaw_err):.1f}deg")
+            if joint_err > max(self.joint_tol_rad, 0.50):
+                raise ValueError(f"goal-reaching plan '{req_id}' final joint error is {joint_err:.3f}rad")
+        return qpos, fps
 
     def _robot_qpos_mujoco(self, command, env_idx: int) -> np.ndarray:
         """Current robot state as MuJoCo qpos [root xyz(env-local), quat wxyz, 29 joints]."""

@@ -45,7 +45,7 @@ from ardy_sonic.ardy_replan_callback import ArdyReplanCallback
 TARGET_JOINTS = np.linspace(-0.3, 0.3, 29).astype(np.float32)  # non-trivial 29-DOF target
 
 
-def _fake_planner_loop(paths: P.RuntimePaths, stop: threading.Event) -> None:
+def _fake_planner_loop(paths: P.RuntimePaths, stop: threading.Event, response_delay_s: float = 0.0) -> None:
     seen: set[str] = set()
     while not stop.is_set():
         for rp in sorted(paths.requests.glob("*.json")):
@@ -56,6 +56,8 @@ def _fake_planner_loop(paths: P.RuntimePaths, stop: threading.Event) -> None:
             except Exception:
                 continue
             seen.add(rp.stem)
+            if response_delay_s > 0.0:
+                time.sleep(response_delay_s)
             fps = 25.0
             T = max(2, int(round(req.duration * fps)))
             canon = np.zeros((T, 36), np.float32)
@@ -143,15 +145,22 @@ class _FakeEnv:
         self.num_envs = 1
 
 
-def run_scenario(name: str, **goal_kwargs) -> None:
+def run_scenario(
+    name: str,
+    planner_delay_s: float = 0.0,
+    sleep_per_step_s: float = 0.0,
+    callback_overrides: dict | None = None,
+    **goal_kwargs,
+) -> None:
     print(f"\n######## scenario: {name} {goal_kwargs} ########")
     runtime = Path(tempfile.mkdtemp(prefix="ardy_sonic_test_"))
     paths = P.RuntimePaths(runtime).ensure()
     stop = threading.Event()
-    th = threading.Thread(target=_fake_planner_loop, args=(paths, stop), daemon=True)
+    th = threading.Thread(target=_fake_planner_loop, args=(paths, stop, planner_delay_s), daemon=True)
     th.start()
 
     env = _FakeEnv()
+    overrides = dict(callback_overrides or {})
     cb = ArdyReplanCallback(
         target_joint_qpos=TARGET_JOINTS.tolist(),
         **goal_kwargs,
@@ -159,9 +168,14 @@ def run_scenario(name: str, **goal_kwargs) -> None:
         final_leg_distance=1.0, landing_hold_seconds=1.0,
         stall_patience=3, min_improve=0.05, hold_seconds=1.0,
         show_target_markers=False, show_plan_markers=False,
-        max_plan_distance=6.0, seconds_per_meter=2.0, track_fraction=0.9,
+        max_plan_distance=overrides.pop("max_plan_distance", 6.0),
+        seconds_per_meter=overrides.pop("seconds_per_meter", 2.0),
+        track_fraction=overrides.pop("track_fraction", 0.9),
+        replan_request_fraction=overrides.pop("replan_request_fraction", 0.8),
+        max_async_start_xy_error=overrides.pop("max_async_start_xy_error", 0.75),
         max_replans=40, max_steps=12000, control_hz=50.0, placeholder_frames=1500,
         plan_timeout_s=30.0, runtime_dir=str(runtime), verbose=True,
+        **overrides,
     )
     cb.on_step_end(env=env)
 
@@ -172,6 +186,8 @@ def run_scenario(name: str, **goal_kwargs) -> None:
         done = cb.eval_step(env, None)
         if done:
             break
+        if sleep_per_step_s > 0.0:
+            time.sleep(sleep_per_step_s)
     stop.set()
     th.join(timeout=2)
 
@@ -197,6 +213,7 @@ def run_scenario(name: str, **goal_kwargs) -> None:
     assert yaw_err <= cb.yaw_tol_rad + 0.02, f"yaw_err too large: {yaw_err}"
     assert joint_err <= cb.joint_tol_rad + 0.02, f"joint_err too large: {joint_err}"
     assert env.motion_command.install_count >= 1
+    assert cb._pending_plan is None, "no async request should be left pending after completion"
     print(f"scenario '{name}' OK")
 
 
@@ -206,6 +223,16 @@ def main() -> None:
     # off-axis absolute goal: exercises the SE(2) rotation and the yaw gate
     # (goal heading = atan2(2, 3) = 33.7 deg while the robot starts facing 0 deg)
     run_scenario("absolute-3-2", goal_mode="absolute", goal_xy=[3.0, 2.0])
+    # chunked plan: exercises non-blocking async replanning. The fake planner
+    # intentionally responds after the request step while eval keeps advancing.
+    run_scenario(
+        "forward-5m-async-prefetch",
+        goal_mode="forward",
+        forward_meters=5.0,
+        planner_delay_s=0.05,
+        sleep_per_step_s=0.001,
+        callback_overrides={"max_plan_distance": 2.0, "replan_request_fraction": 0.8},
+    )
     print("\nBRIDGE CONTROL-LOOP TEST OK")
 
 
