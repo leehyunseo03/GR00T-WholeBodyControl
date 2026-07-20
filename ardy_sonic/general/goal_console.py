@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Interactive command terminal for ardy_sonic/general.
 
-Type env-local XY deltas from the robot's current position, such as:
+Type env-local/global XY goals, such as:
 
     0 3
     1 -1
 
 Each command is written atomically into the shared runtime directory. The
 container-side LiveGoalReplanCallback picks it up and replans from the robot's
-current physical pose toward that relative target. Pass --absolute to send a
-literal env-local XY goal instead.
+current physical pose toward that absolute target. Pass --relative to send a
+current-position delta instead.
 """
 
 from __future__ import annotations
@@ -79,13 +79,12 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument(
         "--relative",
         action="store_true",
-        default=True,
-        help="Interpret X Y as a current-position delta in env-local coordinates (default).",
+        help="Interpret X Y as a current-position delta in env-local coordinates.",
     )
     mode.add_argument(
         "--absolute",
         action="store_true",
-        help="Interpret X Y as a literal env-local goal coordinate.",
+        help="Interpret X Y as a literal env-local/global goal coordinate (default).",
     )
     return ap.parse_args()
 
@@ -94,7 +93,7 @@ def main() -> int:
     args = parse_args()
     runtime = Path(args.runtime) if args.runtime else _default_runtime()
     path = runtime / args.file
-    mode = "absolute" if args.absolute else "relative"
+    mode = "relative" if args.relative else "absolute"
 
     if args.xy:
         if len(args.xy) != 2:

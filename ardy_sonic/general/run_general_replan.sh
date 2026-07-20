@@ -26,6 +26,6 @@ echo "[run_general_replan] initial goal: ${FORWARD_METERS}m forward until a comm
 echo "[run_general_replan] local plan distance: ${LOCAL_PLAN_DISTANCE}m"
 echo "[run_general_replan] command terminal:"
 echo "  python3 ardy_sonic/general/goal_console.py"
-echo "  # then type goals like: 0 3"
+echo "  # then type absolute env-local/global goals like: 0 3"
 
 exec bash "${REPO_ROOT}/ardy_sonic/run_ardy_sonic.sh" "$@"

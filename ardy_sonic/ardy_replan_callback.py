@@ -371,8 +371,17 @@ class ArdyReplanCallback:
         return meta
 
     def _plan_params(self, cur_xy: np.ndarray, remaining: float) -> tuple[float, float, float, bool]:
-        dist = min(float(remaining), self.max_plan_distance)
-        reach_target = dist >= float(remaining) - 1e-6
+        remaining = float(remaining)
+        max_dist = float(self.max_plan_distance)
+        if remaining <= max_dist + self.final_leg_distance:
+            # If one capped step would leave only a short residual, request the
+            # full remaining leg as the goal-reaching plan instead of producing
+            # another near-target intermediate segment.
+            dist = remaining
+            reach_target = True
+        else:
+            dist = max_dist
+            reach_target = False
         if remaining < 0.30:
             # Residual too small for atan2 to give a meaningful walk direction (and a
             # tiny leg must still END facing the goal heading): walk out the residual

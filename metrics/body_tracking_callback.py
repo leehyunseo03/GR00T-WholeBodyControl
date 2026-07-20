@@ -62,6 +62,71 @@ class BodyTrackingCallback:
             arr = np.asarray(dones)
         return arr.astype(bool).reshape(-1)
 
+    @staticmethod
+    def _scalar_for_env(value: Any, env_idx: int) -> float | None:
+        try:
+            if isinstance(value, torch.Tensor):
+                arr = value.detach().cpu().reshape(-1)
+                if arr.numel() == 0:
+                    return None
+                return float(arr[min(env_idx, arr.numel() - 1)].item())
+            arr = np.asarray(value).reshape(-1)
+            if arr.size == 0:
+                return None
+            return float(arr[min(env_idx, arr.size - 1)])
+        except Exception:
+            return None
+
+    def _done_reason(self, env, extras: dict[str, Any], env_idx: int) -> str:
+        parts: list[str] = []
+
+        base_env = getattr(env, "env", env)
+        terminated = self._scalar_for_env(getattr(base_env, "reset_terminated", None), env_idx)
+        truncated = self._scalar_for_env(getattr(base_env, "reset_time_outs", None), env_idx)
+        if terminated is not None:
+            parts.append(f"terminated={bool(terminated)}")
+        if truncated is not None:
+            parts.append(f"truncated={bool(truncated)}")
+
+        time_outs = self._scalar_for_env(extras.get("time_outs"), env_idx)
+        if time_outs is not None and truncated is None:
+            parts.append(f"truncated={bool(time_outs)}")
+
+        logs = extras.get("to_log") or extras.get("log") or {}
+        fired_terms = []
+        for key, value in logs.items():
+            if not str(key).startswith("Episode_Termination/"):
+                continue
+            scalar = self._scalar_for_env(value, 0)
+            if scalar is not None and scalar > 0.0:
+                fired_terms.append(f"{key.split('/', 1)[1]}={scalar:g}")
+        if fired_terms:
+            parts.append("episode_terms=" + ",".join(fired_terms))
+
+        manager = getattr(base_env, "termination_manager", None)
+        term_names = getattr(manager, "_term_names", [])
+        live_terms = []
+        for term_name in term_names:
+            try:
+                scalar = self._scalar_for_env(manager.get_term(term_name), env_idx)
+            except Exception:
+                continue
+            if scalar is not None and scalar > 0.0:
+                live_terms.append(term_name)
+        if live_terms:
+            parts.append("live_terms=" + ",".join(live_terms))
+
+        if hasattr(base_env, "episode_length_buf"):
+            ep_step = self._scalar_for_env(base_env.episode_length_buf, env_idx)
+            max_len = getattr(base_env, "max_episode_length", None)
+            if ep_step is not None and max_len is not None:
+                try:
+                    parts.append(f"episode_step={int(ep_step)}/{int(max_len)}")
+                except Exception:
+                    pass
+
+        return "; ".join(parts) if parts else "reason unavailable"
+
     def _body_indices(self, names: list[str]) -> list[int]:
         assert self._body_names is not None
         return [self._body_names.index(name) for name in names if name in self._body_names]
@@ -182,15 +247,17 @@ class BodyTrackingCallback:
             return True
 
         dones = self._as_done_mask(results[2])
+        extras = results[3] if len(results) > 3 and isinstance(results[3], dict) else {}
         env_idx = min(self.env_index, len(dones) - 1)
         done = bool(dones[env_idx])
 
         if done and not self._done_logged:
             self._done_logged = True
+            reason = self._done_reason(env, extras, env_idx)
             print(
                 "[body_tracking] env done observed "
                 f"(env_index={env_idx}, stop_on_done={self.stop_on_done}, "
-                f"recorded_frames={len(self._frames['body_error'])}).",
+                f"recorded_frames={len(self._frames['body_error'])}, {reason}).",
                 flush=True,
             )
 

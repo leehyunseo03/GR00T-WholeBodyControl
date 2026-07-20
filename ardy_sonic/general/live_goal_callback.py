@@ -82,7 +82,7 @@ class LiveGoalReplanCallback(ArdyReplanCallback):
             f"local_plan_distance={self.local_plan_distance:.3f}m "
             f"keep_alive_after_arrival={self.keep_alive_after_arrival}"
         )
-        self._log("[general] command format: relative env-local delta by default, e.g. `0 3`")
+        self._log("[general] command format: absolute env-local/global goal by default, e.g. `0 3`")
 
     def eval_step(self, env, _results) -> bool:
         if self._done:
@@ -222,8 +222,16 @@ class LiveGoalReplanCallback(ArdyReplanCallback):
 
     def _plan_params(self, cur_xy: np.ndarray, remaining: float) -> tuple[float, float, float, bool]:
         local_max = max(0.05, float(self.local_plan_distance))
-        dist = min(float(remaining), local_max)
-        reach_target = dist >= float(remaining) - 1e-6
+        remaining = float(remaining)
+        if remaining <= local_max + self.final_leg_distance:
+            # Avoid leaving a tiny residual plan near the goal. Once the capped
+            # local step would enter the final-leg radius, make this request the
+            # exact goal-reaching plan.
+            dist = remaining
+            reach_target = True
+        else:
+            dist = local_max
+            reach_target = False
         if remaining < 0.30:
             heading = self._goal_heading
         else:
