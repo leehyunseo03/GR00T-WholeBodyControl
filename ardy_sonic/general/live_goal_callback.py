@@ -39,7 +39,7 @@ def _env_bool(name: str, default: bool) -> bool:
 
 
 class LiveGoalReplanCallback(ArdyReplanCallback):
-    """Follow a live-updated absolute XY goal using short local Ardy plans."""
+    """Follow live-updated XY commands using short local Ardy plans."""
 
     def __init__(
         self,
@@ -82,7 +82,7 @@ class LiveGoalReplanCallback(ArdyReplanCallback):
             f"local_plan_distance={self.local_plan_distance:.3f}m "
             f"keep_alive_after_arrival={self.keep_alive_after_arrival}"
         )
-        self._log("[general] command format: type absolute env-local XY, e.g. `0 3`")
+        self._log("[general] command format: relative env-local delta by default, e.g. `0 3`")
 
     def eval_step(self, env, _results) -> bool:
         if self._done:
@@ -148,7 +148,7 @@ class LiveGoalReplanCallback(ArdyReplanCallback):
             return
 
         try:
-            goal_xy = np.asarray(data["goal_xy"], dtype=np.float32)
+            goal_xy, command_desc = self._resolve_command_goal_xy(data, cur_xy)
         except Exception as exc:  # noqa: BLE001
             self._last_goal_command_seq = seq
             self._log(f"[general] invalid goal command seq={seq}: {exc}")
@@ -159,9 +159,29 @@ class LiveGoalReplanCallback(ArdyReplanCallback):
             return
 
         self._last_goal_command_seq = seq
-        self._switch_to_commanded_goal(goal_xy, cur_xy, seq)
+        self._switch_to_commanded_goal(goal_xy, cur_xy, seq, command_desc=command_desc)
 
-    def _switch_to_commanded_goal(self, goal_xy: np.ndarray, cur_xy: np.ndarray, seq) -> None:
+    def _resolve_command_goal_xy(self, data: dict, cur_xy: np.ndarray) -> tuple[np.ndarray, str]:
+        mode = str(data.get("command_mode", "")).strip().lower()
+        if "goal_delta_xy" in data or mode == "relative":
+            delta = np.asarray(data["goal_delta_xy"], dtype=np.float32)
+            if delta.shape != (2,):
+                raise ValueError(f"goal_delta_xy must have shape (2,), got {delta!r}")
+            return cur_xy.astype(np.float32) + delta, f"relative_delta={delta.round(3).tolist()}"
+        if "goal_xy" in data or mode in {"", "absolute"}:
+            goal = np.asarray(data["goal_xy"], dtype=np.float32)
+            if goal.shape != (2,):
+                raise ValueError(f"goal_xy must have shape (2,), got {goal!r}")
+            return goal, "absolute_goal"
+        raise ValueError("expected goal_delta_xy or goal_xy")
+
+    def _switch_to_commanded_goal(
+        self,
+        goal_xy: np.ndarray,
+        cur_xy: np.ndarray,
+        seq,
+        command_desc: str = "absolute_goal",
+    ) -> None:
         delta = goal_xy - cur_xy
         remaining = float(np.linalg.norm(delta))
         if remaining > 1e-6:
@@ -190,6 +210,7 @@ class LiveGoalReplanCallback(ArdyReplanCallback):
         msg = (
             "[general] new commanded goal "
             f"seq={seq} count={self._live_goal_count} "
+            f"{command_desc} "
             f"cur_xy={cur_xy.round(3).tolist()} "
             f"goal_xy={self._goal_xy.round(3).tolist()} "
             f"heading_to_goal={math.degrees(self._goal_heading):.1f}deg "

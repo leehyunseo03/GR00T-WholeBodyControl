@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Interactive command terminal for ardy_sonic/general.
 
-Type absolute env-local XY goals such as:
+Type env-local XY deltas from the robot's current position, such as:
 
     0 3
-    4.5 -1
+    1 -1
 
 Each command is written atomically into the shared runtime directory. The
 container-side LiveGoalReplanCallback picks it up and replans from the robot's
-current physical pose toward that point.
+current physical pose toward that relative target. Pass --absolute to send a
+literal env-local XY goal instead.
 """
 
 from __future__ import annotations
@@ -43,16 +44,23 @@ def _atomic_write_json(path: Path, data: dict) -> None:
     os.replace(tmp, path)
 
 
-def _write_goal(path: Path, x: float, y: float, note: str = "") -> None:
+def _write_goal(path: Path, x: float, y: float, mode: str, note: str = "") -> None:
     now = time.time()
     data = {
         "seq": time.time_ns(),
         "created_at": now,
-        "goal_xy": [float(x), float(y)],
+        "command_mode": mode,
         "note": note,
     }
+    if mode == "absolute":
+        data["goal_xy"] = [float(x), float(y)]
+    elif mode == "relative":
+        data["goal_delta_xy"] = [float(x), float(y)]
+    else:
+        raise ValueError(f"unknown command mode: {mode}")
     _atomic_write_json(path, data)
-    print(f"[goal_console] wrote goal_xy={[round(x, 4), round(y, 4)]} -> {path}", flush=True)
+    key = "goal_xy" if mode == "absolute" else "goal_delta_xy"
+    print(f"[goal_console] wrote {key}={[round(x, 4), round(y, 4)]} -> {path}", flush=True)
 
 
 def _parse_xy(text: str) -> tuple[float, float]:
@@ -64,9 +72,21 @@ def _parse_xy(text: str) -> tuple[float, float]:
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("xy", nargs="*", help="Optional one-shot goal: X Y")
+    ap.add_argument("xy", nargs="*", help="Optional one-shot command: X Y")
     ap.add_argument("--runtime", default=None, help="Shared runtime dir. Default matches run_planner.sh.")
     ap.add_argument("--file", default="general_goal_command.json", help="Command filename inside the runtime dir.")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--relative",
+        action="store_true",
+        default=True,
+        help="Interpret X Y as a current-position delta in env-local coordinates (default).",
+    )
+    mode.add_argument(
+        "--absolute",
+        action="store_true",
+        help="Interpret X Y as a literal env-local goal coordinate.",
+    )
     return ap.parse_args()
 
 
@@ -74,20 +94,24 @@ def main() -> int:
     args = parse_args()
     runtime = Path(args.runtime) if args.runtime else _default_runtime()
     path = runtime / args.file
+    mode = "absolute" if args.absolute else "relative"
 
     if args.xy:
         if len(args.xy) != 2:
             raise SystemExit("one-shot mode expects exactly two args: X Y")
-        _write_goal(path, float(args.xy[0]), float(args.xy[1]), note="one-shot")
+        _write_goal(path, float(args.xy[0]), float(args.xy[1]), mode=mode, note="one-shot")
         return 0
 
     print("[goal_console] live ARDY goal console")
     print(f"[goal_console] runtime={runtime}")
     print(f"[goal_console] command_file={path}")
-    print("[goal_console] type `x y` to set an absolute env-local goal, or `q` to quit.")
+    if mode == "absolute":
+        print("[goal_console] type `x y` to set an absolute env-local goal, or `q` to quit.")
+    else:
+        print("[goal_console] type `dx dy` to move relative to the current env-local position, or `q` to quit.")
     while True:
         try:
-            line = input("goal xy> ").strip()
+            line = input("goal xy> " if mode == "absolute" else "goal delta> ").strip()
         except (EOFError, KeyboardInterrupt):
             print()
             return 0
@@ -100,7 +124,7 @@ def main() -> int:
         except ValueError as exc:
             print(f"[goal_console] {exc}", file=sys.stderr)
             continue
-        _write_goal(path, x, y, note="interactive")
+        _write_goal(path, x, y, mode=mode, note="interactive")
 
 
 if __name__ == "__main__":
