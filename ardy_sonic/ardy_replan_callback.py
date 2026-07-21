@@ -41,17 +41,25 @@ callback via Hydra ``++eval_callbacks=[ardy_replan]``).
 from __future__ import annotations
 
 import math
+import os
 import time
 from typing import Optional, Sequence
 
 import numpy as np
 import torch
 
+from ardy_sonic.base_state_estimator import FootOdometryBaseEstimator
 from ardy_sonic import protocol as P
 
 
 def _wrap_angle(a):
     return (a + np.pi) % (2.0 * np.pi) - np.pi
+
+
+def _as_bool(value) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+    return bool(value)
 
 
 class ArdyReplanCallback:
@@ -94,6 +102,12 @@ class ArdyReplanCallback:
         cfg_weight: Sequence[float] = (2.0, 3.0),
         seed: int = 0,
         runtime_dir: Optional[str] = None,
+        use_base_state_estimator: bool | str = False,
+        estimator_contact_force_threshold: float = 10.0,
+        estimator_log_interval: int = 100,
+        estimator_left_foot_body: str = "left_ankle_roll_link",
+        estimator_right_foot_body: str = "right_ankle_roll_link",
+        estimator_init_from_sim: bool | str = True,
         verbose: bool = True,
     ):
         self.goal_mode = goal_mode
@@ -131,6 +145,25 @@ class ArdyReplanCallback:
         self.cfg_weight = [float(v) for v in cfg_weight]
         self.seed = int(seed)
         self.verbose = bool(verbose)
+        self.use_base_state_estimator = _as_bool(
+            os.environ.get("ESTIMATE_BASE_STATE", use_base_state_estimator)
+        )
+        self.estimator_contact_force_threshold = float(estimator_contact_force_threshold)
+        self.estimator_log_interval = max(1, int(estimator_log_interval))
+        self.estimator_foot_body_names = {
+            "left": str(estimator_left_foot_body),
+            "right": str(estimator_right_foot_body),
+        }
+        self.estimator_init_from_sim = _as_bool(estimator_init_from_sim)
+        self._base_estimator = (
+            FootOdometryBaseEstimator(default_height=self.target_height)
+            if self.use_base_state_estimator
+            else None
+        )
+        self._base_estimator_foot_body_indices = None
+        self._last_estimator_log_step = -1
+        self._estimator_err_sum = 0.0
+        self._estimator_err_count = 0
 
         self._target_joints = np.asarray(
             self.target_joint_qpos if self.target_joint_qpos is not None else [0.0] * P.NUM_JOINTS,
@@ -187,6 +220,12 @@ class ArdyReplanCallback:
                   f"forward_meters={self.forward_meters} stop=ardy_goal_reached "
                   f"hold={self.hold_seconds:.1f}s diagnostics: pos<={self.arrival_radius}m "
                   f"yaw<={math.degrees(self.yaw_tol_rad):.0f}deg joint<={self.joint_tol_rad}rad")
+        if self.use_base_state_estimator:
+            self._log(
+                "[ardy_replan] base-state estimator enabled "
+                "(IMU orientation + joint-FK foot positions + foot contact; "
+                f"feet={self.estimator_foot_body_names})"
+            )
         # Create marker prims BEFORE the eval loop so they attach to the renderer
         # (creating markers mid-loop can leave them invisible). Positions are filled
         # in later: destination on the first eval_step, plan path on each install.
@@ -658,6 +697,119 @@ class ArdyReplanCallback:
                 raise ValueError(f"goal-reaching plan '{req_id}' final joint error is {joint_err:.3f}rad")
         return qpos, fps
 
+    def _resolve_estimator_foot_body_indices(self, command) -> dict[str, int]:
+        if self._base_estimator_foot_body_indices is not None:
+            return self._base_estimator_foot_body_indices
+        body_names = getattr(command.robot, "body_names", [])
+        indices = {}
+        for side, name in self.estimator_foot_body_names.items():
+            if name not in body_names:
+                raise ValueError(f"estimator foot body '{name}' not found in robot.body_names")
+            indices[side] = body_names.index(name)
+        self._base_estimator_foot_body_indices = indices
+        return indices
+
+    @staticmethod
+    def _quat_apply_inverse_wxyz(q: np.ndarray, v: np.ndarray) -> np.ndarray:
+        w, x, y, z = [float(a) for a in q]
+        qv = np.asarray([x, y, z], dtype=np.float32)
+        vec = np.asarray(v, dtype=np.float32)
+        # q^-1 * v * q for unit q, expanded without building matrices.
+        t = 2.0 * np.cross(-qv, vec)
+        return vec + w * t + np.cross(-qv, t)
+
+    def _foot_positions_in_base_from_sim_fk(self, command, env_idx: int, root_quat_wxyz: np.ndarray) -> dict[str, np.ndarray]:
+        """Foot positions in base frame.
+
+        In sim this uses Isaac's already-computed link transforms as a FK oracle.
+        A real G1 adapter should replace this boundary with encoder-based FK.
+        """
+        indices = self._resolve_estimator_foot_body_indices(command)
+        root_pos_w = command.robot.data.root_pos_w[env_idx].detach().cpu().numpy().astype(np.float32)
+        body_pos_w = command.robot.data.body_pos_w[env_idx].detach().cpu().numpy().astype(np.float32)
+        foot_pos_base = {}
+        for side, body_idx in indices.items():
+            foot_pos_base[side] = self._quat_apply_inverse_wxyz(
+                root_quat_wxyz, body_pos_w[body_idx] - root_pos_w
+            ).astype(np.float32)
+        return foot_pos_base
+
+    def _read_foot_contacts(self, command, env_idx: int) -> dict[str, bool]:
+        indices = self._resolve_estimator_foot_body_indices(command)
+        contacts = {side: False for side in indices}
+        sensor = None
+        scene = getattr(getattr(command, "_env", None), "scene", None)
+        if scene is not None:
+            sensors = getattr(scene, "sensors", None)
+            if sensors is not None and "contact_forces" in sensors:
+                sensor = sensors["contact_forces"]
+            if sensor is None:
+                try:
+                    sensor = scene["contact_forces"]
+                except Exception:  # noqa: BLE001
+                    sensor = None
+
+        if sensor is not None:
+            data = getattr(sensor, "data", None)
+            forces = getattr(data, "net_forces_w", None) if data is not None else None
+            if forces is None and data is not None:
+                forces = getattr(data, "force_matrix_w", None)
+            if forces is not None:
+                forces = forces.detach()
+                sensor_body_names = getattr(sensor, "body_names", None)
+                for side, robot_body_idx in indices.items():
+                    sensor_body_idx = robot_body_idx
+                    body_name = self.estimator_foot_body_names[side]
+                    if sensor_body_names is not None and body_name in sensor_body_names:
+                        sensor_body_idx = sensor_body_names.index(body_name)
+                    if forces.ndim == 3 and sensor_body_idx < forces.shape[1]:
+                        force_norm = torch.linalg.norm(forces[env_idx, sensor_body_idx]).item()
+                    elif forces.ndim == 4 and sensor_body_idx < forces.shape[1]:
+                        force_norm = torch.linalg.norm(forces[env_idx, sensor_body_idx].reshape(-1, 3), dim=-1).max().item()
+                    else:
+                        continue
+                    contacts[side] = force_norm >= self.estimator_contact_force_threshold
+                return contacts
+
+        # Fallback when the ContactSensor layout is unavailable: treat the lowest
+        # ankle-roll link(s) as contact candidates. This is for sim bring-up only.
+        body_pos_w = command.robot.data.body_pos_w[env_idx].detach().cpu()
+        foot_z = {side: float(body_pos_w[body_idx, 2]) for side, body_idx in indices.items()}
+        min_z = min(foot_z.values())
+        return {side: z <= min_z + 0.035 for side, z in foot_z.items()}
+
+    def _apply_base_state_estimator(self, command, env_idx: int, qpos: np.ndarray) -> np.ndarray:
+        if self._base_estimator is None:
+            return qpos
+        root_quat_wxyz = np.asarray(qpos[3:7], dtype=np.float32)
+        foot_pos_base = self._foot_positions_in_base_from_sim_fk(command, env_idx, root_quat_wxyz)
+        contacts = self._read_foot_contacts(command, env_idx)
+        initial_xy = qpos[:2] if (self.estimator_init_from_sim and not self._base_estimator.initialized) else None
+        estimate = self._base_estimator.update(
+            root_quat_wxyz=root_quat_wxyz,
+            foot_pos_base=foot_pos_base,
+            contacts=contacts,
+            base_z=float(qpos[2]),
+            initial_xy=initial_xy,
+        )
+        out = qpos.copy()
+        out[:3] = estimate.root_pos
+        out[3:7] = estimate.root_quat_wxyz
+
+        err = float(np.linalg.norm(out[:2] - qpos[:2]))
+        self._estimator_err_sum += err
+        self._estimator_err_count += 1
+        if self._step - self._last_estimator_log_step >= self.estimator_log_interval:
+            self._last_estimator_log_step = self._step
+            mean_err = self._estimator_err_sum / max(1, self._estimator_err_count)
+            self._log(
+                "[base_estimator] "
+                f"step={self._step} est_xy={out[:2].round(3).tolist()} "
+                f"sim_xy={qpos[:2].round(3).tolist()} err={err:.3f}m "
+                f"mean_err={mean_err:.3f}m contacts={estimate.contacts}"
+            )
+        return out
+
     def _robot_qpos_mujoco(self, command, env_idx: int) -> np.ndarray:
         """Current robot state as MuJoCo qpos [root xyz(env-local), quat wxyz, 29 joints]."""
         root_pos = command.robot.data.root_pos_w[env_idx].detach().clone()
@@ -674,7 +826,10 @@ class ArdyReplanCallback:
         joint_pos_isaac = command.robot.data.joint_pos[env_idx].detach()
         joint_pos_mujoco = joint_pos_isaac[command.isaaclab_to_mujoco_dof]
         qpos = torch.cat([root_pos, root_quat_wxyz, joint_pos_mujoco[:29]], dim=0)
-        return qpos.detach().cpu().numpy().astype(np.float32)
+        qpos_np = qpos.detach().cpu().numpy().astype(np.float32)
+        if self.use_base_state_estimator:
+            qpos_np = self._apply_base_state_estimator(command, env_idx, qpos_np)
+        return qpos_np
 
     def _log(self, msg: str) -> None:
         if self.verbose:

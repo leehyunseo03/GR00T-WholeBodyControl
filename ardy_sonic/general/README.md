@@ -15,6 +15,8 @@ cd /workspace/GR00T-WholeBodyControl
 #CHECKPOINT=/workspace/GR00T-WholeBodyControl/sonic_release/exported/kimodo_position_finetune/kimodo_pos_track_20260708_142052-20260708_142059/last.pt \
 bash ardy_sonic/general/run_general_replan.sh
 
+ESTIMATE_BASE_STATE=True bash ardy_sonic/general/run_general_replan.sh
+
 # HOST or CONTAINER, another terminal
 cd /home/hslee/IsaacLab_ws/GR00T-WholeBodyControl
 python3 ardy_sonic/general/goal_console.py
@@ -49,3 +51,17 @@ ACCEPT_EXISTING_GOAL_COMMAND=True bash ardy_sonic/general/run_general_replan.sh
 python3 ardy_sonic/general/goal_console.py 0 3
 python3 ardy_sonic/general/goal_console.py --relative 0 3
 ```
+
+Base-state estimator experiment:
+
+```bash
+ESTIMATE_BASE_STATE=True bash ardy_sonic/general/run_general_replan.sh
+ESTIMATE_BASE_STATE=True ESTIMATOR_LOG_INTERVAL=50 bash ardy_sonic/general/run_general_replan.sh
+```
+
+This replaces the replanning callback's root XY with a lightweight foot-odometry
+estimate: IMU/base quaternion for heading, ankle-roll foot positions in the base
+frame, and foot contact. In Isaac this still uses sim-computed foot link poses as
+the FK boundary, then compares the estimated XY against sim root XY in logs such
+as `[base_estimator] ... err=...`. On a real G1, replace that FK boundary with
+encoder-based kinematics and feed the same estimator contract.

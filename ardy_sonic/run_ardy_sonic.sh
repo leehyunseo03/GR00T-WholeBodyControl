@@ -36,6 +36,9 @@ TRACK_FRACTION="${TRACK_FRACTION:-0.9}"                       # legacy compatibi
 REPLAN_REQUEST_FRACTION="${REPLAN_REQUEST_FRACTION:-0.8}"     # request next plan after this fraction of current plan
 MAX_ASYNC_START_XY_ERROR="${MAX_ASYNC_START_XY_ERROR:-0.75}"  # discard async plan if its start is too stale (m)
 HANDOFF_BLEND_FRAMES="${HANDOFF_BLEND_FRAMES:-12}"            # smooth non-first replans from current robot qpos
+ESTIMATE_BASE_STATE="${ESTIMATE_BASE_STATE:-False}"           # use IMU+FK+foot-contact odometry for planner qpos
+ESTIMATOR_CONTACT_FORCE_THRESHOLD="${ESTIMATOR_CONTACT_FORCE_THRESHOLD:-10.0}"
+ESTIMATOR_LOG_INTERVAL="${ESTIMATOR_LOG_INTERVAL:-100}"
 MAX_REPLANS="${MAX_REPLANS:-40}"
 MAX_STEPS="${MAX_STEPS:-12000}"
 PLACEHOLDER_FRAMES="${PLACEHOLDER_FRAMES:-1500}"
@@ -150,6 +153,7 @@ echo "[run_ardy_sonic] stop condition: Ardy goal-reaching plan completes, then h
 echo "[run_ardy_sonic] diagnostic tolerances: pos<=${ARRIVAL_RADIUS}m yaw<=${YAW_TOL_DEG}deg joint<=${JOINT_TOL_RAD}rad"
 echo "[run_ardy_sonic] marker z offset=${MARKER_Z_OFFSET}m (visual only)"
 echo "[run_ardy_sonic] async replan request fraction=${REPLAN_REQUEST_FRACTION} max stale start=${MAX_ASYNC_START_XY_ERROR}m handoff_blend_frames=${HANDOFF_BLEND_FRAMES}"
+echo "[run_ardy_sonic] base estimator=${ESTIMATE_BASE_STATE} contact_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}N log_interval=${ESTIMATOR_LOG_INTERVAL}"
 echo "[run_ardy_sonic] Make sure the host Ardy planner server is running (--serve)."
 
 # NOTE: '++manager_env.terminations.time_out=null' below is required. That term
@@ -194,6 +198,9 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.replan_request_fraction=${REPLAN_REQUEST_FRACTION}" \
   "++callbacks.ardy_replan.max_async_start_xy_error=${MAX_ASYNC_START_XY_ERROR}" \
   "++callbacks.ardy_replan.handoff_blend_frames=${HANDOFF_BLEND_FRAMES}" \
+  "++callbacks.ardy_replan.use_base_state_estimator=${ESTIMATE_BASE_STATE}" \
+  "++callbacks.ardy_replan.estimator_contact_force_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}" \
+  "++callbacks.ardy_replan.estimator_log_interval=${ESTIMATOR_LOG_INTERVAL}" \
   "++callbacks.ardy_replan.max_replans=${MAX_REPLANS}" \
   "++callbacks.ardy_replan.max_steps=${MAX_STEPS}" \
   "++callbacks.ardy_replan.placeholder_frames=${PLACEHOLDER_FRAMES}" \
