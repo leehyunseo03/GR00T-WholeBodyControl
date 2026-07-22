@@ -37,6 +37,11 @@ REPLAN_REQUEST_FRACTION="${REPLAN_REQUEST_FRACTION:-0.8}"     # request next pla
 MAX_ASYNC_START_XY_ERROR="${MAX_ASYNC_START_XY_ERROR:-0.75}"  # discard async plan if its start is too stale (m)
 HANDOFF_BLEND_FRAMES="${HANDOFF_BLEND_FRAMES:-12}"            # smooth non-first replans from current robot qpos
 ESTIMATE_BASE_STATE="${ESTIMATE_BASE_STATE:-False}"           # use IMU+FK+foot-contact odometry for planner qpos
+STRICT_NO_PRIVILEGED_STATE="${STRICT_NO_PRIVILEGED_STATE:-${ESTIMATE_BASE_STATE}}"  # estimator path cannot read sim root/body poses
+ESTIMATOR_CONTACT_SOURCE="${ESTIMATOR_CONTACT_SOURCE:-kinematic}"  # kinematic | sim_sensor
+ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN="${ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN:-0.035}"
+ESTIMATOR_INITIAL_XY="${ESTIMATOR_INITIAL_XY:-}"              # optional "x,y"; default estimator origin is 0,0
+ESTIMATOR_BASE_Z="${ESTIMATOR_BASE_Z:-0.72}"
 ESTIMATOR_CONTACT_FORCE_THRESHOLD="${ESTIMATOR_CONTACT_FORCE_THRESHOLD:-10.0}"
 ESTIMATOR_LOG_INTERVAL="${ESTIMATOR_LOG_INTERVAL:-100}"
 MAX_REPLANS="${MAX_REPLANS:-40}"
@@ -153,7 +158,8 @@ echo "[run_ardy_sonic] stop condition: Ardy goal-reaching plan completes, then h
 echo "[run_ardy_sonic] diagnostic tolerances: pos<=${ARRIVAL_RADIUS}m yaw<=${YAW_TOL_DEG}deg joint<=${JOINT_TOL_RAD}rad"
 echo "[run_ardy_sonic] marker z offset=${MARKER_Z_OFFSET}m (visual only)"
 echo "[run_ardy_sonic] async replan request fraction=${REPLAN_REQUEST_FRACTION} max stale start=${MAX_ASYNC_START_XY_ERROR}m handoff_blend_frames=${HANDOFF_BLEND_FRAMES}"
-echo "[run_ardy_sonic] base estimator=${ESTIMATE_BASE_STATE} contact_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}N log_interval=${ESTIMATOR_LOG_INTERVAL}"
+echo "[run_ardy_sonic] base estimator=${ESTIMATE_BASE_STATE} strict_no_privileged=${STRICT_NO_PRIVILEGED_STATE} contact_source=${ESTIMATOR_CONTACT_SOURCE} initial_xy=${ESTIMATOR_INITIAL_XY:-0,0} base_z=${ESTIMATOR_BASE_Z}"
+echo "[run_ardy_sonic] estimator contact_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}N kinematic_z_margin=${ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN} log_interval=${ESTIMATOR_LOG_INTERVAL}"
 echo "[run_ardy_sonic] Make sure the host Ardy planner server is running (--serve)."
 
 # NOTE: '++manager_env.terminations.time_out=null' below is required. That term
@@ -199,6 +205,11 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.max_async_start_xy_error=${MAX_ASYNC_START_XY_ERROR}" \
   "++callbacks.ardy_replan.handoff_blend_frames=${HANDOFF_BLEND_FRAMES}" \
   "++callbacks.ardy_replan.use_base_state_estimator=${ESTIMATE_BASE_STATE}" \
+  "++callbacks.ardy_replan.strict_no_privileged_state=${STRICT_NO_PRIVILEGED_STATE}" \
+  "++callbacks.ardy_replan.estimator_contact_source=${ESTIMATOR_CONTACT_SOURCE}" \
+  "++callbacks.ardy_replan.estimator_kinematic_contact_z_margin=${ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN}" \
+  "++callbacks.ardy_replan.estimator_initial_xy=${ESTIMATOR_INITIAL_XY}" \
+  "++callbacks.ardy_replan.estimator_base_z=${ESTIMATOR_BASE_Z}" \
   "++callbacks.ardy_replan.estimator_contact_force_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}" \
   "++callbacks.ardy_replan.estimator_log_interval=${ESTIMATOR_LOG_INTERVAL}" \
   "++callbacks.ardy_replan.max_replans=${MAX_REPLANS}" \

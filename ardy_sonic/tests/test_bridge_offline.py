@@ -145,6 +145,55 @@ class _FakeEnv:
         self.num_envs = 1
 
 
+class _PrivilegedAccessForbiddenData:
+    def __init__(self):
+        self.root_quat_w = torch.tensor([[1.0, 0.0, 0.0, 0.0]])
+        self.joint_pos = torch.zeros(1, 29)
+
+    @property
+    def root_pos_w(self):
+        raise AssertionError("strict estimator path must not read root_pos_w")
+
+    @property
+    def body_pos_w(self):
+        raise AssertionError("strict estimator path must not read body_pos_w")
+
+
+class _FakeEncoderFkParser:
+    body_names = ["pelvis", "left_ankle_roll_link", "right_ankle_roll_link"]
+
+    def qpos_to_global_transforms(self, qpos, root_quat_wxyz=True):
+        del root_quat_wxyz
+        q = torch.as_tensor(qpos, dtype=torch.float32)
+        body_pos = torch.zeros(3, 3, dtype=torch.float32)
+        # Keep both feet below the base using only qpos/joint-derived data.
+        body_pos[1] = torch.tensor([0.0, 0.10, -0.72 + 0.01 * q[7]])
+        body_pos[2] = torch.tensor([0.0, -0.10, -0.72 + 0.01 * q[13]])
+        return body_pos, torch.eye(3).repeat(3, 1, 1)
+
+
+class _StrictEstimatorCommand:
+    def __init__(self):
+        self.robot = type("R", (), {"data": _PrivilegedAccessForbiddenData()})()
+        self.isaaclab_to_mujoco_dof = torch.arange(29)
+        self.motion_lib = type("ML", (), {"mesh_parsers": _FakeEncoderFkParser()})()
+
+
+def test_strict_estimator_qpos_avoids_global_sim_state():
+    cb = ArdyReplanCallback(
+        use_base_state_estimator=True,
+        strict_no_privileged_state=True,
+        estimator_initial_xy=[1.0, 2.0],
+        estimator_contact_source="kinematic",
+        show_target_markers=False,
+        show_plan_markers=False,
+        verbose=False,
+    )
+    qpos = cb._robot_qpos_mujoco(_StrictEstimatorCommand(), 0)
+    np.testing.assert_allclose(qpos[:2], [1.0, 2.0], atol=1e-6)
+    assert qpos.shape == (36,)
+
+
 def run_scenario(
     name: str,
     planner_delay_s: float = 0.0,

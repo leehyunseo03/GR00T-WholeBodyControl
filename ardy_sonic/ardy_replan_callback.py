@@ -62,6 +62,31 @@ def _as_bool(value) -> bool:
     return bool(value)
 
 
+def _env_float(name: str, default: float) -> float:
+    value = os.environ.get(name)
+    if value is None or value == "":
+        return float(default)
+    return float(value)
+
+
+def _env_xy(name: str):
+    value = os.environ.get(name)
+    return _parse_optional_xy(value, name)
+
+
+def _parse_optional_xy(value, name: str = "xy"):
+    if value is None:
+        return None
+    if isinstance(value, str):
+        if value.strip() == "":
+            return None
+        parts = value.replace(",", " ").split()
+        if len(parts) != 2:
+            raise ValueError(f"{name} must contain exactly two numbers, got {value!r}")
+        return [float(parts[0]), float(parts[1])]
+    return value
+
+
 class ArdyReplanCallback:
     def __init__(
         self,
@@ -103,11 +128,16 @@ class ArdyReplanCallback:
         seed: int = 0,
         runtime_dir: Optional[str] = None,
         use_base_state_estimator: bool | str = False,
+        strict_no_privileged_state: Optional[bool | str] = None,
+        estimator_initial_xy: Optional[Sequence[float]] = None,
+        estimator_base_z: Optional[float] = None,
+        estimator_contact_source: str = "kinematic",  # kinematic | sim_sensor
+        estimator_kinematic_contact_z_margin: float = 0.035,
         estimator_contact_force_threshold: float = 10.0,
         estimator_log_interval: int = 100,
         estimator_left_foot_body: str = "left_ankle_roll_link",
         estimator_right_foot_body: str = "right_ankle_roll_link",
-        estimator_init_from_sim: bool | str = True,
+        estimator_init_from_sim: bool | str = False,
         verbose: bool = True,
     ):
         self.goal_mode = goal_mode
@@ -148,6 +178,30 @@ class ArdyReplanCallback:
         self.use_base_state_estimator = _as_bool(
             os.environ.get("ESTIMATE_BASE_STATE", use_base_state_estimator)
         )
+        if strict_no_privileged_state is None:
+            strict_no_privileged_state = self.use_base_state_estimator
+        self.strict_no_privileged_state = _as_bool(
+            os.environ.get("STRICT_NO_PRIVILEGED_STATE", strict_no_privileged_state)
+        )
+        env_initial_xy = _env_xy("ESTIMATOR_INITIAL_XY")
+        if env_initial_xy is not None:
+            estimator_initial_xy = env_initial_xy
+        estimator_initial_xy = _parse_optional_xy(estimator_initial_xy, "estimator_initial_xy")
+        self.estimator_initial_xy = (
+            None
+            if estimator_initial_xy is None
+            else np.asarray(estimator_initial_xy, dtype=np.float32).reshape(2)
+        )
+        self.estimator_base_z = _env_float(
+            "ESTIMATOR_BASE_Z",
+            self.target_height if estimator_base_z is None else float(estimator_base_z),
+        )
+        self.estimator_contact_source = str(
+            os.environ.get("ESTIMATOR_CONTACT_SOURCE", estimator_contact_source)
+        ).strip().lower()
+        self.estimator_kinematic_contact_z_margin = _env_float(
+            "ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN", estimator_kinematic_contact_z_margin
+        )
         self.estimator_contact_force_threshold = float(estimator_contact_force_threshold)
         self.estimator_log_interval = max(1, int(estimator_log_interval))
         self.estimator_foot_body_names = {
@@ -155,15 +209,27 @@ class ArdyReplanCallback:
             "right": str(estimator_right_foot_body),
         }
         self.estimator_init_from_sim = _as_bool(estimator_init_from_sim)
+        if self.strict_no_privileged_state and self.estimator_init_from_sim:
+            raise ValueError(
+                "estimator_init_from_sim=True reads simulator root XY. "
+                "Set STRICT_NO_PRIVILEGED_STATE=False for sim-only validation, or use ESTIMATOR_INITIAL_XY."
+            )
+        if self.strict_no_privileged_state and self.estimator_contact_source == "sim_sensor":
+            raise ValueError(
+                "ESTIMATOR_CONTACT_SOURCE=sim_sensor is not allowed with STRICT_NO_PRIVILEGED_STATE=True. "
+                "Use kinematic contact or provide a real sensor adapter."
+            )
         self._base_estimator = (
             FootOdometryBaseEstimator(default_height=self.target_height)
             if self.use_base_state_estimator
             else None
         )
-        self._base_estimator_foot_body_indices = None
+        self._estimator_body_index_cache = {}
         self._last_estimator_log_step = -1
         self._estimator_err_sum = 0.0
         self._estimator_err_count = 0
+        self._estimator_yaw_err_sum = 0.0
+        self._estimator_yaw_err_count = 0
 
         self._target_joints = np.asarray(
             self.target_joint_qpos if self.target_joint_qpos is not None else [0.0] * P.NUM_JOINTS,
@@ -223,7 +289,9 @@ class ArdyReplanCallback:
         if self.use_base_state_estimator:
             self._log(
                 "[ardy_replan] base-state estimator enabled "
-                "(IMU orientation + joint-FK foot positions + foot contact; "
+                "(IMU orientation + encoder-FK foot positions + foot contact; "
+                f"strict_no_privileged_state={self.strict_no_privileged_state} "
+                f"contact_source={self.estimator_contact_source} "
                 f"feet={self.estimator_foot_body_names})"
             )
         # Create marker prims BEFORE the eval loop so they attach to the renderer
@@ -697,16 +765,16 @@ class ArdyReplanCallback:
                 raise ValueError(f"goal-reaching plan '{req_id}' final joint error is {joint_err:.3f}rad")
         return qpos, fps
 
-    def _resolve_estimator_foot_body_indices(self, command) -> dict[str, int]:
-        if self._base_estimator_foot_body_indices is not None:
-            return self._base_estimator_foot_body_indices
-        body_names = getattr(command.robot, "body_names", [])
+    def _resolve_estimator_foot_body_indices(self, body_names, source: str) -> dict[str, int]:
+        key = (source, tuple(body_names))
+        if key in self._estimator_body_index_cache:
+            return self._estimator_body_index_cache[key]
         indices = {}
         for side, name in self.estimator_foot_body_names.items():
             if name not in body_names:
-                raise ValueError(f"estimator foot body '{name}' not found in robot.body_names")
+                raise ValueError(f"estimator foot body '{name}' not found in {source} body names")
             indices[side] = body_names.index(name)
-        self._base_estimator_foot_body_indices = indices
+        self._estimator_body_index_cache[key] = indices
         return indices
 
     @staticmethod
@@ -724,7 +792,11 @@ class ArdyReplanCallback:
         In sim this uses Isaac's already-computed link transforms as a FK oracle.
         A real G1 adapter should replace this boundary with encoder-based FK.
         """
-        indices = self._resolve_estimator_foot_body_indices(command)
+        if self.strict_no_privileged_state:
+            raise RuntimeError("_foot_positions_in_base_from_sim_fk requires privileged simulator body poses")
+        indices = self._resolve_estimator_foot_body_indices(
+            getattr(command.robot, "body_names", []), "robot"
+        )
         root_pos_w = command.robot.data.root_pos_w[env_idx].detach().cpu().numpy().astype(np.float32)
         body_pos_w = command.robot.data.body_pos_w[env_idx].detach().cpu().numpy().astype(np.float32)
         foot_pos_base = {}
@@ -734,8 +806,37 @@ class ArdyReplanCallback:
             ).astype(np.float32)
         return foot_pos_base
 
-    def _read_foot_contacts(self, command, env_idx: int) -> dict[str, bool]:
-        indices = self._resolve_estimator_foot_body_indices(command)
+    def _foot_positions_in_base_from_encoder_fk(self, command, qpos: np.ndarray) -> dict[str, np.ndarray]:
+        """Foot positions from current joint angles, with the root placed at the base origin."""
+        parser = getattr(getattr(command, "motion_lib", None), "mesh_parsers", None)
+        if parser is None:
+            raise ValueError("encoder-FK estimator requires command.motion_lib.mesh_parsers")
+        body_names = getattr(parser, "body_names", None)
+        if body_names is None:
+            raise ValueError("encoder-FK estimator requires mesh parser body_names")
+        indices = self._resolve_estimator_foot_body_indices(body_names, "motion-lib")
+        qpos_fk = np.asarray(qpos, dtype=np.float32).copy()
+        qpos_fk[:3] = 0.0
+        qpos_fk[3:7] = [1.0, 0.0, 0.0, 0.0]
+        qpos_t = torch.as_tensor(qpos_fk, dtype=torch.float32, device="cpu")
+        body_pos, _ = parser.qpos_to_global_transforms(qpos_t, root_quat_wxyz=True)
+        body_pos_np = body_pos.detach().cpu().numpy().astype(np.float32)
+        return {side: body_pos_np[body_idx].copy() for side, body_idx in indices.items()}
+
+    def _estimate_contacts_from_kinematics(self, foot_pos_base: dict[str, np.ndarray]) -> dict[str, bool]:
+        if not foot_pos_base:
+            raise ValueError("kinematic contact estimation needs at least one foot position")
+        foot_z = {side: float(np.asarray(pos).reshape(-1)[2]) for side, pos in foot_pos_base.items()}
+        min_z = min(foot_z.values())
+        margin = max(0.0, float(self.estimator_kinematic_contact_z_margin))
+        return {side: z <= min_z + margin for side, z in foot_z.items()}
+
+    def _read_sim_foot_contacts(self, command, env_idx: int) -> dict[str, bool]:
+        if self.strict_no_privileged_state:
+            raise RuntimeError("_read_sim_foot_contacts requires privileged simulator contact/body data")
+        indices = self._resolve_estimator_foot_body_indices(
+            getattr(command.robot, "body_names", []), "robot"
+        )
         contacts = {side: False for side in indices}
         sensor = None
         scene = getattr(getattr(command, "_env", None), "scene", None)
@@ -782,36 +883,99 @@ class ArdyReplanCallback:
         if self._base_estimator is None:
             return qpos
         root_quat_wxyz = np.asarray(qpos[3:7], dtype=np.float32)
-        foot_pos_base = self._foot_positions_in_base_from_sim_fk(command, env_idx, root_quat_wxyz)
-        contacts = self._read_foot_contacts(command, env_idx)
-        initial_xy = qpos[:2] if (self.estimator_init_from_sim and not self._base_estimator.initialized) else None
+        if self.estimator_contact_source == "sim_sensor":
+            foot_pos_base = self._foot_positions_in_base_from_sim_fk(command, env_idx, root_quat_wxyz)
+            contacts = self._read_sim_foot_contacts(command, env_idx)
+        elif self.estimator_contact_source == "kinematic":
+            foot_pos_base = self._foot_positions_in_base_from_encoder_fk(command, qpos)
+            contacts = self._estimate_contacts_from_kinematics(foot_pos_base)
+        else:
+            raise ValueError(
+                f"unknown ESTIMATOR_CONTACT_SOURCE={self.estimator_contact_source!r}; "
+                "expected 'kinematic' or 'sim_sensor'"
+            )
+        if not self._base_estimator.initialized and self.estimator_initial_xy is not None:
+            initial_xy = self.estimator_initial_xy
+        elif self.estimator_init_from_sim and not self._base_estimator.initialized:
+            if self.strict_no_privileged_state:
+                raise RuntimeError("estimator_init_from_sim is not allowed in strict no-privileged mode")
+            initial_xy = qpos[:2]
+        else:
+            initial_xy = None
         estimate = self._base_estimator.update(
             root_quat_wxyz=root_quat_wxyz,
             foot_pos_base=foot_pos_base,
             contacts=contacts,
-            base_z=float(qpos[2]),
+            base_z=float(self.estimator_base_z),
             initial_xy=initial_xy,
         )
         out = qpos.copy()
         out[:3] = estimate.root_pos
         out[3:7] = estimate.root_quat_wxyz
 
-        err = float(np.linalg.norm(out[:2] - qpos[:2]))
-        self._estimator_err_sum += err
-        self._estimator_err_count += 1
         if self._step - self._last_estimator_log_step >= self.estimator_log_interval:
             self._last_estimator_log_step = self._step
-            mean_err = self._estimator_err_sum / max(1, self._estimator_err_count)
-            self._log(
+            est_yaw = P.yaw_from_quat_wxyz(out[3:7])
+            foot_z = {
+                side: round(float(np.asarray(pos).reshape(-1)[2]), 3)
+                for side, pos in foot_pos_base.items()
+            }
+            msg = (
                 "[base_estimator] "
-                f"step={self._step} est_xy={out[:2].round(3).tolist()} "
-                f"sim_xy={qpos[:2].round(3).tolist()} err={err:.3f}m "
-                f"mean_err={mean_err:.3f}m contacts={estimate.contacts}"
+                f"step={self._step} source={self.estimator_contact_source} "
+                f"est_xy={out[:2].round(3).tolist()} "
+                f"est_yaw={math.degrees(est_yaw):.1f}deg "
+                f"contacts={estimate.contacts} "
+                f"foot_z={foot_z}"
             )
+            if not self.strict_no_privileged_state:
+                sim_state = self._sim_root_state_for_diagnostics(command, env_idx)
+                if sim_state is not None:
+                    sim_xy, sim_yaw = sim_state
+                    err = float(np.linalg.norm(out[:2] - sim_xy))
+                    yaw_err = abs(float(_wrap_angle(est_yaw - sim_yaw)))
+                    self._estimator_err_sum += err
+                    self._estimator_err_count += 1
+                    self._estimator_yaw_err_sum += yaw_err
+                    self._estimator_yaw_err_count += 1
+                    mean_err = self._estimator_err_sum / max(1, self._estimator_err_count)
+                    mean_yaw_err = (
+                        self._estimator_yaw_err_sum
+                        / max(1, self._estimator_yaw_err_count)
+                    )
+                    msg += (
+                        f" sim_xy={sim_xy.round(3).tolist()} err={err:.3f}m "
+                        f"mean_err={mean_err:.3f}m "
+                        f"sim_yaw={math.degrees(sim_yaw):.1f}deg "
+                        f"yaw_err={math.degrees(yaw_err):.1f}deg "
+                        f"mean_yaw_err={math.degrees(mean_yaw_err):.1f}deg"
+                    )
+            self._log(msg)
         return out
+
+    def _sim_root_state_for_diagnostics(self, command, env_idx: int):
+        try:
+            root_pos = command.robot.data.root_pos_w[env_idx].detach().clone()
+            env_origins = getattr(command._env.scene, "env_origins", None)  # noqa: SLF001
+            if env_origins is not None:
+                root_pos = root_pos - env_origins[env_idx].to(root_pos.device)
+            root_quat_wxyz = command.robot.data.root_quat_w[env_idx].detach().clone()
+            try:
+                from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
+
+                root_quat_wxyz = quat_adapter.isaaclab_to_wxyz(root_quat_wxyz)
+            except Exception:  # noqa: BLE001
+                pass
+            sim_xy = root_pos[:2].detach().cpu().numpy().astype(np.float32)
+            sim_yaw = P.yaw_from_quat_wxyz(root_quat_wxyz.detach().cpu().numpy())
+            return sim_xy, sim_yaw
+        except Exception:  # noqa: BLE001
+            return None
 
     def _robot_qpos_mujoco(self, command, env_idx: int) -> np.ndarray:
         """Current robot state as MuJoCo qpos [root xyz(env-local), quat wxyz, 29 joints]."""
+        if self.use_base_state_estimator:
+            return self._estimated_robot_qpos_mujoco(command, env_idx)
         root_pos = command.robot.data.root_pos_w[env_idx].detach().clone()
         env_origins = getattr(command._env.scene, "env_origins", None)  # noqa: SLF001
         if env_origins is not None:
@@ -826,10 +990,28 @@ class ArdyReplanCallback:
         joint_pos_isaac = command.robot.data.joint_pos[env_idx].detach()
         joint_pos_mujoco = joint_pos_isaac[command.isaaclab_to_mujoco_dof]
         qpos = torch.cat([root_pos, root_quat_wxyz, joint_pos_mujoco[:29]], dim=0)
-        qpos_np = qpos.detach().cpu().numpy().astype(np.float32)
-        if self.use_base_state_estimator:
-            qpos_np = self._apply_base_state_estimator(command, env_idx, qpos_np)
-        return qpos_np
+        return qpos.detach().cpu().numpy().astype(np.float32)
+
+    def _estimated_robot_qpos_mujoco(self, command, env_idx: int) -> np.ndarray:
+        """Current qpos for replanning without simulator global root position."""
+        root_quat_wxyz = command.robot.data.root_quat_w[env_idx].detach().clone()
+        try:
+            from gear_sonic.isaac_utils import quaternion_adapter as quat_adapter
+
+            root_quat_wxyz = quat_adapter.isaaclab_to_wxyz(root_quat_wxyz)
+        except Exception:  # noqa: BLE001
+            pass
+        joint_pos_isaac = command.robot.data.joint_pos[env_idx].detach()
+        joint_pos_mujoco = joint_pos_isaac[command.isaaclab_to_mujoco_dof]
+        root_pos = torch.tensor(
+            [0.0, 0.0, float(self.estimator_base_z)],
+            dtype=joint_pos_mujoco.dtype,
+            device=joint_pos_mujoco.device,
+        )
+        qpos = torch.cat([root_pos, root_quat_wxyz, joint_pos_mujoco[:29]], dim=0)
+        return self._apply_base_state_estimator(
+            command, env_idx, qpos.detach().cpu().numpy().astype(np.float32)
+        )
 
     def _log(self, msg: str) -> None:
         if self.verbose:

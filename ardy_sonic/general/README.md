@@ -57,11 +57,24 @@ Base-state estimator experiment:
 ```bash
 ESTIMATE_BASE_STATE=True bash ardy_sonic/general/run_general_replan.sh
 ESTIMATE_BASE_STATE=True ESTIMATOR_LOG_INTERVAL=50 bash ardy_sonic/general/run_general_replan.sh
+ESTIMATE_BASE_STATE=True ESTIMATOR_INITIAL_XY=1.0,2.0 bash ardy_sonic/general/run_general_replan.sh
 ```
 
 This replaces the replanning callback's root XY with a lightweight foot-odometry
-estimate: IMU/base quaternion for heading, ankle-roll foot positions in the base
-frame, and foot contact. In Isaac this still uses sim-computed foot link poses as
-the FK boundary, then compares the estimated XY against sim root XY in logs such
-as `[base_estimator] ... err=...`. On a real G1, replace that FK boundary with
-encoder-based kinematics and feed the same estimator contract.
+estimate and, by default, enables `STRICT_NO_PRIVILEGED_STATE=True`. In that mode
+the callback does not read simulator `root_pos_w` or `body_pos_w` for replanning:
+it builds foot positions from the current joint qpos through encoder-style FK,
+uses kinematic lowest-foot contact, and initializes the odometry frame at
+`ESTIMATOR_INITIAL_XY` or `[0, 0]`.
+
+For sim-only debugging, you can opt back into simulator sensor comparisons:
+
+```bash
+ESTIMATE_BASE_STATE=True STRICT_NO_PRIVILEGED_STATE=False ESTIMATOR_CONTACT_SOURCE=sim_sensor bash ardy_sonic/general/run_general_replan.sh
+ESTIMATE_BASE_STATE=True STRICT_NO_PRIVILEGED_STATE=False ESTIMATOR_LOG_INTERVAL=25 bash ardy_sonic/general/run_general_replan.sh
+```
+
+The non-strict estimator log includes sim-only `sim_xy`/`err` and
+`sim_yaw`/`yaw_err` comparisons. Treat those as diagnostics only; strict
+deployment-style replanning still uses the local foot-odometry estimate rather
+than simulator global state.
