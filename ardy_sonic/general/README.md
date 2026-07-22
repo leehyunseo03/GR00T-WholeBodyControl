@@ -58,14 +58,27 @@ Base-state estimator experiment:
 ESTIMATE_BASE_STATE=True bash ardy_sonic/general/run_general_replan.sh
 ESTIMATE_BASE_STATE=True ESTIMATOR_LOG_INTERVAL=50 bash ardy_sonic/general/run_general_replan.sh
 ESTIMATE_BASE_STATE=True ESTIMATOR_INITIAL_XY=1.0,2.0 bash ardy_sonic/general/run_general_replan.sh
+ESTIMATE_BASE_STATE=True ESTIMATOR_CONTACT_ENTER_STEPS=2 ESTIMATOR_MAX_ANCHOR_RESIDUAL=0.18 bash ardy_sonic/general/run_general_replan.sh
 ```
 
-This replaces the replanning callback's root XY with a lightweight foot-odometry
-estimate and, by default, enables `STRICT_NO_PRIVILEGED_STATE=True`. In that mode
-the callback does not read simulator `root_pos_w` or `body_pos_w` for replanning:
-it builds foot positions from the current joint qpos through encoder-style FK,
-uses kinematic lowest-foot contact, and initializes the odometry frame at
-`ESTIMATOR_INITIAL_XY` or `[0, 0]`.
+This replaces the replanning callback's root XY/yaw with a strict-signal legged
+odometry estimate and, by default, enables `STRICT_NO_PRIVILEGED_STATE=True`.
+In that mode the callback does not read simulator `root_pos_w` or `body_pos_w`
+for replanning: it builds foot positions from the current joint qpos through
+encoder-style FK, uses kinematic lowest-foot contact, filters contact with
+short hysteresis, rejects large stance-anchor jumps as likely slip/outliers, and
+initializes the odometry frame at `ESTIMATOR_INITIAL_XY` or `[0, 0]`.
+
+Estimator tuning knobs:
+
+```bash
+ESTIMATOR_CONTACT_ENTER_STEPS=2          # raw contact frames before accepting stance
+ESTIMATOR_CONTACT_EXIT_STEPS=2           # missed frames before dropping stance
+ESTIMATOR_XY_CORRECTION_ALPHA=0.75       # blend toward stance-foot XY measurement
+ESTIMATOR_MAX_XY_CORRECTION_PER_STEP=0.08
+ESTIMATOR_MAX_ANCHOR_RESIDUAL=0.18       # bigger residual is treated as slip/outlier
+ESTIMATOR_MAX_YAW_RATE=3.5               # rad/s yaw jump gate for replanning qpos
+```
 
 For sim-only debugging, you can opt back into simulator sensor comparisons:
 

@@ -43,6 +43,12 @@ ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN="${ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN:-0.
 ESTIMATOR_INITIAL_XY="${ESTIMATOR_INITIAL_XY:-}"              # optional "x,y"; default estimator origin is 0,0
 ESTIMATOR_BASE_Z="${ESTIMATOR_BASE_Z:-0.72}"
 ESTIMATOR_CONTACT_FORCE_THRESHOLD="${ESTIMATOR_CONTACT_FORCE_THRESHOLD:-10.0}"
+ESTIMATOR_CONTACT_ENTER_STEPS="${ESTIMATOR_CONTACT_ENTER_STEPS:-2}"  # raw contact frames before accepting stance
+ESTIMATOR_CONTACT_EXIT_STEPS="${ESTIMATOR_CONTACT_EXIT_STEPS:-2}"    # missed frames before dropping stance
+ESTIMATOR_XY_CORRECTION_ALPHA="${ESTIMATOR_XY_CORRECTION_ALPHA:-0.75}"
+ESTIMATOR_MAX_XY_CORRECTION_PER_STEP="${ESTIMATOR_MAX_XY_CORRECTION_PER_STEP:-0.08}"
+ESTIMATOR_MAX_ANCHOR_RESIDUAL="${ESTIMATOR_MAX_ANCHOR_RESIDUAL:-0.18}"  # stance anchor outlier/slip gate (m)
+ESTIMATOR_MAX_YAW_RATE="${ESTIMATOR_MAX_YAW_RATE:-3.5}"  # rad/s yaw jump gate for replanning qpos
 ESTIMATOR_LOG_INTERVAL="${ESTIMATOR_LOG_INTERVAL:-100}"
 MAX_REPLANS="${MAX_REPLANS:-40}"
 MAX_STEPS="${MAX_STEPS:-12000}"
@@ -160,6 +166,7 @@ echo "[run_ardy_sonic] marker z offset=${MARKER_Z_OFFSET}m (visual only)"
 echo "[run_ardy_sonic] async replan request fraction=${REPLAN_REQUEST_FRACTION} max stale start=${MAX_ASYNC_START_XY_ERROR}m handoff_blend_frames=${HANDOFF_BLEND_FRAMES}"
 echo "[run_ardy_sonic] base estimator=${ESTIMATE_BASE_STATE} strict_no_privileged=${STRICT_NO_PRIVILEGED_STATE} contact_source=${ESTIMATOR_CONTACT_SOURCE} initial_xy=${ESTIMATOR_INITIAL_XY:-0,0} base_z=${ESTIMATOR_BASE_Z}"
 echo "[run_ardy_sonic] estimator contact_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}N kinematic_z_margin=${ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN} log_interval=${ESTIMATOR_LOG_INTERVAL}"
+echo "[run_ardy_sonic] estimator hysteresis=${ESTIMATOR_CONTACT_ENTER_STEPS}/${ESTIMATOR_CONTACT_EXIT_STEPS} xy_alpha=${ESTIMATOR_XY_CORRECTION_ALPHA} max_xy_step=${ESTIMATOR_MAX_XY_CORRECTION_PER_STEP}m max_anchor_residual=${ESTIMATOR_MAX_ANCHOR_RESIDUAL}m max_yaw_rate=${ESTIMATOR_MAX_YAW_RATE}rad/s"
 echo "[run_ardy_sonic] Make sure the host Ardy planner server is running (--serve)."
 
 # NOTE: '++manager_env.terminations.time_out=null' below is required. That term
@@ -211,6 +218,12 @@ HYDRA_FULL_ERROR="${HYDRA_FULL_ERROR:-1}" LIVESTREAM="${LIVESTREAM}" \
   "++callbacks.ardy_replan.estimator_initial_xy=${ESTIMATOR_INITIAL_XY}" \
   "++callbacks.ardy_replan.estimator_base_z=${ESTIMATOR_BASE_Z}" \
   "++callbacks.ardy_replan.estimator_contact_force_threshold=${ESTIMATOR_CONTACT_FORCE_THRESHOLD}" \
+  "++callbacks.ardy_replan.estimator_contact_enter_steps=${ESTIMATOR_CONTACT_ENTER_STEPS}" \
+  "++callbacks.ardy_replan.estimator_contact_exit_steps=${ESTIMATOR_CONTACT_EXIT_STEPS}" \
+  "++callbacks.ardy_replan.estimator_xy_correction_alpha=${ESTIMATOR_XY_CORRECTION_ALPHA}" \
+  "++callbacks.ardy_replan.estimator_max_xy_correction_per_step=${ESTIMATOR_MAX_XY_CORRECTION_PER_STEP}" \
+  "++callbacks.ardy_replan.estimator_max_anchor_residual=${ESTIMATOR_MAX_ANCHOR_RESIDUAL}" \
+  "++callbacks.ardy_replan.estimator_max_yaw_rate=${ESTIMATOR_MAX_YAW_RATE}" \
   "++callbacks.ardy_replan.estimator_log_interval=${ESTIMATOR_LOG_INTERVAL}" \
   "++callbacks.ardy_replan.max_replans=${MAX_REPLANS}" \
   "++callbacks.ardy_replan.max_steps=${MAX_STEPS}" \

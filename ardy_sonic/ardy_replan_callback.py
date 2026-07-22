@@ -134,6 +134,12 @@ class ArdyReplanCallback:
         estimator_contact_source: str = "kinematic",  # kinematic | sim_sensor
         estimator_kinematic_contact_z_margin: float = 0.035,
         estimator_contact_force_threshold: float = 10.0,
+        estimator_contact_enter_steps: int = 2,
+        estimator_contact_exit_steps: int = 2,
+        estimator_xy_correction_alpha: float = 0.75,
+        estimator_max_xy_correction_per_step: float = 0.08,
+        estimator_max_anchor_residual: float = 0.18,
+        estimator_max_yaw_rate: float = 3.5,
         estimator_log_interval: int = 100,
         estimator_left_foot_body: str = "left_ankle_roll_link",
         estimator_right_foot_body: str = "right_ankle_roll_link",
@@ -203,6 +209,29 @@ class ArdyReplanCallback:
             "ESTIMATOR_KINEMATIC_CONTACT_Z_MARGIN", estimator_kinematic_contact_z_margin
         )
         self.estimator_contact_force_threshold = float(estimator_contact_force_threshold)
+        self.estimator_contact_enter_steps = max(
+            1, int(_env_float("ESTIMATOR_CONTACT_ENTER_STEPS", estimator_contact_enter_steps))
+        )
+        self.estimator_contact_exit_steps = max(
+            1, int(_env_float("ESTIMATOR_CONTACT_EXIT_STEPS", estimator_contact_exit_steps))
+        )
+        self.estimator_xy_correction_alpha = float(np.clip(
+            _env_float("ESTIMATOR_XY_CORRECTION_ALPHA", estimator_xy_correction_alpha),
+            0.0,
+            1.0,
+        ))
+        self.estimator_max_xy_correction_per_step = max(
+            0.0,
+            _env_float("ESTIMATOR_MAX_XY_CORRECTION_PER_STEP", estimator_max_xy_correction_per_step),
+        )
+        self.estimator_max_anchor_residual = max(
+            1e-6,
+            _env_float("ESTIMATOR_MAX_ANCHOR_RESIDUAL", estimator_max_anchor_residual),
+        )
+        self.estimator_max_yaw_rate = max(
+            0.0,
+            _env_float("ESTIMATOR_MAX_YAW_RATE", estimator_max_yaw_rate),
+        )
         self.estimator_log_interval = max(1, int(estimator_log_interval))
         self.estimator_foot_body_names = {
             "left": str(estimator_left_foot_body),
@@ -220,7 +249,15 @@ class ArdyReplanCallback:
                 "Use kinematic contact or provide a real sensor adapter."
             )
         self._base_estimator = (
-            FootOdometryBaseEstimator(default_height=self.target_height)
+            FootOdometryBaseEstimator(
+                default_height=self.target_height,
+                contact_enter_steps=self.estimator_contact_enter_steps,
+                contact_exit_steps=self.estimator_contact_exit_steps,
+                xy_correction_alpha=self.estimator_xy_correction_alpha,
+                max_xy_correction_per_update=self.estimator_max_xy_correction_per_step,
+                max_anchor_residual=self.estimator_max_anchor_residual,
+                max_yaw_rate=self.estimator_max_yaw_rate,
+            )
             if self.use_base_state_estimator
             else None
         )
@@ -292,6 +329,9 @@ class ArdyReplanCallback:
                 "(IMU orientation + encoder-FK foot positions + foot contact; "
                 f"strict_no_privileged_state={self.strict_no_privileged_state} "
                 f"contact_source={self.estimator_contact_source} "
+                f"contact_hysteresis={self.estimator_contact_enter_steps}/{self.estimator_contact_exit_steps} "
+                f"max_anchor_residual={self.estimator_max_anchor_residual:.3f}m "
+                f"max_yaw_rate={math.degrees(self.estimator_max_yaw_rate):.1f}deg/s "
                 f"feet={self.estimator_foot_body_names})"
             )
         # Create marker prims BEFORE the eval loop so they attach to the renderer
@@ -908,6 +948,7 @@ class ArdyReplanCallback:
             contacts=contacts,
             base_z=float(self.estimator_base_z),
             initial_xy=initial_xy,
+            dt=1.0 / self.control_hz if self.control_hz > 0.0 else None,
         )
         out = qpos.copy()
         out[:3] = estimate.root_pos
@@ -926,6 +967,8 @@ class ArdyReplanCallback:
                 f"est_xy={out[:2].round(3).tolist()} "
                 f"est_yaw={math.degrees(est_yaw):.1f}deg "
                 f"contacts={estimate.contacts} "
+                f"conf={{{', '.join(f'{k}: {v:.2f}' for k, v in estimate.contact_confidence.items())}}} "
+                f"slip={estimate.slip_feet} "
                 f"foot_z={foot_z}"
             )
             if not self.strict_no_privileged_state:
