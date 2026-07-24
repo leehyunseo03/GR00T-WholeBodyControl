@@ -354,6 +354,20 @@ class MySceneCfg(InteractiveSceneCfg):
         else:
             raise ValueError(f"Unknown terrain type: {terrain_type}")
 
+        scene_usd_path = config.get("scene_usd_path", None)
+        if scene_usd_path:
+            self.scene_usd = AssetBaseCfg(
+                prim_path=config.get("scene_usd_prim_path", "/World/IKEA_Scene"),
+                spawn=sim_utils.UsdFileCfg(
+                    usd_path=scene_usd_path,
+                    scale=tuple(config.get("scene_usd_scale", [1.0, 1.0, 1.0])),
+                ),
+                init_state=AssetBaseCfg.InitialStateCfg(
+                    pos=tuple(config.get("scene_usd_position", [0.0, 0.0, 0.0])),
+                    rot=tuple(config.get("scene_usd_quat", [1.0, 0.0, 0.0, 0.0])),
+                ),
+            )
+
         # robots
         self.robot: ArticulationCfg = dataclasses.MISSING
 

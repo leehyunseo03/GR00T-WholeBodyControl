@@ -36,6 +36,13 @@ config:
   save_rendering_dir: ${experiment_dir}/renderings_training
   experiment_dir: ${experiment_dir}
   terrain_type: plane # "0: plane" or "1: trimesh"
+  scene_usd_path: null
+  scene_usd_position: [0.0, 0.0, 0.0]
+  scene_usd_quat: [1.0, 0.0, 0.0, 0.0]
+  scene_usd_scale: [1.0, 1.0, 1.0]
+  viewer:
+    eye: [4.5, 0.0, 4.0]
+    lookat: [0.0, 0.0, 0.0]
 
   # Object mass override (kg). Set to override USD-defined mass.
   # Example: ++manager_env.config.object_mass=0.1
